@@ -1,7 +1,8 @@
+import React from "react";
+import Layout from "../components/Layout";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { NextPage } from "next";
-import Layout from "../components/Layout";
 import {
   Flex,
   Box,
@@ -22,7 +23,7 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
-const Home: NextPage = () => {
+const login: NextPage = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +38,7 @@ const Home: NextPage = () => {
   const onSubmit = () => console.log("Clicked");
 
   return (
-    <Layout title={"Signup - sharefolio"}>
+    <Layout title={"signin - sharefolio"}>
       <Flex
         minH={"100vh"}
         align={"center"}
@@ -47,7 +48,7 @@ const Home: NextPage = () => {
         <Stack spacing={8} mx={"auto"} my={0} maxW={"lg"} py={4} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign up
+              Login
             </Heading>
           </Stack>
           <Box
@@ -57,25 +58,10 @@ const Home: NextPage = () => {
             py={8}
             px={12}
             w={"md"}
-            h={"md"}
           >
             <Stack spacing={4}>
               {/* フォーム */}
               <form onSubmit={handleSubmit(onSubmit)}>
-                {/* Username入力 */}
-                <FormControl id="userName" isRequired>
-                  <FormLabel>Username</FormLabel>
-                  <Input
-                    type="text"
-                    id="userName"
-                    placeholder="Username"
-                    {...register("userName", {
-                      required: "This is required",
-                    })}
-                    mb={4}
-                  />
-                </FormControl>
-
                 {/* email入力欄 */}
                 <FormControl id="email" isRequired>
                   <FormLabel>Email address</FormLabel>
@@ -144,8 +130,8 @@ const Home: NextPage = () => {
               {/* ログイン画面への推移ボタン */}
               <Stack pt={6}>
                 <Text align={"center"}>
-                  Already a user?{" "}
-                  <NextLink href={"/login"}>
+                  Don't have an account yet?{" "}
+                  <NextLink href={"/"}>
                     <Text
                       as="span"
                       color={"blue.400"}
@@ -154,7 +140,7 @@ const Home: NextPage = () => {
                         cursor: "pointer",
                       }}
                     >
-                      Login
+                      Sign up
                     </Text>
                   </NextLink>
                 </Text>
@@ -167,4 +153,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default login;

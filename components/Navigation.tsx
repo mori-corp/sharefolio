@@ -58,8 +58,9 @@ export default function Navigation() {
           alignItems={{ base: "center" }}
         >
           {/* *** ロゴ  *** */}
-          <NextLink href="/posts" passHref>
+          <NextLink href="/" passHref>
             <Text
+              as="a"
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
@@ -83,6 +84,7 @@ export default function Navigation() {
         >
           <NextLink href="/" passHref>
             <Button
+              as="a"
               display={{ base: "none", md: "inline-flex" }}
               fontSize={"sm"}
               fontWeight={600}
@@ -91,7 +93,6 @@ export default function Navigation() {
               _hover={{
                 bg: "blue.300",
               }}
-              onClick={handleClick}
             >
               Logout
             </Button>
@@ -120,6 +121,7 @@ const DesktopNav = () => {
               {/* リンク */}
               <NextLink href={navItem.href ?? "#"} passHref>
                 <Text
+                  as="a"
                   p={2}
                   fontSize={"sm"}
                   fontWeight={500}
@@ -163,23 +165,26 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
       <Flex
         py={2}
         // as={NextLink}
-        href={href ?? "#"}
+        // href={href ?? "#"}
         justify={"space-between"}
         align={"center"}
         _hover={{
           textDecoration: "none",
         }}
       >
-        <Text
-          fontWeight={600}
-          color={useColorModeValue("gray.600", "gray.200")}
-          _hover={{
-            cursor: "pointer",
-          }}
-          marginBottom={"10px"}
-        >
-          {label}
-        </Text>
+        <NextLink href={href ?? "#"}>
+          <Text
+            as="a"
+            fontWeight={600}
+            color={useColorModeValue("gray.600", "gray.200")}
+            _hover={{
+              cursor: "pointer",
+            }}
+            marginBottom={"10px"}
+          >
+            {label}
+          </Text>
+        </NextLink>
       </Flex>
     </Stack>
   );
@@ -193,6 +198,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
+  {
+    label: "投稿一覧",
+    href: "/posts",
+  },
   {
     label: "投稿する",
     href: "/posts/create",
