@@ -39,26 +39,14 @@ const login: NextPage = () => {
 
   return (
     <Layout title={"signin - sharefolio"}>
-      <Flex
-        minH={"100vh"}
-        align={"center"}
-        justify={"center"}
-        bg={useColorModeValue("gray.50", "gray.800")}
-      >
+      <Flex minH={"100vh"} align={"center"} justify={"center"}>
         <Stack spacing={8} mx={"auto"} my={0} maxW={"lg"} py={4} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
               Login
             </Heading>
           </Stack>
-          <Box
-            rounded={"lg"}
-            bg={useColorModeValue("white", "gray.700")}
-            boxShadow={"lg"}
-            py={8}
-            px={12}
-            w={"md"}
-          >
+          <Box rounded={"lg"} boxShadow={"lg"} py={8} px={12} w={"md"}>
             <Stack spacing={4}>
               {/* フォーム */}
               <form onSubmit={handleSubmit(onSubmit)}>
