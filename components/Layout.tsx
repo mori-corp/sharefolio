@@ -1,9 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import Link from "next/link";
-import styles from "../styles/layouts/Layout.module.scss";
 import type { ReactNode } from "react";
-import Navigation from "./Navigation";
+import { Navigation } from "./Navigation";
+import { Flex } from "@chakra-ui/react";
 
 type Props = {
   children: ReactNode;
@@ -19,7 +18,9 @@ export default function Layout({ children, title }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navigation />
-      <div className={styles.container}>{children}</div>
+      <Flex flexDirection={"column"} bg={"gray.50"} w={"full"} h={"full"}>
+        {children}
+      </Flex>
     </>
   );
 }
