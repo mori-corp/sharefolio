@@ -1,34 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# アプリケーション名
 
-## Getting Started
+sharefolio
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+# アプリケーション概要
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ポートフォリオのアイディアが欲しいエンジニア、プログラミング初学者、就職活動中の人などへ向け、たくさんのオリジナルアプリを一箇所でまとめて閲覧・シェアできるプラットフォームです。
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+<br>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# アプリ URL
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+https://sharefolio2022.web.app/
 
-## Learn More
+<br>
 
-To learn more about Next.js, take a look at the following resources:
+# テスト用アカウント
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- メールアドレス　：
+- パスワード　　　：
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<br>
 
-## Deploy on Vercel
+# 利用方法
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. xxx
+2. xxx
+3. xxx
+4. xxx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br>
+
+# 機能一覧
+
+| 機能                           | ログインユーザー | 非ログインユーザー |
+| ------------------------------ | ---------------- | ------------------ |
+| ユーザー登録                   | ×                | ◯                  |
+| ユーザー編集                   | ◯                | ×                  |
+| 投稿閲覧                       | ◯                | ×                  |
+| 投稿編集・削除                 | ◯                | ×                  |
+| ソート機能（レベル別、言語別） | ◯                | ×                  |
+
+<br>
+
+# アプリを作成した背景
+
+ポートフォリオのプロジェクトアイディアを探していた際に、自分と近いレベルの人であったり、同じ言語を使用している人が作ったプロジェクトを、一箇所でまとめて閲覧できたら便利だと思い、このアプリの作成を決めました。ここアプリを使い、他のエンジニアの方々のオリジナルアプリから、アイディアの着想を得たり、自分が作成したアプリを投稿し、気軽にフィードバックをし合える場の提供を目指しています。自分が学んできた、基本的な認証機能の実装、CRUD操作、UIフレームワークのアウトプットととして、本アプリに機能を実装しました。
+
+<br>
+
+# 実装予定の機能
+
+xxxx
+
+<br>
+
+# 開発環境
+
+- フロントエンド
+  - React(v18.2.0)
+  - Next.js(v12.3.1)
+  - Typescript
+  - Recoil
+  - Chakra UI
+- バックエンド
+  - Firebase (v9.12.1)
+- その他
+  - Firebase hosting
+
+<br>
+
+# ローカルでの動作方法
+
+以下のコマンドを順に実行
+
+<br>
+
+# 工夫した点
+
+xxx
