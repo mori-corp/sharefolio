@@ -5,7 +5,6 @@ import {
   Heading,
   Input,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
 

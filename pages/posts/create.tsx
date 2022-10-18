@@ -1,10 +1,9 @@
 import React from "react";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Layout from "../../components/Layout";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
   FormHelperText,
   Button,
   Input,
@@ -14,11 +13,14 @@ import {
   useColorModeValue,
   Stack,
   Textarea,
+  Select,
+  Checkbox,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 
 const create: NextPage = () => {
   return (
-    <Layout title={"Create - sharefolio"}>
+    <Layout title={"Create - ShareFolio"}>
       <Flex flexDirection={"column"} align={"center"} w={"full"} p={8}>
         {/* ヘディング部分 */}
         <Heading fontSize={"4xl"} mb={8}>
@@ -56,6 +58,35 @@ const create: NextPage = () => {
               <Textarea placeholder="簡単な説明を入力" />
             </FormControl>
 
+            {/* レベル */}
+            <FormControl mb={4}>
+              <FormLabel>レベル</FormLabel>
+              <Select placeholder="レベル" w={40}>
+                <option value="beginner">初心者</option>
+                <option value="intermediate">中級者</option>
+                <option value="advanced">上級者</option>
+              </Select>
+            </FormControl>
+
+            {/* 言語詮索 */}
+            <FormControl mb={4}>
+              <FormLabel>使用言語</FormLabel>
+              <CheckboxGroup>
+                <Checkbox mr={4}>HTML</Checkbox>
+                <Checkbox mr={4}>CSS</Checkbox>
+                <Checkbox mr={4}>Javascript</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+                <Checkbox mr={4}>Check</Checkbox>
+              </CheckboxGroup>
+            </FormControl>
+
             {/* アプリURL */}
             <FormControl mb={4}>
               <FormLabel>アプリURL</FormLabel>
@@ -69,8 +100,6 @@ const create: NextPage = () => {
             </FormControl>
             <Stack spacing={10} pt={2} mb={4}>
               <Button
-                type="submit"
-                loadingText="Submitting"
                 size="lg"
                 bg={"blue.400"}
                 color={"white"}
@@ -78,7 +107,7 @@ const create: NextPage = () => {
                   bg: "blue.500",
                 }}
               >
-                投稿
+                投稿する
               </Button>
             </Stack>
           </form>

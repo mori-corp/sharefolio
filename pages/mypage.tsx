@@ -1,5 +1,5 @@
 import React from "react";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Layout from "../components/Layout";
 import { ImageUpload } from "../components/ImageUpload";
 import {
@@ -14,12 +14,13 @@ import {
 
 const myPage: NextPage = () => {
   return (
-    <Layout title={"Mypage - sharefolio"}>
+    <Layout title={"Mypage - ShareFolio"}>
       <Flex flexDirection={"column"} align={"center"} w={"full"} p={8}>
         {/* ヘディング部分 */}
         <Heading fontSize={"4xl"} mb={8}>
           マイページ
         </Heading>
+
         <Box
           rounded={"lg"}
           bg={"white"}
