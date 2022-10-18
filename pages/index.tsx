@@ -1,8 +1,13 @@
 import type { NextPage } from "next";
-import { SignUp } from "../components/SignUp";
+import { Auth } from "../components/Auth";
+import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
-  return <SignUp />;
+  return (
+    <Layout title={"ShareFolio"}>
+      <Auth />
+    </Layout>
+  );
 };
 
 export default Home;
