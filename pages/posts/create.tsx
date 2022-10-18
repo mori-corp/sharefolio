@@ -29,7 +29,7 @@ const create: NextPage = () => {
 
         <Box
           rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
+          bg={"white"}
           boxShadow={"lg"}
           py={10}
           px={{ lg: 14, md: 14, sm: 4 }}
