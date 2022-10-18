@@ -6,8 +6,6 @@ import {
   Button,
   Stack,
   Collapse,
-  Icon,
-  // Link,
   Popover,
   PopoverTrigger,
   useColorModeValue,
@@ -16,12 +14,25 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../lib/auth";
+import { auth } from "../firebase";
+import { useRouter } from "next/router";
+import { signOut } from "firebase/auth";
 
-export default function Navigation() {
+export const Navigation: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
+  const router = useRouter();
+  const setUser = useSetRecoilState(userState);
 
-  const handleClick = () => {
-    console.log("Clicked!");
+  // ログアウト処理
+  const handleLogout = async () => {
+    await signOut(auth);
+    setUser({
+      uid: "",
+      photoUrl: "",
+      displayName: "",
+    });
   };
 
   return (
@@ -58,7 +69,7 @@ export default function Navigation() {
           alignItems={{ base: "center" }}
         >
           {/* *** ロゴ  *** */}
-          <NextLink href="/" passHref>
+          <NextLink href="/posts" passHref>
             <Text
               as="a"
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
@@ -89,10 +100,29 @@ export default function Navigation() {
               fontSize={"sm"}
               fontWeight={600}
               color={"white"}
+              bg={"pink.400"}
+              _hover={{
+                bg: "pink.300",
+              }}
+            >
+              Sign up
+            </Button>
+          </NextLink>
+
+          {/* ログアウト処理 */}
+
+          <NextLink href="/" passHref>
+            <Button
+              as="a"
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
               bg={"blue.400"}
               _hover={{
                 bg: "blue.300",
               }}
+              onClick={handleLogout}
             >
               Logout
             </Button>
@@ -105,12 +135,11 @@ export default function Navigation() {
       </Collapse>
     </Box>
   );
-}
+};
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
-  // const popoverContentBgColor = useColorModeValue("white", "gray.800");
+  const linkColor = "gray.600";
+  const linkHoverColor = "gray.800";
 
   return (
     <Stack direction={"row"} spacing={4}>
@@ -192,16 +221,11 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 
 interface NavItem {
   label: string;
-  subLabel?: string;
   children?: Array<NavItem>;
   href?: string;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: "投稿一覧",
-    href: "/posts",
-  },
   {
     label: "投稿する",
     href: "/posts/create",
@@ -209,9 +233,5 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: "マイページ",
     href: "/mypage",
-  },
-  {
-    label: "<追加要素>",
-    href: "#",
   },
 ];
