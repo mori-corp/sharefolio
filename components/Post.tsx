@@ -5,28 +5,26 @@ import {
   Link,
   Image,
   Text,
-  Divider,
+  Stack,
   HStack,
   Tag,
-  Wrap,
-  WrapItem,
   SpaceProps,
   useColorModeValue,
   Container,
-  VStack,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 
-interface IBlogTags {
+type IBlogTags = {
   tags: Array<string>;
   marginTop?: SpaceProps["marginTop"];
-}
+};
 
 const BlogTags: React.FC<IBlogTags> = (props) => {
   return (
     <HStack spacing={2} marginTop={props.marginTop}>
       {props.tags.map((tag) => {
         return (
-          <Tag size={"md"} variant="solid" colorScheme="orange" key={tag}>
+          <Tag size={"md"} variant="solid" colorScheme="pink" key={tag}>
             {tag}
           </Tag>
         );
@@ -35,12 +33,13 @@ const BlogTags: React.FC<IBlogTags> = (props) => {
   );
 };
 
-interface BlogAuthorProps {
+// 投稿者のデータ型定義
+type PosterProps = {
   date: Date;
   name: string;
-}
+};
 
-export const BlogAuthor: React.FC<BlogAuthorProps> = (props) => {
+export const Poster: React.FC<PosterProps> = (props) => {
   return (
     <HStack marginTop="2" spacing="2" display="flex" alignItems="center">
       <Image
@@ -62,12 +61,14 @@ export default function ArticleList() {
     <Container maxW={"5xl"} p="12">
       <Heading as="h1">投稿一覧</Heading>
 
+      {/* 各投稿のBox */}
       <Box
         marginTop={{ base: "1", sm: "5" }}
         display="flex"
         flexDirection={{ base: "column", md: "row" }}
         justifyContent="space-between"
       >
+        {/* サムネ画像部分（左半分）のBox */}
         <Box
           display="flex"
           flex="1"
@@ -75,8 +76,9 @@ export default function ArticleList() {
           position="relative"
           alignItems="center"
         >
+          {/* サムネ画像のBox */}
           <Box width={{ sm: "100%" }} zIndex="2" marginTop="5%" marginRight={4}>
-            {/* 画像部分 */}
+            {/* サムネ画像部分 */}
             <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
               <Image
                 borderRadius="lg"
@@ -88,20 +90,9 @@ export default function ArticleList() {
               />
             </Link>
           </Box>
-
-          {/* コンテンツ部分 */}
-          <Box zIndex="1" width="100%" position="absolute" height="100%">
-            <Box
-              bgGradient={useColorModeValue(
-                "radial(orange.600 1px, transparent 1px)",
-                "radial(orange.300 1px, transparent 1px)"
-              )}
-              backgroundSize="20px 20px"
-              opacity="0.4"
-              height="100%"
-            />
-          </Box>
         </Box>
+
+        {/* 文章（コンテンツ）部分（右半分）のBox */}
         <Box
           display="flex"
           flex="1"
@@ -109,14 +100,27 @@ export default function ArticleList() {
           justifyContent="center"
           marginTop={{ base: "3", sm: "3" }}
         >
-          {/* タグ一覧 */}
-          <BlogTags tags={["Engineering", "Product"]} />
+          {/* 言語タグ一覧 */}
+          <BlogTags tags={["HTML", "CSS", "React", "Next.js"]} />
+
+          {/* レベル */}
+          <Stack mt={1}>
+            <Tag size={"md"} variant="solid" colorScheme="blue">
+              レベル
+            </Tag>
+          </Stack>
 
           {/* ポートフォリオタイトル */}
-          <Heading marginTop="1">
-            <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
-              Blog article title
-            </Link>
+          <Heading marginTop="1" fontSize={"2xl"}>
+            <NextLink href="/posts/detail">
+              <Text
+                as="a"
+                textDecoration="none"
+                _hover={{ textDecoration: "none", cursor: "pointer" }}
+              >
+                シェアして楽しむポートフォリオ - ShareFolio
+              </Text>
+            </NextLink>
           </Heading>
 
           {/* 説明部分 */}
@@ -133,7 +137,7 @@ export default function ArticleList() {
           </Text>
 
           {/* 投稿者 */}
-          <BlogAuthor name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
+          <Poster name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
         </Box>
       </Box>
     </Container>
