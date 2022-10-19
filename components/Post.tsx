@@ -5,14 +5,17 @@ import {
   Link,
   Image,
   Text,
-  Stack,
-  HStack,
   Tag,
   SpaceProps,
   useColorModeValue,
   Container,
+  Wrap,
+  Icon,
+  HStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { AiOutlineHeart } from "react-icons/ai";
+import { Author } from "./Author";
 
 type IBlogTags = {
   tags: Array<string>;
@@ -21,37 +24,15 @@ type IBlogTags = {
 
 const BlogTags: React.FC<IBlogTags> = (props) => {
   return (
-    <HStack spacing={2} marginTop={props.marginTop}>
+    <Wrap spacing={1} marginTop={props.marginTop}>
       {props.tags.map((tag) => {
         return (
-          <Tag size={"md"} variant="solid" colorScheme="pink" key={tag}>
+          <Tag size={"sm"} variant="solid" colorScheme="pink" key={tag}>
             {tag}
           </Tag>
         );
       })}
-    </HStack>
-  );
-};
-
-// 投稿者のデータ型定義
-type PosterProps = {
-  date: Date;
-  name: string;
-};
-
-export const Poster: React.FC<PosterProps> = (props) => {
-  return (
-    <HStack marginTop="2" spacing="2" display="flex" alignItems="center">
-      <Image
-        borderRadius="full"
-        boxSize="40px"
-        src="https://100k-faces.glitch.me/random-image"
-        alt={`Avatar of ${props.name}`}
-      />
-      <Text fontWeight="medium">{props.name}</Text>
-      <Text>—</Text>
-      <Text>{props.date.toLocaleDateString()}</Text>
-    </HStack>
+    </Wrap>
   );
 };
 
@@ -59,8 +40,6 @@ export const Poster: React.FC<PosterProps> = (props) => {
 export default function ArticleList() {
   return (
     <Container maxW={"5xl"} p="12">
-      <Heading as="h1">投稿一覧</Heading>
-
       {/* 各投稿のBox */}
       <Box
         marginTop={{ base: "1", sm: "5" }}
@@ -100,16 +79,6 @@ export default function ArticleList() {
           justifyContent="center"
           marginTop={{ base: "3", sm: "3" }}
         >
-          {/* 言語タグ一覧 */}
-          <BlogTags tags={["HTML", "CSS", "React", "Next.js"]} />
-
-          {/* レベル */}
-          <Stack mt={1}>
-            <Tag size={"md"} variant="solid" colorScheme="blue">
-              レベル
-            </Tag>
-          </Stack>
-
           {/* ポートフォリオタイトル */}
           <Heading marginTop="1" fontSize={"2xl"}>
             <NextLink href="/posts/detail">
@@ -136,8 +105,29 @@ export default function ArticleList() {
             and scrambled it to make a type specimen book.
           </Text>
 
+          {/* 言語タグ一覧 */}
+          <BlogTags
+            tags={[
+              "HTML",
+              "CSS",
+              "Javascript",
+              "React",
+              "Next.js",
+              "Python",
+              "sample",
+              "sample",
+              "sample",
+            ]}
+            marginTop={2}
+          />
+
           {/* 投稿者 */}
-          <Poster name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
+          <HStack mt={4}>
+            <Author name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
+            {/* ハートアイコン */}
+            <Icon as={AiOutlineHeart} w={5} h={5} />
+            <Text>100</Text>
+          </HStack>
         </Box>
       </Box>
     </Container>
