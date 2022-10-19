@@ -1,19 +1,14 @@
 import { app } from "../firebase";
-import {
-  getAuth,
-  signInWithPopup,
-  signOut,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
 type UserState = {
-  uid: string;
-  photoUrl: string | null;
-  displayName: string | null;
+  uid: string | undefined;
+  photoUrl: string | null | undefined;
+  displayName: string | null | undefined;
 };
 
 export const userState = atom<UserState>({
