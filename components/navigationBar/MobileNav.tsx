@@ -14,7 +14,7 @@ export const MobileNav: React.FC = () => {
   return (
     <Stack bg={"white"} p={4} display={{ md: "none" }}>
       {NAV_ITEMS.map((navItem) => (
-        <Stack spacing={4} onClick={onToggle}>
+        <Stack spacing={4} onClick={onToggle} key={navItem.label}>
           <Flex
             py={2}
             justify={"space-between"}
