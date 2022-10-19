@@ -40,27 +40,23 @@ export const DesktopNav: React.FC = () => {
       <HStack>
         {NAV_ITEMS.map((navItem) => (
           <Box key={navItem.label}>
-            <Popover trigger={"hover"} placement={"bottom-start"}>
-              <PopoverTrigger>
-                {/* リンク */}
-                <NextLink href={navItem.href ?? "#"} passHref>
-                  <Text
-                    as="a"
-                    p={2}
-                    fontSize={"sm"}
-                    fontWeight={500}
-                    color={linkColor}
-                    _hover={{
-                      textDecoration: "none",
-                      color: linkHoverColor,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {navItem.label}
-                  </Text>
-                </NextLink>
-              </PopoverTrigger>
-            </Popover>
+            {/* リンク */}
+            <NextLink href={navItem.href ?? "#"} passHref>
+              <Text
+                as="a"
+                p={2}
+                fontSize={"sm"}
+                fontWeight={500}
+                color={linkColor}
+                _hover={{
+                  textDecoration: "none",
+                  color: linkHoverColor,
+                  cursor: "pointer",
+                }}
+              >
+                {navItem.label}
+              </Text>
+            </NextLink>
           </Box>
         ))}
       </HStack>
