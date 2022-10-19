@@ -11,6 +11,7 @@ import {
   FormLabel,
   Button,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 const myPage: NextPage = () => {
   return (
@@ -43,15 +44,28 @@ const myPage: NextPage = () => {
           <Button
             type="submit"
             loadingText="Submitting"
-            size="lg"
             bg={"blue.400"}
             color={"white"}
             _hover={{
               bg: "blue.500",
             }}
+            mr={4}
           >
             更新
           </Button>
+          <NextLink href="/posts" passHref>
+            <Button
+              as="a"
+              loadingText="Submitting"
+              bg={"gray.400"}
+              color={"white"}
+              _hover={{
+                bg: "gray.500",
+              }}
+            >
+              TOPへ
+            </Button>
+          </NextLink>
         </Box>
       </Flex>
     </Layout>
