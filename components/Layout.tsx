@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import type { ReactNode } from "react";
-import { Navigation } from "./Navigation";
+import { Navigation } from "./navigationBar/Navigation";
 import { Flex } from "@chakra-ui/react";
 
 type Props = {

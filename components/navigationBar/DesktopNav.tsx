@@ -1,7 +1,7 @@
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../lib/auth";
+import { userState } from "../../lib/auth";
 import { NAV_ITEMS } from "./NavItems";
 import {
   Box,
