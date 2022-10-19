@@ -107,17 +107,7 @@ export default function ArticleList() {
 
           {/* 言語タグ一覧 */}
           <BlogTags
-            tags={[
-              "HTML",
-              "CSS",
-              "Javascript",
-              "React",
-              "Next.js",
-              "Python",
-              "sample",
-              "sample",
-              "sample",
-            ]}
+            tags={["HTML", "CSS", "Javascript", "React", "Next.js", "Python"]}
             marginTop={2}
           />
 
