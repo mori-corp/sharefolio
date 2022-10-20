@@ -33,6 +33,7 @@ export const signInWithGoogle = async () => {
   await signInWithPopup(auth, provider).catch((err) => alert(err.message));
 };
 
+// 認証ユーザーの状態管理
 export const useAuth = (): UserState => {
   const [authUser, setUser] = useRecoilState(userState);
 
