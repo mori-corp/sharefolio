@@ -37,7 +37,7 @@ const BlogTags: React.FC<IBlogTags> = (props) => {
 };
 
 // 投稿一覧
-export default function ArticleList() {
+export default function Posts() {
   return (
     <Container maxW={"5xl"} p="12">
       {/* 各投稿のBox */}

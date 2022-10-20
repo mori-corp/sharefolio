@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import Layout from "../../components/Layout";
-import Post from "../../components/Post";
+import Posts from "../../components/Posts";
 import { Heading } from "@chakra-ui/react";
 
 const index: NextPage = () => {
@@ -10,10 +10,9 @@ const index: NextPage = () => {
       <Heading as="h1" textAlign={"center"} mt={16}>
         投稿一覧
       </Heading>
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      <Posts />
+      <Posts />
+      <Posts />
     </Layout>
   );
 };
