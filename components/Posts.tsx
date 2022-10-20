@@ -5,39 +5,17 @@ import {
   Link,
   Image,
   Text,
-  Tag,
-  SpaceProps,
   useColorModeValue,
   Container,
-  Wrap,
   Icon,
   HStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "./Author";
+import { BlogTags } from "./BlogTags";
 
-type IBlogTags = {
-  tags: Array<string>;
-  marginTop?: SpaceProps["marginTop"];
-};
-
-const BlogTags: React.FC<IBlogTags> = (props) => {
-  return (
-    <Wrap spacing={1} marginTop={props.marginTop}>
-      {props.tags.map((tag) => {
-        return (
-          <Tag size={"sm"} variant="solid" colorScheme="pink" key={tag}>
-            {tag}
-          </Tag>
-        );
-      })}
-    </Wrap>
-  );
-};
-
-// 投稿一覧
-export default function Posts() {
+export const Posts: React.FC = () => {
   return (
     <Container maxW={"5xl"} p="12">
       {/* 各投稿のBox */}
@@ -79,7 +57,7 @@ export default function Posts() {
           justifyContent="center"
           marginTop={{ base: "3", sm: "3" }}
         >
-          {/* ポートフォリオタイトル */}
+          {/* 投稿タイトル */}
           <Heading marginTop="1" fontSize={"2xl"}>
             <NextLink href="/posts/detail">
               <Text
@@ -87,12 +65,12 @@ export default function Posts() {
                 textDecoration="none"
                 _hover={{ textDecoration: "none", cursor: "pointer" }}
               >
-                シェアして楽しむポートフォリオ - ShareFolio
+                ポートフォリオをシェアして楽しむプラットフォーム - ShareFolio
               </Text>
             </NextLink>
           </Heading>
 
-          {/* 説明部分 */}
+          {/* アプリの説明部分 */}
           <Text
             as="p"
             marginTop="2"
@@ -107,19 +85,44 @@ export default function Posts() {
 
           {/* 言語タグ一覧 */}
           <BlogTags
-            tags={["HTML", "CSS", "Javascript", "React", "Next.js", "Python"]}
-            marginTop={2}
+            tags={[
+              "HTML",
+              "CSS",
+              "Javascript",
+              "Vue.js",
+              "Nuxt.js",
+              "React.js",
+              "Next.js",
+              "TypeScript",
+              "Node.js",
+              "Express.js",
+              "Firebase",
+              "Amplify",
+              "SQL",
+              "NoSQL",
+              "GraphQL",
+              "Java",
+              "Ruby",
+              "Go",
+              "PHP",
+              "C#",
+              "Python",
+            ]}
           />
 
-          {/* 投稿者 */}
+          {/* 投稿者情報 */}
           <HStack mt={4}>
+            {/* 投稿者 */}
             <Author name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
+
             {/* ハートアイコン */}
             <Icon as={AiOutlineHeart} w={5} h={5} />
+
+            {/* いいね数 */}
             <Text>100</Text>
           </HStack>
         </Box>
       </Box>
     </Container>
   );
-}
+};
