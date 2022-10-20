@@ -20,6 +20,30 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 const edit: NextPage = () => {
+  const languages = [
+    "HTML",
+    "CSS",
+    "Javascript",
+    "Vue.js",
+    "Nuxt.js",
+    "React.js",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Express.js",
+    "Firebase",
+    "Amplify",
+    "SQL",
+    "NoSQL",
+    "GraphQL",
+    "Java",
+    "Ruby",
+    "Go",
+    "PHP",
+    "C#",
+    "Python",
+  ];
+
   const router = useRouter();
   const { detail } = router.query;
 
@@ -76,22 +100,13 @@ const edit: NextPage = () => {
               </Select>
             </FormControl>
 
-            {/* 言語詮索 */}
+            {/* 言語設定 */}
             <FormControl mb={4}>
-              <FormLabel>使用言語</FormLabel>
+              <FormLabel>使用技術</FormLabel>
               <CheckboxGroup>
-                <Checkbox mr={4}>HTML</Checkbox>
-                <Checkbox mr={4}>CSS</Checkbox>
-                <Checkbox mr={4}>Javascript</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
+                {languages.map((language) => (
+                  <Checkbox m={2}>{language}</Checkbox>
+                ))}
               </CheckboxGroup>
             </FormControl>
 
