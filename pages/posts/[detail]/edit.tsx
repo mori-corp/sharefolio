@@ -1,7 +1,8 @@
 import React from "react";
 import type { NextPage } from "next";
 import NextLink from "next/link";
-import Layout from "../../components/Layout";
+import { useRouter } from "next/router";
+import Layout from "../../../components/Layout";
 import {
   FormControl,
   FormLabel,
@@ -19,9 +20,13 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 const edit: NextPage = () => {
+  const router = useRouter();
+  const { detail } = router.query;
+
   const handleEditButtonClick = () => {
     alert("Edit button clicked!");
   };
+
   return (
     <Layout title={"Edit - ShareFolio"}>
       <Flex flexDirection={"column"} align={"center"} w={"full"} p={8}>
@@ -116,7 +121,7 @@ const edit: NextPage = () => {
                 編集する
               </Button>
 
-              <NextLink href="/posts/detail" passHref>
+              <NextLink href={`/posts/${detail}`} passHref>
                 <Button
                   as="a"
                   size="lg"
