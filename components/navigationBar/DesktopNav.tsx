@@ -7,8 +7,6 @@ import {
   Box,
   Text,
   Stack,
-  Popover,
-  PopoverTrigger,
   Button,
   HStack,
 } from "@chakra-ui/react";
@@ -21,6 +19,7 @@ export const DesktopNav: React.FC = () => {
 
   // ログアウト処理
   const handleLogout = async () => {
+    alert("Logout!");
     await signOut(auth);
     setUser({
       uid: "",
