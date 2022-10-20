@@ -11,6 +11,8 @@ export const NAV_ITEMS: Array<NavItemType> = [
   },
   {
     label: "マイページ",
-    href: "/mypage",
+
+    // ログインしているユーザーのuidを取得して、/mypage/以下に設定することで、ユーザー固有のルーティングを設定する
+    href: "/mypage/user-uid",
   },
 ];
