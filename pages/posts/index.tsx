@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import Layout from "../../components/Layout";
-import Posts from "../../components/Posts";
+import { Posts } from "../../components/Posts";
 import { Heading } from "@chakra-ui/react";
 
 const index: NextPage = () => {
