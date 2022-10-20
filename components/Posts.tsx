@@ -59,7 +59,14 @@ export const Posts: React.FC = () => {
         >
           {/* 投稿タイトル */}
           <Heading marginTop="1" fontSize={"2xl"}>
-            <NextLink href="/posts/detail">
+           
+            {/* ダイナミックルーティングについて
+            
+            1. 以下のNextLink hrefには、各投稿固有のidを、パスとして指定
+            2. このidが、/posts/[detail]へ受け継がれる
+            
+             */}
+            <NextLink href="/posts/post-id">
               <Text
                 as="a"
                 textDecoration="none"
