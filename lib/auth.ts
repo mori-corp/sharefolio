@@ -1,6 +1,11 @@
-import { app } from "../firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { atom } from "recoil";
+import { auth } from "../firebase";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { useEffect } from "react";
+import { atom, useRecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
@@ -24,6 +29,26 @@ export const userState = atom<UserState>({
 // googleでサインインする
 export const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
-  const auth = getAuth(app);
+
   await signInWithPopup(auth, provider).catch((err) => alert(err.message));
+};
+
+export const useAuth = (): UserState => {
+  const [authUser, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    // ログイン/ログアウトを感知
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Recoilで状態保持
+        setUser({
+          uid: user.uid,
+          photoUrl: user.photoURL,
+          displayName: user.displayName,
+        });
+      }
+    });
+  }, []);
+
+  return authUser;
 };
