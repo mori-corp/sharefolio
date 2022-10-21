@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { db } from "../../firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import Layout from "../../components/Layout";
@@ -31,6 +32,8 @@ const create: NextPage = () => {
 
   // 本来は、userIDを、Recoilで状態管理しているuserのuidに設定する。
   const userId = "shin-sampleId";
+
+  const router = useRouter();
 
   // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: any) => {
@@ -65,6 +68,18 @@ const create: NextPage = () => {
     await addDoc(collectionRef, payload);
 
     alert("投稿を作成しました");
+
+    // フォームのクリア
+    setAppName("");
+    setTitle("");
+    setDescription("");
+    setLevel("");
+    setSelectedLanguage([]);
+    setAppUrl("");
+    setGithub("");
+
+    //投稿一覧へリダイレクト
+    router.push("/posts");
   };
 
   const displayedLanguages = [
