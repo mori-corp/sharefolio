@@ -32,19 +32,16 @@ const create: NextPage = () => {
   // 本来は、userIDを、Recoilで状態管理しているuserのuidに設定する。
   const userId = "shin-sampleId";
 
-  // CheckBoxの管理
-  const [checked, setChecked] = useState(false);
-
+  // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: any) => {
-    // チェックの有無を確認する
-    setChecked(e.target.value);
-
+    const { checked, value } = e.target;
     if (checked) {
-      // もしチェックがされていれば、arrayに格納する
-      setSelectedLanguage([...selectedLanguage, e.target.value]);
+      // case1: 言語にチェックがされた時
+      setSelectedLanguage([...selectedLanguage, value]);
+    } else {
+      // case2: 言語からチェックがはずされた時
+      setSelectedLanguage(selectedLanguage.filter((e) => e !== value));
     }
-    //もしチェックが外された場合は、arrayからfilterをして取り除く
-    
   };
 
   // 投稿作成
