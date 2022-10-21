@@ -62,7 +62,7 @@ const create: NextPage = () => {
 
     console.log(payload);
     // 追加（document_idは、firebaseが自動生成）
-    // await addDoc(collectionRef, payload);
+    await addDoc(collectionRef, payload);
 
     alert("投稿を作成しました");
   };
