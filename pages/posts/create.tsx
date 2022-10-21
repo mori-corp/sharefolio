@@ -45,7 +45,7 @@ const create: NextPage = () => {
   };
 
   // 投稿作成
-  const handleSubmitPost = async (e: any) => {
+  const submitPost = async (e: any) => {
     e.preventDefault();
     const collectionRef = collection(db, "posts");
     const payload = {
@@ -107,11 +107,14 @@ const create: NextPage = () => {
           w={{ lg: "60%", md: "80%", sm: "100%" }}
         >
           {/* フォーム */}
-          <form onSubmit={handleSubmitPost}>
+          <form onSubmit={submitPost}>
             {/* アプリ名 */}
-            <FormControl mb={4} isRequired>
-              <FormLabel>アプリ / サービス名</FormLabel>
+            {/* Val : 必須、20文字以内 */}
+            <FormControl mb={4}>
+              <FormLabel htmlFor="appName">アプリ / サービス名</FormLabel>
               <Input
+                placeholder="20文字以内で入力してください"
+                id="appName"
                 type="text"
                 value={appName}
                 onChange={(e) => {
@@ -121,11 +124,12 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* タイトル */}
+            {/* Val : 必須、40文字以内 */}
             <FormControl mb={4} isRequired>
               <FormLabel>投稿タイトル</FormLabel>
               <Input
                 type="text"
-                placeholder="20文字以内で入力してください"
+                placeholder="40文字以内で入力してください"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
@@ -137,10 +141,11 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* 説明 */}
+            {/* Val : 必須、400文字以内 */}
             <FormControl mb={4} isRequired>
               <FormLabel>説明</FormLabel>
               <Textarea
-                placeholder="簡単な説明を入力"
+                placeholder="簡単な説明を入力。400文字以内"
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
@@ -152,7 +157,6 @@ const create: NextPage = () => {
             <FormControl mb={4} isRequired>
               <FormLabel>レベル</FormLabel>
               <Select
-                placeholder="レベル"
                 w={40}
                 value={level}
                 onChange={(e) => {
@@ -166,6 +170,7 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* 使用言語選択 */}
+            {/* Val : 必須ではないが、一個以上かならず選択 */}
             <FormControl mb={4}>
               <FormLabel>使用技術</FormLabel>
               <CheckboxGroup>
@@ -183,6 +188,7 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* アプリURL */}
+            {/* Val : 必須、url形式 */}
             <FormControl mb={4} isRequired>
               <FormLabel>アプリURL</FormLabel>
               <Input
@@ -196,6 +202,7 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* Github */}
+            {/* Val : url形式 */}
             <FormControl mb={4}>
               <FormLabel>Github</FormLabel>
               <Input
