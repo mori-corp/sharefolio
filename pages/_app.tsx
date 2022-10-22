@@ -13,14 +13,15 @@ type Props = {
 const AuthUser = ({ children }: Props): any => {
   const user = useAuth();
   const router = useRouter();
-
-  useEffect(() :any => {
+  useEffect((): any => {
     if (user.uid) {
-      return children;
+      return console.log(user);
     } else {
-      router.push("/");
+      return router.push("/");
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+  return children;
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
