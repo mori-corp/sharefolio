@@ -19,6 +19,7 @@ import {
   Checkbox,
   CheckboxGroup,
 } from "@chakra-ui/react";
+import { useUser } from "../../lib/auth";
 
 const create: NextPage = () => {
   // 投稿時の各属性の定義
@@ -29,11 +30,11 @@ const create: NextPage = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string[]>([]);
   const [appUrl, setAppUrl] = useState("");
   const [github, setGithub] = useState("");
-
-  // 本来は、userIDを、Recoilで状態管理しているuserのuidに設定する。
-  const userId = "shin-sampleId";
-
   const router = useRouter();
+
+  // Recoilで状態管理しているuserのuidを投稿者のid(userId)として設定
+  const user = useUser();
+  const userId = user.uid;
 
   // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: any) => {
@@ -63,7 +64,6 @@ const create: NextPage = () => {
       date: serverTimestamp(),
     };
 
-    console.log(payload);
     // 追加（document_idは、firebaseが自動生成）
     await addDoc(collectionRef, payload);
 
