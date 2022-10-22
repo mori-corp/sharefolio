@@ -11,8 +11,6 @@ const index: NextPage = () => {
         投稿一覧
       </Heading>
       <Posts />
-      <Posts />
-      <Posts />
     </Layout>
   );
 };
