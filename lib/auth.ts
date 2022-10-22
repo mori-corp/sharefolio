@@ -11,20 +11,22 @@ import { recoilPersist } from "recoil-persist";
 const { persistAtom } = recoilPersist();
 
 type UserState = {
-  uid: string | undefined;
-  photoUrl: string | null | undefined;
-  displayName: string | null | undefined;
+  uid: string | null;
+  photoUrl: string | null;
+  displayName: string | null;
 };
 
 export const userState = atom<UserState>({
   key: "userState",
   default: {
-    uid: "",
-    photoUrl: "",
-    displayName: "",
+    uid: null,
+    photoUrl: null,
+    displayName: null,
   },
   effects_UNSTABLE: [persistAtom],
 });
+
+
 
 // googleでサインインする
 export const signInWithGoogle = async () => {
@@ -38,10 +40,9 @@ export const useAuth = (): UserState => {
   const [authUser, setUser] = useRecoilState(userState);
 
   useEffect(() => {
-    // ログイン/ログアウトを感知
-    onAuthStateChanged(auth, (user) => {
+    // 認証を感知し、Recoilで状態保持
+    return onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Recoilで状態保持
         setUser({
           uid: user.uid,
           photoUrl: user.photoURL,
@@ -49,7 +50,7 @@ export const useAuth = (): UserState => {
         });
       }
     });
-  }, []);
+  }, [setUser]);
 
   return authUser;
 };
