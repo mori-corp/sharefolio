@@ -1,6 +1,8 @@
 import NextLink from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
 import type { NextPage } from "next";
-import Layout from "../../components/Layout";
+import Layout from "../../../components/Layout";
 import {
   Flex,
   Box,
@@ -17,9 +19,12 @@ import {
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { AiOutlineHeart } from "react-icons/ai";
-import { Author } from "../../components/Author";
+import { Author } from "../../../components/Author";
 
 const detail: NextPage = () => {
+  const router = useRouter();
+  const { detail } = router.query;
+
   return (
     <Layout title={"Detail - ShareFolio"}>
       <Flex flexDirection={"column"} align={"center"} w={"full"}>
@@ -167,7 +172,7 @@ const detail: NextPage = () => {
           {/* ボタン部分 */}
           <Stack>
             {/* 編集ボタン */}
-            {/* <NextLink href="/posts/edit" passHref>
+            <NextLink href={`/posts/${detail}/edit`} passHref>
               <Button
                 as="a"
                 loadingText="Submitting"
@@ -180,7 +185,7 @@ const detail: NextPage = () => {
               >
                 編集
               </Button>
-            </NextLink> */}
+            </NextLink>
 
             {/* 戻るボタン */}
             <NextLink href="/posts" passHref>

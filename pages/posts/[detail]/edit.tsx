@@ -1,7 +1,8 @@
 import React from "react";
 import type { NextPage } from "next";
 import NextLink from "next/link";
-import Layout from "../../components/Layout";
+import { useRouter } from "next/router";
+import Layout from "../../../components/Layout";
 import {
   FormControl,
   FormLabel,
@@ -19,9 +20,37 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 const edit: NextPage = () => {
+  const languages = [
+    "HTML",
+    "CSS",
+    "Javascript",
+    "Vue.js",
+    "Nuxt.js",
+    "React.js",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Express.js",
+    "Firebase",
+    "Amplify",
+    "SQL",
+    "NoSQL",
+    "GraphQL",
+    "Java",
+    "Ruby",
+    "Go",
+    "PHP",
+    "C#",
+    "Python",
+  ];
+
+  const router = useRouter();
+  const { detail } = router.query;
+
   const handleEditButtonClick = () => {
     alert("Edit button clicked!");
   };
+
   return (
     <Layout title={"Edit - ShareFolio"}>
       <Flex flexDirection={"column"} align={"center"} w={"full"} p={8}>
@@ -71,22 +100,13 @@ const edit: NextPage = () => {
               </Select>
             </FormControl>
 
-            {/* 言語詮索 */}
+            {/* 言語設定 */}
             <FormControl mb={4}>
-              <FormLabel>使用言語</FormLabel>
+              <FormLabel>使用技術</FormLabel>
               <CheckboxGroup>
-                <Checkbox mr={4}>HTML</Checkbox>
-                <Checkbox mr={4}>CSS</Checkbox>
-                <Checkbox mr={4}>Javascript</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
-                <Checkbox mr={4}>Check</Checkbox>
+                {languages.map((language) => (
+                  <Checkbox m={2}>{language}</Checkbox>
+                ))}
               </CheckboxGroup>
             </FormControl>
 
@@ -116,7 +136,7 @@ const edit: NextPage = () => {
                 編集する
               </Button>
 
-              <NextLink href="/posts/detail" passHref>
+              <NextLink href={`/posts/${detail}`} passHref>
                 <Button
                   as="a"
                   size="lg"

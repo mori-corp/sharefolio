@@ -27,7 +27,6 @@ export const userState = atom<UserState>({
 });
 
 
-
 // googleでサインインする
 export const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
