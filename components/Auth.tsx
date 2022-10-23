@@ -30,7 +30,8 @@ export const Auth: React.FC = () => {
 
   // googleでサインイン
   const handleGoogleSignIn = async () => {
-    signInWithGoogle();
+    await signInWithGoogle();
+    router.push("/posts");
   };
 
   // Email,passwordでの新規登録
