@@ -14,13 +14,13 @@ export const DesktopNav: React.FC = () => {
 
   // ログアウト処理
   const handleLogout = async () => {
-    alert("Logout!");
-    await signOut(auth);
+    alert("ログアウトしました");
     setUser({
       uid: "",
       photoUrl: "",
       displayName: "",
     });
+    await signOut(auth);
   };
 
   return (
@@ -64,21 +64,23 @@ export const DesktopNav: React.FC = () => {
       </HStack>
       {/* Sign upボタン */}
       <HStack>
-        <NextLink href="/" passHref>
-          <Button
-            as="a"
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            _hover={{
-              bg: "pink.300",
-            }}
-          >
-            Sign up
-          </Button>
-        </NextLink>
+        {!user.uid && (
+          <NextLink href="/" passHref>
+            <Button
+              as="a"
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"pink.400"}
+              _hover={{
+                bg: "pink.300",
+              }}
+            >
+              Sign up
+            </Button>
+          </NextLink>
+        )}
 
         {/* ログアウトボタン */}
         <Button
