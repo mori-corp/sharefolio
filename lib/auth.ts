@@ -5,7 +5,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { useEffect } from "react";
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
@@ -26,6 +26,9 @@ export const userState = atom<UserState>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const useUser = () => {
+  return useRecoilValue(userState);
+};
 
 // googleでサインインする
 export const signInWithGoogle = async () => {
