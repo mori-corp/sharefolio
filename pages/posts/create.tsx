@@ -53,7 +53,7 @@ const create: NextPage = () => {
     e.preventDefault();
     const collectionRef = collection(db, "posts");
     const payload = {
-      userId: userId,
+      authorId: userId,
       appName: appName,
       title: title,
       description: description,

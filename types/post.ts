@@ -8,5 +8,5 @@ export type PostType = {
   appUrl: string;
   github: string;
   postedDate: any | null;
-  userId: string;
+  authorId: string;
 };

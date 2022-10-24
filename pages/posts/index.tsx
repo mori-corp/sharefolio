@@ -49,7 +49,7 @@ const index: NextPage = () => {
           appUrl: doc.data().appUrl,
           github: doc.data().github,
           postedDate: doc.data().date,
-          userId: doc.data().userId,
+          authorId: doc.data().userId,
         }))
       );
     });
@@ -69,7 +69,7 @@ const index: NextPage = () => {
       appUrl: post.appUrl,
       github: post.github,
       postedDate: post.date,
-      userId: post.userId,
+      authorId: post.authorId,
     });
   };
 

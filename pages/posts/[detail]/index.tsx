@@ -37,7 +37,7 @@ const detail: NextPage = () => {
     level,
     github,
     postedDate,
-    userId,
+    authorId,
   } = usePostValue();
 
   console.log(postedDate);
