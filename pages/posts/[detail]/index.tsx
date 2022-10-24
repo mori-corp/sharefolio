@@ -23,6 +23,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../../components/Author";
 import { usePostValue } from "../../../lib/atoms";
 import { LanguageTags } from "../../../components/LanguageTags";
+import { useUser } from "../../../lib/auth";
 
 const detail: NextPage = () => {
   const router = useRouter();
@@ -40,6 +41,8 @@ const detail: NextPage = () => {
   } = usePostValue();
 
   console.log(postedDate);
+
+  const user = useUser();
 
   return (
     <Layout title={"Detail - ShareFolio"}>
@@ -153,12 +156,16 @@ const detail: NextPage = () => {
             {/* 投稿者 */}
             <HStack>
               <Text fontSize={"md"}>投稿者:</Text>
-              <Author name={userId} date={new Date("2021-04-06T19:01:27Z")} />
+              <Author
+                name={user.displayName}
+                date={new Date("2021-04-06T19:01:27Z")}
+                photoUrl={user.photoUrl}
+              />
             </HStack>
           </Flex>
 
           {/* コメント欄（外枠） */}
-          <Stack
+          {/* <Stack
             spacing="8"
             rounded={"lg"}
             bg={"white"}
@@ -192,7 +199,7 @@ const detail: NextPage = () => {
               </Box>
             </Box>
             <hr />
-          </Stack>
+          </Stack> */}
           {/* ボタン部分 */}
           <Stack>
             {/* 編集ボタン */}

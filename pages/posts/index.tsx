@@ -21,11 +21,13 @@ import { Author } from "../../components/Author";
 import { LanguageTags } from "../../components/LanguageTags";
 import { useRecoilState } from "recoil";
 import { postState } from "../../lib/atoms";
+import { useUser } from "../../lib/auth";
 import { Post } from "../../lib/types";
 
 const index: NextPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [postDetail, setPostDetail] = useRecoilState(postState);
+  const user = useUser();
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
@@ -152,7 +154,11 @@ const index: NextPage = () => {
                   {/* 投稿者情報 */}
                   <HStack mt={4}>
                     {/* 投稿者 */}
-                    <Author name={post.userId} date={new Date()} />
+                    <Author
+                      name={user.displayName}
+                      date={new Date()}
+                      photoUrl={user.photoUrl}
+                    />
 
                     {/* ハートアイコン */}
                     <Icon as={AiOutlineHeart} w={5} h={5} />
