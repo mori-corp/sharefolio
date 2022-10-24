@@ -61,7 +61,7 @@ const create: NextPage = () => {
       language: selectedLanguage,
       appUrl: appUrl,
       github: github,
-      date: serverTimestamp(),
+      postedDate: serverTimestamp(),
     };
 
     // 追加（document_idは、firebaseが自動生成）

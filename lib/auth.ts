@@ -7,21 +7,16 @@ import {
 import { useEffect } from "react";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { UserState } from "./types";
 
 const { persistAtom } = recoilPersist();
-
-type UserState = {
-  uid: string | null;
-  photoUrl: string | null;
-  displayName: string | null;
-};
 
 export const userState = atom<UserState>({
   key: "userState",
   default: {
-    uid: null,
-    photoUrl: null,
-    displayName: null,
+    uid: "",
+    photoUrl: "",
+    displayName: "",
   },
   effects_UNSTABLE: [persistAtom],
 });
