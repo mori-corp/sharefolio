@@ -7,11 +7,11 @@ import {
 import { useEffect } from "react";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { UserState } from "./types";
+import { UserType } from "../types/user";
 
 const { persistAtom } = recoilPersist();
 
-export const userState = atom<UserState>({
+export const userState = atom<UserType>({
   key: "userState",
   default: {
     uid: "",
@@ -33,7 +33,7 @@ export const signInWithGoogle = async () => {
 };
 
 // 認証ユーザーの状態管理
-export const useAuth = (): UserState => {
+export const useAuth = (): UserType => {
   const [authUser, setUser] = useRecoilState(userState);
 
   useEffect(() => {

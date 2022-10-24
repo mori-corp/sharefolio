@@ -23,10 +23,10 @@ import { LanguageTags } from "../../components/LanguageTags";
 import { useRecoilState } from "recoil";
 import { postState } from "../../lib/atoms";
 import { useUser } from "../../lib/auth";
-import { Post } from "../../lib/types";
+import { PostType } from "../../types/post";
 
 const index: NextPage = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
   const [postDetail, setPostDetail] = useRecoilState(postState);
   const user = useUser();
 

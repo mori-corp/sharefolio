@@ -1,10 +1,10 @@
 import { atom, useRecoilValue } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { Post } from "./types";
+import { PostType } from "../types/post";
 
 const { persistAtom } = recoilPersist();
 
-export const postState = atom<Post>({
+export const postState = atom<PostType>({
   key: "postState",
   default: {
     id: "",

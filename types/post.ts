@@ -1,10 +1,4 @@
-export type UserState = {
-  uid: string | null;
-  photoUrl: any;
-  displayName: string | null;
-};
-
-export type Post = {
+export type PostType = {
   id: string;
   appName: string;
   title: string;
