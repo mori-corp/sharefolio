@@ -32,9 +32,10 @@ const index: NextPage = () => {
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
-    const q = query(collection(db, "posts"), orderBy("date", "desc"));
+    const q = query(collection(db, "posts"), orderBy("postedDate", "desc"));
 
     const unsub = onSnapshot(q, (snapshot) => {
+      console.log(snapshot.docs);
       setPosts(
         snapshot.docs.map((doc) => ({
           ...doc.data(),
