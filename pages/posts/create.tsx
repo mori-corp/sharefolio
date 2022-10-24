@@ -26,7 +26,7 @@ const create: NextPage = () => {
   const [appName, setAppName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [level, setLevel] = useState("");
+  const [level, setLevel] = useState("beginner");
   const [selectedLanguage, setSelectedLanguage] = useState<string[]>([]);
   const [appUrl, setAppUrl] = useState("");
   const [github, setGithub] = useState("");
