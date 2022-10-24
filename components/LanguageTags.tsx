@@ -1,12 +1,12 @@
 import React from "react";
 import { Tag, SpaceProps, Wrap } from "@chakra-ui/react";
 
-type IBlogTags = {
+type ILanguageTags = {
   tags: Array<string>;
   marginTop?: SpaceProps["marginTop"];
 };
 
-export const BlogTags: React.FC<IBlogTags> = (props) => {
+export const LanguageTags: React.FC<ILanguageTags> = (props) => {
   return (
     <Wrap spacing={1} marginTop={2}>
       {props.tags.map((tag) => {
