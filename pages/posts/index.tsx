@@ -19,7 +19,7 @@ import {
 import NextLink from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../components/Author";
-import { BlogTags } from "../../components/BlogTags";
+import { LanguageTags } from "../../components/LanguageTags";
 
 type Post = {
   id: string;
@@ -145,7 +145,7 @@ const index: NextPage = () => {
                   </Text>
 
                   {/* 言語タグ一覧 */}
-                  <BlogTags tags={post.language} />
+                  <LanguageTags tags={post.language} />
 
                   {/* 投稿者情報 */}
                   <HStack mt={4}>
