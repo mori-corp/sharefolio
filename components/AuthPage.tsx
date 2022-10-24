@@ -21,7 +21,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { signInWithGoogle } from "../lib/auth";
 import { useRouter } from "next/router";
 
-export const Auth: React.FC = () => {
+export const AuthPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
