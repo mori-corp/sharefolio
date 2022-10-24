@@ -156,11 +156,7 @@ const detail: NextPage = () => {
             {/* 投稿者 */}
             <HStack>
               <Text fontSize={"md"}>投稿者:</Text>
-              <Author
-                name={user.displayName}
-                date={new Date("2021-04-06T19:01:27Z")}
-                photoUrl={user.photoUrl}
-              />
+              <Author name="example" date={new Date("2021-04-06T19:01:27Z")} />
             </HStack>
           </Flex>
 

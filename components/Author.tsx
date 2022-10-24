@@ -5,8 +5,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 // 投稿者のデータ型定義
 type PosterProps = {
   date: Date | null;
-  name: string | null;
-  photoUrl: string;
+  name: string;
 };
 
 export const Author: React.FC<PosterProps> = (props) => {
@@ -16,7 +15,7 @@ export const Author: React.FC<PosterProps> = (props) => {
       <Image
         borderRadius="full"
         boxSize="36px"
-        src={props.photoUrl}
+        src="https://100k-faces.glitch.me/random-image"
         alt={`Avatar of ${props.name}`}
       />
 

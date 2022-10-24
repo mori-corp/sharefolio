@@ -154,11 +154,7 @@ const index: NextPage = () => {
                   {/* 投稿者情報 */}
                   <HStack mt={4}>
                     {/* 投稿者 */}
-                    <Author
-                      name={user.displayName}
-                      date={new Date()}
-                      photoUrl={user.photoUrl}
-                    />
+                    <Author name="example" date={new Date()} />
 
                     {/* ハートアイコン */}
                     <Icon as={AiOutlineHeart} w={5} h={5} />
