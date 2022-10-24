@@ -14,9 +14,11 @@ export const Author: React.FC<AuthorProps> = (props) => {
       {/* プロフィール画像 */}
       <Image
         borderRadius="full"
-        boxSize="36px"
-        src="https://100k-faces.glitch.me/random-image"
+        boxSize="28px"
+        src="/user.png"
         alt={`Avatar of ${props.name}`}
+        border="1px"
+        borderColor="gray.200"
       />
 
       {/* ユーザーネーム */}
