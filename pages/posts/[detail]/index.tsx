@@ -40,9 +40,21 @@ const detail: NextPage = () => {
     authorId,
   } = usePostValue();
 
-  console.log(postedDate);
-
   const user = useUser();
+
+  const levels = (level: string) => {
+    switch (level) {
+      case "beginner":
+        return "初級";
+        break;
+      case "intermediate":
+        return "中級";
+        break;
+      case "advanced":
+        return "上級";
+        break;
+    }
+  };
 
   return (
     <Layout title={"Detail - ShareFolio"}>
@@ -136,7 +148,7 @@ const detail: NextPage = () => {
               {/* レベル */}
               <ListItem>
                 <ListIcon color="green.500" />
-                レベル：{level}
+                レベル：{levels(level)}
               </ListItem>
 
               {/* 投稿日時 */}
