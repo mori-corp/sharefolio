@@ -93,7 +93,9 @@ export const AuthPage: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     mb={4}
                   />
-                  <InputRightElement h={"full"}>
+
+                  {/* パスワード可視化ボタン */}
+                  <InputRightElement>
                     <Button
                       variant={"ghost"}
                       onClick={() =>
