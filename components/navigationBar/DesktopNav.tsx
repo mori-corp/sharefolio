@@ -83,20 +83,22 @@ export const DesktopNav: React.FC = () => {
         )}
 
         {/* ログアウトボタン */}
-        <Button
-          as="a"
-          display={{ base: "none", md: "inline-flex" }}
-          fontSize={"sm"}
-          fontWeight={600}
-          color={"white"}
-          bg={"blue.400"}
-          _hover={{
-            bg: "blue.300",
-          }}
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
+        {user.uid && (
+          <Button
+            as="a"
+            display={{ base: "none", md: "inline-flex" }}
+            fontSize={"sm"}
+            fontWeight={600}
+            color={"white"}
+            bg={"blue.400"}
+            _hover={{
+              bg: "blue.300",
+            }}
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        )}
       </HStack>
     </Stack>
   );
