@@ -48,7 +48,7 @@ const index: NextPage = () => {
           language: doc.data().language,
           appUrl: doc.data().appUrl,
           github: doc.data().github,
-          postedDate: doc.data().date,
+          postedDate: doc.data().postedDate,
           authorId: doc.data().userId,
         }))
       );
@@ -68,7 +68,7 @@ const index: NextPage = () => {
       language: post.language,
       appUrl: post.appUrl,
       github: post.github,
-      postedDate: post.date,
+      postedDate: post.postedDate,
       authorId: post.authorId,
     });
   };

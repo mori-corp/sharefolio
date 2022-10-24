@@ -40,6 +40,18 @@ const detail: NextPage = () => {
     authorId,
   } = usePostValue();
 
+  // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
+  const getDisplayTime = () => {
+    if (postedDate === null) return;
+    const year = postedDate.toDate().getFullYear();
+    const month = ("0" + (postedDate.toDate().getMonth() + 1)).slice(-2);
+    const date = ("0" + postedDate.toDate().getDate()).slice(-2);
+    const hour = ("0" + postedDate.toDate().getHours()).slice(-2);
+    const min = ("0" + postedDate.toDate().getMinutes()).slice(-2);
+
+    return `${year}年${month}月${date}日 ${hour}:${min}`;
+  };
+
   const user = useUser();
 
   const levels = (level: string) => {
@@ -154,7 +166,7 @@ const detail: NextPage = () => {
               {/* 投稿日時 */}
               <ListItem>
                 <ListIcon color="green.500" />
-                投稿日時：
+                投稿日時：{getDisplayTime()}
               </ListItem>
             </List>
           </Box>
