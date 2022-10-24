@@ -9,7 +9,6 @@ import {
   Link,
   Image,
   Text,
-  useColorModeValue,
   Container,
   Icon,
   HStack,
@@ -19,29 +18,21 @@ import {
 import NextLink from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../components/Author";
-import { BlogTags } from "../../components/BlogTags";
-
-type Post = {
-  id: string;
-  appName: string;
-  title: string;
-  description: string;
-  level: string;
-  language: Array<string>;
-  appUrl: string;
-  github: string;
-  date: Date;
-  userId: string;
-};
+import { LanguageTags } from "../../components/LanguageTags";
+import { useRecoilState } from "recoil";
+import { postState } from "../../lib/atoms";
+import { Post } from "../../lib/types";
 
 const index: NextPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [postDetail, setPostDetail] = useRecoilState(postState);
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
     const q = query(collection(db, "posts"), orderBy("date", "desc"));
 
     const unsub = onSnapshot(q, (snapshot) => {
+      console.log(snapshot);
       setPosts(
         snapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -54,7 +45,7 @@ const index: NextPage = () => {
           language: doc.data().language,
           appUrl: doc.data().appUrl,
           github: doc.data().github,
-          date: doc.data().date,
+          postedDate: doc.data().date,
           userId: doc.data().userId,
         }))
       );
@@ -62,6 +53,22 @@ const index: NextPage = () => {
 
     return unsub;
   }, []);
+
+  // 各投稿をクリック、Recoilへ状態保持
+  const showDetail = (post: any) => {
+    setPostDetail({
+      id: post.id,
+      appName: post.appName,
+      title: post.title,
+      description: post.description,
+      level: post.level,
+      language: post.language,
+      appUrl: post.appUrl,
+      github: post.github,
+      postedDate: post.date,
+      userId: post.userId,
+    });
+  };
 
   return (
     <Layout title={"Posts - ShareFolio"}>
@@ -122,17 +129,12 @@ const index: NextPage = () => {
                 >
                   {/* 投稿タイトル */}
                   <Heading marginTop="1" fontSize={"2xl"}>
-                    {/* ダイナミックルーティングについて
-            
-            1. 以下のNextLink hrefには、各投稿固有のidを、パスとして指定
-            2. このidが、/posts/[detail]へ受け継がれる
-            
-             */}
-                    <NextLink href="/posts/post-id">
+                    <NextLink href={`/posts/${post.id}`}>
                       <Text
                         as="a"
                         textDecoration="none"
                         _hover={{ textDecoration: "none", cursor: "pointer" }}
+                        onClick={() => showDetail(post)}
                       >
                         {post.title}
                       </Text>
@@ -145,7 +147,7 @@ const index: NextPage = () => {
                   </Text>
 
                   {/* 言語タグ一覧 */}
-                  <BlogTags tags={post.language} />
+                  <LanguageTags tags={post.language} />
 
                   {/* 投稿者情報 */}
                   <HStack mt={4}>

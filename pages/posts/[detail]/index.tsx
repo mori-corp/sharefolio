@@ -16,21 +16,43 @@ import {
   Stack,
   Icon,
   HStack,
+  Image,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../../components/Author";
+import { usePostValue } from "../../../lib/atoms";
+import { LanguageTags } from "../../../components/LanguageTags";
 
 const detail: NextPage = () => {
   const router = useRouter();
   const { detail } = router.query;
+  const {
+    title,
+    appName,
+    description,
+    appUrl,
+    language,
+    level,
+    github,
+    postedDate,
+    userId,
+  } = usePostValue();
+
+  console.log(postedDate);
 
   return (
     <Layout title={"Detail - ShareFolio"}>
       <Flex flexDirection={"column"} align={"center"} w={"full"}>
-        <Heading maxW={"2xl"} fontSize={"2xl"} px={{ sm: 8 }} mt={8}>
-          ポートフォリオをシェアして楽しむプラットフォーム -
-          共有とシェアのオリジナルアプリ
+        {/* 投稿タイトル */}
+        <Heading
+          maxW={"2xl"}
+          textAlign={"center"}
+          fontSize={"2xl"}
+          px={{ sm: 8 }}
+          mt={20}
+        >
+          {title}
         </Heading>
 
         <Stack
@@ -41,7 +63,7 @@ const detail: NextPage = () => {
         >
           {/* アプリ名 */}
           <Text my={4} fontSize={"4xl"} fontWeight={"bold"} color={"blue.400"}>
-            ShareFolio
+            {appName}
           </Text>
 
           {/* アプリの説明欄 */}
@@ -52,10 +74,18 @@ const detail: NextPage = () => {
             py={10}
             px={{ lg: 14, md: 14, sm: 4 }}
           >
-            <Box>
-              ポートフォリオのアイディアが欲しいエンジニア、プログラミング初学者、就職活動中の人などへ向け、たくさんのオリジナルアプリを一箇所でまとめて閲覧・シェアできるプラットフォームです。
-            </Box>
+            <Box>{description}</Box>
           </Box>
+
+          {/* プレビュー画像 */}
+          <Image
+            borderRadius="lg"
+            src={
+              "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
+            }
+            alt="some good alt text"
+            objectFit="contain"
+          />
 
           {/* アプリの詳細情報 */}
           <Box
@@ -76,7 +106,7 @@ const detail: NextPage = () => {
                   color={"blue.400"}
                   isExternal
                 >
-                  https://sharefolio2022.web.app/ isExternal
+                  {appUrl}
                 </Link>
               </ListItem>
 
@@ -89,27 +119,21 @@ const detail: NextPage = () => {
                   color={"blue.400"}
                   isExternal
                 >
-                  https://github.com/mori-corp/sharefolio
+                  {github}
                 </Link>
               </ListItem>
 
               {/* 使用言語 */}
               <ListItem>
                 <ListIcon color="green.500" />
-                使用言語：HTML, CSS, Javascript, React, Next.js, Vue, Python,
-                PHP, Ruby
+                使用言語：
+                <LanguageTags tags={language} />
               </ListItem>
 
               {/* レベル */}
               <ListItem>
                 <ListIcon color="green.500" />
-                レベル：初級
-              </ListItem>
-
-              {/* 投稿者 */}
-              <ListItem>
-                <ListIcon color="green.500" />
-                投稿者：
+                レベル：{level}
               </ListItem>
 
               {/* 投稿日時 */}
@@ -129,7 +153,7 @@ const detail: NextPage = () => {
             {/* 投稿者 */}
             <HStack>
               <Text fontSize={"md"}>投稿者:</Text>
-              <Author name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
+              <Author name={userId} date={new Date("2021-04-06T19:01:27Z")} />
             </HStack>
           </Flex>
 
