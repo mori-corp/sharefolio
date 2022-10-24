@@ -34,7 +34,6 @@ const index: NextPage = () => {
     const q = query(collection(db, "posts"), orderBy("date", "desc"));
 
     const unsub = onSnapshot(q, (snapshot) => {
-      console.log(snapshot);
       setPosts(
         snapshot.docs.map((doc) => ({
           ...doc.data(),
