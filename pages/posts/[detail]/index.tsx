@@ -128,11 +128,7 @@ const detail: NextPage = () => {
               <ListItem>
                 <ExternalLinkIcon color="blue.400" />
                 アプリURL：
-                <Link
-                  href="https://sharefolio2022.web.app/"
-                  color={"blue.400"}
-                  isExternal
-                >
+                <Link href={appUrl} color={"blue.400"} isExternal>
                   {appUrl}
                 </Link>
               </ListItem>
@@ -141,11 +137,7 @@ const detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 GitHub：
-                <Link
-                  href="https://github.com/mori-corp/sharefolio"
-                  color={"blue.400"}
-                  isExternal
-                >
+                <Link href={github} color={"blue.400"} isExternal>
                   {github}
                 </Link>
               </ListItem>
