@@ -16,7 +16,7 @@ export const postState = atom<PostType>({
     appUrl: "",
     github: "",
     postedDate: null,
-    userId: "",
+    authorId: "",
   },
   effects_UNSTABLE: [persistAtom],
 });
