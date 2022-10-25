@@ -21,6 +21,7 @@ import {
 import { usePostValue } from "../../../lib/atoms";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { DeleteButton } from "../../../components/DeleteButton";
 
 const edit: NextPage = () => {
   const {
@@ -250,6 +251,7 @@ const edit: NextPage = () => {
               >
                 削除
               </Button>
+              <DeleteButton title={"投稿を削除"} />
 
               {/* 戻るボタン */}
               <NextLink href={`/posts/${detail}`} passHref>
