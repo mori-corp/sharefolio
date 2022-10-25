@@ -55,6 +55,18 @@ const index: NextPage = () => {
     return unsub;
   }, []);
 
+  // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
+  const getDisplayTime = (e: any) => {
+    if (e === null) return;
+    const year = e.toDate().getFullYear();
+    const month = ("0" + (e.toDate().getMonth() + 1)).slice(-2);
+    const date = ("0" + e.toDate().getDate()).slice(-2);
+    const hour = ("0" + e.toDate().getHours()).slice(-2);
+    const min = ("0" + e.toDate().getMinutes()).slice(-2);
+
+    return `${year}年${month}月${date}日 ${hour}:${min}`;
+  };
+
   // 各投稿をクリック、Recoilへ状態保持
   const showDetail = (post: any) => {
     setPostDetail({
@@ -62,7 +74,7 @@ const index: NextPage = () => {
       appName: post.appName,
       title: post.title,
       description: post.description,
-      level: post.level,  
+      level: post.level,
       language: post.language,
       appUrl: post.appUrl,
       github: post.github,
@@ -153,7 +165,8 @@ const index: NextPage = () => {
                   {/* 投稿者情報 */}
                   <HStack mt={4}>
                     {/* 投稿者 */}
-                    <Author name="example" date={new Date()} />
+                    <Author name="example" />
+                    <Text>{getDisplayTime(post.postedDate)}</Text>
 
                     {/* ハートアイコン */}
                     <Icon as={AiOutlineHeart} w={5} h={5} />
