@@ -5,12 +5,19 @@ import { userState } from "../../lib/auth";
 import { NAV_ITEMS } from "./NavItems";
 import { Box, Text, Stack, Button, HStack } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useEffect, useState } from "react";
 
 export const DesktopNav: React.FC = () => {
   const linkColor = "gray.600";
   const linkHoverColor = "gray.800";
   // const setUser = useSetRecoilState(userState);
   const [user, setUser] = useRecoilState(userState);
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    setIsLogin(user.uid !== "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ログアウト処理
   const handleLogout = async () => {
@@ -33,7 +40,7 @@ export const DesktopNav: React.FC = () => {
     >
       <HStack>
         {/* 未ログイン状態では、ナビゲーション非表示 */}
-        {user.uid && (
+        {isLogin && (
           <>
             {NAV_ITEMS.map((navItem) => (
               <Box key={navItem.label}>
@@ -62,9 +69,10 @@ export const DesktopNav: React.FC = () => {
           </>
         )}
       </HStack>
+
       {/* Sign upボタン */}
       <HStack>
-        {!user.uid && (
+        {!isLogin && (
           <NextLink href="/" passHref>
             <Button
               as="a"
@@ -83,7 +91,7 @@ export const DesktopNav: React.FC = () => {
         )}
 
         {/* ログアウトボタン */}
-        {user.uid && (
+        {isLogin && (
           <Button
             as="a"
             display={{ base: "none", md: "inline-flex" }}

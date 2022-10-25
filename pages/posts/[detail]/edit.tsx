@@ -105,7 +105,9 @@ const edit: NextPage = () => {
               <FormLabel>使用技術</FormLabel>
               <CheckboxGroup>
                 {languages.map((language) => (
-                  <Checkbox m={2}>{language}</Checkbox>
+                  <Checkbox m={2} key={language}>
+                    {language}
+                  </Checkbox>
                 ))}
               </CheckboxGroup>
             </FormControl>
