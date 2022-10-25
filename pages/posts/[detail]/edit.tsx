@@ -19,9 +19,12 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 import { usePostValue } from "../../../lib/atoms";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../../firebase";
 
 const edit: NextPage = () => {
   const {
+    id,
     title,
     appName,
     description,
@@ -45,8 +48,20 @@ const edit: NextPage = () => {
   const router = useRouter();
   const { detail } = router.query;
 
+  //投稿の編集
   const handleEditButtonClick = () => {
     alert("Edit button clicked!");
+  };
+
+  //投稿の削除
+  const handleDeleteButtonClick = async (id: string) => {
+    // firestoreのドキュメントを、Recoilでセットしている投稿idで参照
+    const docRef = doc(db, "posts", id); //第３引数は、document id
+    await deleteDoc(docRef);
+
+    alert("投稿が削除されました！");
+
+    router.push("/posts");
   };
 
   const displayedLanguages = [
@@ -174,8 +189,8 @@ const edit: NextPage = () => {
               />
             </FormControl>
 
-            {/* 更新ボタン */}
             <Stack>
+              {/* 更新ボタン */}
               <Button
                 size="lg"
                 bg={"blue.400"}
@@ -188,6 +203,20 @@ const edit: NextPage = () => {
                 編集する
               </Button>
 
+              {/* 削除ボタン */}
+              <Button
+                size="lg"
+                bg={"red.500"}
+                color={"white"}
+                _hover={{
+                  bg: "red.400",
+                }}
+                onClick={() => handleDeleteButtonClick(id)}
+              >
+                削除
+              </Button>
+
+              {/* 戻るボタン */}
               <NextLink href={`/posts/${detail}`} passHref>
                 <Button
                   as="a"
