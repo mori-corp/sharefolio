@@ -165,6 +165,7 @@ const create: NextPage = () => {
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
+                rows={10}
               />
             </FormControl>
 

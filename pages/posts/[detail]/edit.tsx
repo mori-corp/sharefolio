@@ -168,6 +168,7 @@ const edit: NextPage = () => {
                 placeholder="簡単な説明を入力"
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
+                rows={10}
               />
             </FormControl>
 
