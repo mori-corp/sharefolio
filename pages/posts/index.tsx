@@ -90,7 +90,7 @@ const index: NextPage = () => {
       </Heading>
 
       <Container maxW={"5xl"} p="12">
-        <UnorderedList>
+        <UnorderedList styleType="none">
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
