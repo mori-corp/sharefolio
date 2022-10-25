@@ -178,9 +178,7 @@ const create: NextPage = () => {
                   setLevel(e.target.value);
                 }}
               >
-                <option value="beginner" selected>
-                  初心者
-                </option>
+                <option value="beginner">初心者</option>
                 <option value="intermediate">中級者</option>
                 <option value="advanced">上級者</option>
               </Select>
