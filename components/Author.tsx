@@ -1,10 +1,8 @@
 import React from "react";
 import { Image, Text, HStack, Icon } from "@chakra-ui/react";
-import { AiOutlineHeart } from "react-icons/ai";
 
 // 投稿者のデータ型定義
 type AuthorProps = {
-  date: Date | null;
   name: string;
 };
 
@@ -24,9 +22,6 @@ export const Author: React.FC<AuthorProps> = (props) => {
       {/* ユーザーネーム */}
       <Text fontWeight="medium">{props.name}</Text>
       <Text>—</Text>
-
-      {/* 投稿日時 */}
-      <Text>{props.date?.toLocaleDateString()}</Text>
     </HStack>
   );
 };
