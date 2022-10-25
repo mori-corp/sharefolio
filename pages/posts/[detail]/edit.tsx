@@ -19,7 +19,7 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 import { usePostValue } from "../../../lib/atoms";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 
 const edit: NextPage = () => {
@@ -49,8 +49,38 @@ const edit: NextPage = () => {
   const { detail } = router.query;
 
   //投稿の編集
-  const handleEditButtonClick = () => {
-    alert("Edit button clicked!");
+  const handleEditButtonClick = async (id: string) => {
+    // firestoreのドキュメントの参照
+    const docRef = doc(db, "posts", id);
+
+    // 編集内容を定義
+    const payload = {
+      appName: editedAppName,
+      title: editedTitle,
+      description: editedDescription,
+      level: editedLevel,
+      language: editedLanguage,
+      appUrl: editedAppUrl,
+      github: editedGithub,
+    };
+
+    //変更のあった箇所のみ、ドキュメントをアップデート
+    await updateDoc(docRef, payload);
+
+    router.push("/posts");
+    alert("投稿が編集されました！");
+  };
+
+  // チェックボックスの値の取得関数
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked, value } = e.target;
+    if (checked) {
+      // case1: 言語にチェックがされた時
+      setEditedLanguage([...editedLanguage, value]);
+    } else {
+      // case2: 言語からチェックがはずされた時
+      setEditedLanguage(editedLanguage.filter((e) => e !== value));
+    }
   };
 
   //投稿の削除
@@ -158,9 +188,14 @@ const edit: NextPage = () => {
             {/* 言語設定 */}
             <FormControl mb={4}>
               <FormLabel>使用技術</FormLabel>
-              <CheckboxGroup>
+              <CheckboxGroup defaultValue={language}>
                 {displayedLanguages.map((displayedLanguage) => (
-                  <Checkbox m={2} key={displayedLanguage}>
+                  <Checkbox
+                    m={2}
+                    key={displayedLanguage}
+                    onChange={handleCheckBoxChange}
+                    value={displayedLanguage}
+                  >
                     {displayedLanguage}
                   </Checkbox>
                 ))}
@@ -198,7 +233,7 @@ const edit: NextPage = () => {
                 _hover={{
                   bg: "blue.500",
                 }}
-                onClick={handleEditButtonClick}
+                onClick={() => handleEditButtonClick(id)}
               >
                 編集する
               </Button>
