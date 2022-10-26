@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { db } from "../../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -18,43 +21,66 @@ import {
   HStack,
   Image,
 } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../../components/Author";
-import { usePostValue } from "../../../lib/atoms";
 import { LanguageTags } from "../../../components/LanguageTags";
 import { useUser } from "../../../lib/auth";
+import { PostType } from "../../../types/post";
+import { useRecoilState } from "recoil";
+import { postState, usePostIdValue } from "../../../lib/atoms";
 
 const detail: NextPage = () => {
+  const [post, setPost] = useState<PostType>();
   const router = useRouter();
   const { detail } = router.query;
-  const {
-    title,
-    appName,
-    description,
-    appUrl,
-    language,
-    level,
-    github,
-    postedDate,
-    authorId,
-  } = usePostValue();
+  const postId = usePostIdValue();
+  const [postDetail, setPostDetail] = useRecoilState<PostType>(postState);
 
-  // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
-  const getDisplayTime = () => {
-    if (postedDate === null) return;
-    const year = postedDate.toDate().getFullYear();
-    const month = ("0" + (postedDate.toDate().getMonth() + 1)).slice(-2);
-    const date = ("0" + postedDate.toDate().getDate()).slice(-2);
-    const hour = ("0" + postedDate.toDate().getHours()).slice(-2);
-    const min = ("0" + postedDate.toDate().getMinutes()).slice(-2);
+  // firebaseから、ドキュメントを投稿idで参照
+  useEffect((): any => {
+    const readDoc = async () => {
+      const docRef = doc(db, "posts", postId);
+      const docSnap = await getDoc(docRef);
 
-    return `${year}年${month}月${date}日 ${hour}:${min}`;
+      if (docSnap.exists()) {
+        setPost({
+          ...docSnap.data(),
+          id: postId,
+          title: docSnap.data().title,
+          appName: docSnap.data().appName,
+          description: docSnap.data().description,
+          appUrl: docSnap.data().appUrl,
+          language: docSnap.data().language,
+          level: docSnap.data().level,
+          github: docSnap.data().github,
+          postedDate: docSnap.data().postedDate,
+          authorId: docSnap.data().authorId,
+        });
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    };
+    return readDoc;
+  }, []);
+
+  // 各投稿をクリック、Recoilへ状態保持
+  const handleEditButtonClick = (postId: any) => {
+    setPostDetail({
+      id: postId,
+      title: post?.title,
+      appName: post?.appName,
+      description: post?.description,
+      appUrl: post?.appUrl,
+      language: post?.language,
+      level: post?.level,
+      github: post?.github,
+      postedDate: post?.postedDate,
+      authorId: post?.authorId,
+    });
   };
 
-  const user = useUser();
-
-  const levels = (level: string) => {
+  const levels = (level: string | undefined) => {
     switch (level) {
       case "beginner":
         return "初級";
@@ -79,7 +105,7 @@ const detail: NextPage = () => {
           px={{ sm: 8 }}
           mt={20}
         >
-          {title}
+          {post?.title}
         </Heading>
 
         <Stack
@@ -90,7 +116,7 @@ const detail: NextPage = () => {
         >
           {/* アプリ名 */}
           <Text my={4} fontSize={"4xl"} fontWeight={"bold"} color={"blue.400"}>
-            {appName}
+            {post?.appName}
           </Text>
 
           {/* アプリの説明欄 */}
@@ -101,7 +127,7 @@ const detail: NextPage = () => {
             py={10}
             px={{ lg: 14, md: 14, sm: 4 }}
           >
-            <Box>{description}</Box>
+            <Box>{post?.description}</Box>
           </Box>
 
           {/* プレビュー画像 */}
@@ -126,10 +152,10 @@ const detail: NextPage = () => {
             <List spacing={4}>
               {/* アプリURL */}
               <ListItem>
-                <ExternalLinkIcon color="blue.400" />
+                <ListIcon color="green.500" />
                 アプリURL：
-                <Link href={appUrl} color={"blue.400"} isExternal>
-                  {appUrl}
+                <Link href={post?.appUrl} color={"blue.400"} isExternal>
+                  {post?.appUrl}
                 </Link>
               </ListItem>
 
@@ -137,8 +163,8 @@ const detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 GitHub：
-                <Link href={github} color={"blue.400"} isExternal>
-                  {github}
+                <Link href={post?.github} color={"blue.400"} isExternal>
+                  {post?.github}
                 </Link>
               </ListItem>
 
@@ -146,20 +172,20 @@ const detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 使用言語：
-                <LanguageTags tags={language} />
+                <LanguageTags tags={post?.language} />
               </ListItem>
 
               {/* レベル */}
               <ListItem>
                 <ListIcon color="green.500" />
-                レベル：{levels(level)}
+                レベル：{levels(post?.level)}
               </ListItem>
 
               {/* 投稿日時 */}
-              <ListItem>
+              {/* <ListItem>
                 <ListIcon color="green.500" />
-                投稿日時：{getDisplayTime()}
-              </ListItem>
+                <Text>投稿日時：{getDisplayTime(post?.postedDate)}</Text>
+              </ListItem> */}
             </List>
           </Box>
 
@@ -225,6 +251,7 @@ const detail: NextPage = () => {
                 _hover={{
                   bg: "pink.500",
                 }}
+                onClick={() => handleEditButtonClick(post?.id)}
               >
                 編集
               </Button>

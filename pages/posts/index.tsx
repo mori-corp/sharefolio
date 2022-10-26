@@ -19,16 +19,13 @@ import NextLink from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../components/Author";
 import { LanguageTags } from "../../components/LanguageTags";
-
-import { useRecoilState } from "recoil";
-import { postState } from "../../lib/atoms";
-import { useUser } from "../../lib/auth";
+import { useSetRecoilState } from "recoil";
+import { postIdState } from "../../lib/atoms";
 import { PostType } from "../../types/post";
 
 const index: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [postDetail, setPostDetail] = useRecoilState(postState);
-  const user = useUser();
+  const setPostId = useSetRecoilState(postIdState);
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
@@ -65,22 +62,6 @@ const index: NextPage = () => {
     const min = ("0" + e.toDate().getMinutes()).slice(-2);
 
     return `${year}年${month}月${date}日 ${hour}:${min}`;
-  };
-
-  // 各投稿をクリック、Recoilへ状態保持
-  const showDetail = (post: any) => {
-    setPostDetail({
-      id: post.id,
-      appName: post.appName,
-      title: post.title,
-      description: post.description,
-      level: post.level,
-      language: post.language,
-      appUrl: post.appUrl,
-      github: post.github,
-      postedDate: post.postedDate,
-      authorId: post.authorId,
-    });
   };
 
   return (
@@ -147,7 +128,8 @@ const index: NextPage = () => {
                         as="a"
                         textDecoration="none"
                         _hover={{ textDecoration: "none", cursor: "pointer" }}
-                        onClick={() => showDetail(post)}
+                        // 投稿のドキュメントidをrecoilにセット
+                        onClick={() => setPostId(post.id)}
                       >
                         {post.title}
                       </Text>

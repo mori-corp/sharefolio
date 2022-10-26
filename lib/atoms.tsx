@@ -21,6 +21,16 @@ export const postState = atom<PostType>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const postIdState = atom({
+  key: "idState",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const usePostValue = () => {
   return useRecoilValue(postState);
+};
+
+export const usePostIdValue = () => {
+  return useRecoilValue(postIdState);
 };
