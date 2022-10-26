@@ -76,7 +76,7 @@ const index: NextPage = () => {
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
               <Box
-                marginTop={{ base: "10", sm: "8" }}
+                my={{ base: "10", sm: "8" }}
                 display="flex"
                 flexDirection={{ base: "column", md: "row" }}
                 justifyContent="space-between"
