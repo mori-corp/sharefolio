@@ -70,13 +70,13 @@ const index: NextPage = () => {
         投稿一覧
       </Heading>
 
-      <Container maxW={"5xl"} p="12">
+      <Container maxW={"5xl"} p={{ lg: "12", md: "12", sm: "1" }}>
         <UnorderedList styleType="none">
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
               <Box
-                marginTop={{ base: "1", sm: "5" }}
+                marginTop={{ base: "10", sm: "8" }}
                 display="flex"
                 flexDirection={{ base: "column", md: "row" }}
                 justifyContent="space-between"
@@ -118,7 +118,7 @@ const index: NextPage = () => {
                   display="flex"
                   flex="1"
                   flexDirection="column"
-                  justifyContent="center"
+                  justifyContent="space-around"
                   marginTop={{ base: "3", sm: "3" }}
                 >
                   {/* 投稿タイトル */}
@@ -130,6 +130,7 @@ const index: NextPage = () => {
                         _hover={{ textDecoration: "none", cursor: "pointer" }}
                         // 投稿のドキュメントidをrecoilにセット
                         onClick={() => setPostId(post.id)}
+                        noOfLines={2}
                       >
                         {post.title}
                       </Text>
@@ -137,7 +138,13 @@ const index: NextPage = () => {
                   </Heading>
 
                   {/* アプリの説明部分 */}
-                  <Text as="p" marginTop="2" color="gray.700" fontSize="md">
+                  <Text
+                    as="p"
+                    marginTop="2"
+                    color="gray.700"
+                    fontSize="md"
+                    noOfLines={4}
+                  >
                     {post.description}
                   </Text>
 
