@@ -16,7 +16,7 @@ import NextLink from "next/link";
 const myPage: NextPage = () => {
   return (
     <Layout title={"Mypage - ShareFolio"}>
-      <Flex flexDirection={"column"} align={"center"} w={"full"} p={8}>
+      <Flex flexDirection={"column"} align={"center"} w={"full"} p={2}>
         {/* ヘディング部分 */}
         <Heading fontSize={"4xl"} mb={8}>
           マイページ
@@ -27,8 +27,8 @@ const myPage: NextPage = () => {
           bg={"white"}
           boxShadow={"lg"}
           py={10}
-          px={{ lg: 14, md: 14, sm: 4 }}
-          w={{ lg: "60%", md: "80%", sm: "100%" }}
+          px={{ base: 4, sm: 4, md: 14 }}
+          w={{ base: "100%", sm: "80%", md: "60%" }}
         >
           <FormControl id="email" isRequired>
             <FormLabel>Username </FormLabel>

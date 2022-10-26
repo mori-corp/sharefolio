@@ -24,7 +24,6 @@ import {
 import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../../components/Author";
 import { LanguageTags } from "../../../components/LanguageTags";
-import { useUser } from "../../../lib/auth";
 import { PostType } from "../../../types/post";
 import { useRecoilState } from "recoil";
 import { postState, usePostIdValue } from "../../../lib/atoms";
@@ -101,8 +100,8 @@ const detail: NextPage = () => {
         <Heading
           maxW={"2xl"}
           textAlign={"center"}
-          fontSize={"2xl"}
-          px={{ sm: 8 }}
+          fontSize={{ base: "lg", sm: "2xl" }}
+          px={{ base: 4, sm: 8 }}
           mt={20}
         >
           {post?.title}
@@ -110,12 +109,17 @@ const detail: NextPage = () => {
 
         <Stack
           textAlign={"center"}
-          w={{ lg: "60%", md: "80%", sm: "100%" }}
+          w={{ base: "100%", md: "80%" }}
           p={4}
           spacing="4"
         >
           {/* アプリ名 */}
-          <Text my={4} fontSize={"4xl"} fontWeight={"bold"} color={"blue.400"}>
+          <Text
+            my={4}
+            fontSize={{ base: "2xl", sm: "4xl" }}
+            fontWeight={"bold"}
+            color={"blue.400"}
+          >
             {post?.appName}
           </Text>
 
@@ -125,9 +129,9 @@ const detail: NextPage = () => {
             bg={"white"}
             boxShadow={"lg"}
             py={10}
-            px={{ lg: 14, md: 14, sm: 4 }}
+            px={{ base: 4, md: 10 }}
           >
-            <Box>{post?.description}</Box>
+            <Text fontSize={{ base: "sm", sm: "md" }}>{post?.description}</Text>
           </Box>
 
           {/* プレビュー画像 */}
@@ -146,10 +150,10 @@ const detail: NextPage = () => {
             bg={"white"}
             boxShadow={"lg"}
             py={10}
-            px={{ lg: 14, md: 14, sm: 4 }}
+            px={{ base: 4, md: 10 }}
             textAlign={"left"}
           >
-            <List spacing={4}>
+            <List spacing={4} fontSize={{ base: "sm", sm: "md" }}>
               {/* アプリURL */}
               <ListItem>
                 <ListIcon color="green.500" />
@@ -192,12 +196,12 @@ const detail: NextPage = () => {
           {/* ハートアイコン */}
           <Flex align={"center"} justify={"space-between"}>
             <HStack>
-              <Icon as={AiOutlineHeart} w={8} h={8} />
-              <Text fontSize={"md"}>100 Likes</Text>
+              <Icon as={AiOutlineHeart} w={6} h={6} />
+              <Text fontSize={"sm"}>100 Likes</Text>
             </HStack>
             {/* 投稿者 */}
             <HStack>
-              <Text fontSize={"md"}>投稿者:</Text>
+              <Text fontSize={"sm"}>投稿者:</Text>
               <Author name="example" />
             </HStack>
           </Flex>

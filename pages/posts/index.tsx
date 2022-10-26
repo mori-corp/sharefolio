@@ -70,11 +70,7 @@ const index: NextPage = () => {
         投稿一覧
       </Heading>
 
-      <Container
-        display={"flex"}
-        maxW={"5xl"}
-        p={{ lg: "12", md: "12", sm: "1" }}
-      >
+      <Container display={"flex"} maxW={"5xl"} p={{ base: 1, md: 12 }}>
         <UnorderedList styleType="none" m={0}>
           {posts.map((post) => (
             <ListItem key={post.id}>
@@ -126,11 +122,11 @@ const index: NextPage = () => {
                   flex="1"
                   flexDirection="column"
                   justifyContent="space-around"
-                  marginTop={{ md: "0", sm: "3" }}
+                  marginTop={{ base: 3, sm: 3, md: 0 }}
                   ml={{ sm: 0, md: 4 }}
                 >
                   {/* 投稿タイトル */}
-                  <Heading marginTop="1" fontSize={"2xl"}>
+                  <Heading marginTop="1" fontSize={{ base: "lg", sm: "2xl" }}>
                     <NextLink href={`/posts/${post.id}`}>
                       <Text
                         as="a"
@@ -150,7 +146,7 @@ const index: NextPage = () => {
                     as="p"
                     marginTop="2"
                     color="gray.700"
-                    fontSize="md"
+                    fontSize={{ base: "sm", sm: "md" }}
                     noOfLines={4}
                   >
                     {post.description}
@@ -164,13 +160,15 @@ const index: NextPage = () => {
                     <HStack mt={4}>
                       {/* 投稿者 */}
                       <Author name="example" />
-                      <Text>{getDisplayTime(post.postedDate)}</Text>
+                      <Text fontSize={"sm"}>
+                        {getDisplayTime(post.postedDate)}
+                      </Text>
 
                       {/* ハートアイコン */}
-                      <Icon as={AiOutlineHeart} w={5} h={5} />
+                      <Icon as={AiOutlineHeart} w={4} h={4} />
 
                       {/* いいね数 */}
-                      <Text>100</Text>
+                      <Text fontSize={"sm"}>100</Text>
                     </HStack>
                   </Box>
                 </Box>

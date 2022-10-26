@@ -107,7 +107,12 @@ const create: NextPage = () => {
   ];
   return (
     <Layout title={"Create - ShareFolio"}>
-      <Flex flexDirection={"column"} align={"center"} w={"full"} p={8}>
+      <Flex
+        flexDirection={"column"}
+        align={"center"}
+        w={"full"}
+        p={{ base: 2, sm: 4, md: 8 }}
+      >
         {/* ヘディング部分 */}
         <Heading fontSize={"4xl"} mb={8}>
           投稿作成
@@ -118,8 +123,8 @@ const create: NextPage = () => {
           bg={"white"}
           boxShadow={"lg"}
           py={10}
-          px={{ lg: 14, md: 14, sm: 4 }}
-          w={{ lg: "60%", md: "80%", sm: "100%" }}
+          px={{ base: 4, md: 14 }}
+          w={{ base: "100% ", md: "80%" }}
         >
           {/* フォーム */}
           <form onSubmit={submitPost}>
