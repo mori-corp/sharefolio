@@ -70,8 +70,12 @@ const index: NextPage = () => {
         投稿一覧
       </Heading>
 
-      <Container maxW={"5xl"} p={{ lg: "12", md: "12", sm: "1" }}>
-        <UnorderedList styleType="none">
+      <Container
+        display={"flex"}
+        maxW={"5xl"}
+        p={{ lg: "12", md: "12", sm: "1" }}
+      >
+        <UnorderedList styleType="none" m={0}>
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
@@ -80,12 +84,15 @@ const index: NextPage = () => {
                 display="flex"
                 flexDirection={{ base: "column", md: "row" }}
                 justifyContent="space-between"
+                p={4}
+                bg={"gray.100"}
+                _hover={{ bg: "gray.200" }}
+                borderRadius={"lg"}
               >
                 {/* サムネ画像部分（左半分）のBox */}
                 <Box
                   display="flex"
                   flex="1"
-                  marginRight="3"
                   position="relative"
                   alignItems="center"
                 >
@@ -93,8 +100,8 @@ const index: NextPage = () => {
                   <Box
                     width={{ sm: "100%" }}
                     zIndex="2"
-                    marginTop="5%"
-                    marginRight={4}
+                    my={{ sm: 5, md: 0 }}
+                    marginRight={{ md: "4" }}
                   >
                     {/* サムネ画像部分 */}
                     <Link
@@ -119,7 +126,8 @@ const index: NextPage = () => {
                   flex="1"
                   flexDirection="column"
                   justifyContent="space-around"
-                  marginTop={{ base: "3", sm: "3" }}
+                  marginTop={{ md: "0", sm: "3" }}
+                  ml={{ sm: 0, md: 4 }}
                 >
                   {/* 投稿タイトル */}
                   <Heading marginTop="1" fontSize={"2xl"}>
@@ -148,21 +156,23 @@ const index: NextPage = () => {
                     {post.description}
                   </Text>
 
-                  {/* 言語タグ一覧 */}
-                  <LanguageTags tags={post.language} />
+                  <Box>
+                    {/* 言語タグ一覧 */}
+                    <LanguageTags tags={post.language} />
 
-                  {/* 投稿者情報 */}
-                  <HStack mt={4}>
-                    {/* 投稿者 */}
-                    <Author name="example" />
-                    <Text>{getDisplayTime(post.postedDate)}</Text>
+                    {/* 投稿者情報 */}
+                    <HStack mt={4}>
+                      {/* 投稿者 */}
+                      <Author name="example" />
+                      <Text>{getDisplayTime(post.postedDate)}</Text>
 
-                    {/* ハートアイコン */}
-                    <Icon as={AiOutlineHeart} w={5} h={5} />
+                      {/* ハートアイコン */}
+                      <Icon as={AiOutlineHeart} w={5} h={5} />
 
-                    {/* いいね数 */}
-                    <Text>100</Text>
-                  </HStack>
+                      {/* いいね数 */}
+                      <Text>100</Text>
+                    </HStack>
+                  </Box>
                 </Box>
               </Box>
             </ListItem>
