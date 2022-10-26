@@ -80,20 +80,6 @@ const detail: NextPage = () => {
     });
   };
 
-  // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
-  // const getDisplayTime = (dateObj: any) => {
-  //   if (dateObj === null) return;
-  //   const year = dateObj.toDate().getFullYear();
-  //   const month = ("0" + (dateObj.toDate().getMonth() + 1)).slice(-2);
-  //   const date = ("0" + dateObj.toDate().getDate()).slice(-2);
-  //   const hour = ("0" + dateObj.toDate().getHours()).slice(-2);
-  //   const min = ("0" + dateObj.toDate().getMinutes()).slice(-2);
-
-  //   return `${year}年${month}月${date}日 ${hour}:${min}`;
-  // };
-
-  const user = useUser();
-
   const levels = (level: string | undefined) => {
     switch (level) {
       case "beginner":
@@ -196,10 +182,10 @@ const detail: NextPage = () => {
               </ListItem>
 
               {/* 投稿日時 */}
-              <ListItem>
+              {/* <ListItem>
                 <ListIcon color="green.500" />
-                投稿日時：
-              </ListItem>
+                <Text>投稿日時：{getDisplayTime(post?.postedDate)}</Text>
+              </ListItem> */}
             </List>
           </Box>
 
