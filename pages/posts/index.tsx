@@ -110,7 +110,9 @@ const index: NextPage = () => {
                     >
                       <Image
                         borderRadius="lg"
-                        src={post.image}
+                        // post.image !== "" ?
+
+                        src={post.image ? post.image : "/no-image-icon.png"}
                         alt={`image of ${post.appName}`}
                         objectFit="cover"
                         align={"center"}
