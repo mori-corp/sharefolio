@@ -20,7 +20,12 @@ import {
 } from "@chakra-ui/react";
 import { usePostValue } from "../../../lib/atoms";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 import { db, storage } from "../../../firebase";
 import { validateImage } from "image-validator";
 
@@ -30,6 +35,7 @@ const edit: NextPage = () => {
     title,
     appName,
     description,
+    image,
     appUrl,
     language,
     level,
@@ -155,6 +161,18 @@ const edit: NextPage = () => {
     // firestoreのドキュメントを、Recoilでセットしている投稿idで参照
     const docRef = doc(db, "posts", id); //第３引数は、document id
     await deleteDoc(docRef);
+
+    // 画像ファイルの参照作成
+    const desertRef = ref(storage, image);
+
+    // 画像ファイルを削除
+    deleteObject(desertRef)
+      .then(() => {
+        console.log("画像ファイルが、storageから削除されました。");
+      })
+      .catch((error) => {
+        console.log("画像ファイルの削除に失敗しました。");
+      });
 
     alert("投稿が削除されました！");
 
