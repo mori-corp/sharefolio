@@ -3,6 +3,7 @@ export type PostType = {
   appName: string | undefined;
   title: string | undefined;
   description: string | undefined;
+  image: string | undefined;
   level: string | undefined;
   language: Array<string> | undefined;
   appUrl: string | undefined;
