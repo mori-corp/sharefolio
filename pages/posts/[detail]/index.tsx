@@ -136,13 +136,15 @@ const detail: NextPage = () => {
             <Text fontSize={{ base: "sm", sm: "md" }}>{post?.description}</Text>
           </Box>
 
-          {/* プレビュー画像 */}
-          <Image
-            borderRadius="lg"
-            src={post?.image}
-            alt={`image of ${post?.appName}`}
-            objectFit="contain"
-          />
+          {/* アプリ画像 */}
+          {post?.image && (
+            <Image
+              borderRadius="lg"
+              src={post?.image}
+              alt={`image of ${post?.appName}`}
+              objectFit="contain"
+            />
+          )}
 
           {/* アプリの詳細情報 */}
           <Box
