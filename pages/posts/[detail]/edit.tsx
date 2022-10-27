@@ -20,7 +20,9 @@ import {
 } from "@chakra-ui/react";
 import { usePostValue } from "../../../lib/atoms";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { db, storage } from "../../../firebase";
+import { validateImage } from "image-validator";
 
 const edit: NextPage = () => {
   const {
@@ -44,32 +46,10 @@ const edit: NextPage = () => {
   const [editedLanguage, setEditedLanguage] = useState<string[]>([]);
   const [editedAppUrl, setEditedAppUrl] = useState(appUrl);
   const [editedGithub, setEditedGithub] = useState(github);
+  const [editedFile, setEditedFile] = useState<File>(null!);
 
   const router = useRouter();
   const { detail } = router.query;
-
-  //投稿の編集
-  const handleEditButtonClick = async (id: string) => {
-    // firestoreのドキュメントの参照
-    const docRef = doc(db, "posts", id);
-
-    // 編集内容を定義
-    const payload = {
-      appName: editedAppName,
-      title: editedTitle,
-      description: editedDescription,
-      level: editedLevel,
-      language: editedLanguage,
-      appUrl: editedAppUrl,
-      github: editedGithub,
-    };
-
-    //変更のあった箇所のみ、ドキュメントをアップデート
-    await updateDoc(docRef, payload);
-
-    router.push("/posts");
-    alert("投稿が編集されました！");
-  };
 
   // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +61,93 @@ const edit: NextPage = () => {
       // case2: 言語からチェックがはずされた時
       setEditedLanguage(editedLanguage.filter((e) => e !== value));
     }
+  };
+
+  // アップロードされたファイルのバリデーション関数
+  const validateFile = async (file: File) => {
+    // 3GBを最大のファイルサイズに設定
+    const limitFileSize = 3 * 1024 * 1024;
+    if (file.size > limitFileSize) {
+      alert("ファイルサイズが大きすぎます。\n3メガバイト以下にしてください。");
+      return false;
+    }
+    const isValidImage = await validateImage(file);
+    if (!isValidImage) {
+      alert("画像ファイル以外はアップロードできません。");
+      return false;
+    }
+    return true;
+  };
+
+  // 画像選択関数
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files![0];
+    if (!(await validateFile(file))) {
+      return;
+    }
+    reader.onloadend = async () => {
+      setEditedFile(file);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  //投稿の編集関数
+  const handleEditButtonClick = async (id: string) => {
+    // アプリイメージ画像の参照とURL生成
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const N = 16;
+    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+      .map((n) => S[n % S.length])
+      .join("");
+
+    // Cloud storageへアップロード
+    const storageRef = ref(storage, `images/${randomChar}_${editedFile.name}`);
+    await uploadBytes(storageRef, editedFile)
+      .then((snapshot) => {
+        console.log("画像アップロードに成功しました");
+      })
+      .catch((error) => {
+        console.log("画像アップロードに失敗しました");
+      });
+
+    // cloud storageのURLを取得
+    await getDownloadURL(
+      ref(storage, `images/${randomChar}_${editedFile.name}`)
+    ).then((url) => {
+      // firestoreのドキュメントの参照
+      const docRef = doc(db, "posts", id);
+      // 編集内容を定義
+      const payload = {
+        appName: editedAppName,
+        title: editedTitle,
+        description: editedDescription,
+        image: url,
+        level: editedLevel,
+        language: editedLanguage,
+        appUrl: editedAppUrl,
+        github: editedGithub,
+      };
+
+      //変更のあった箇所のみ、ドキュメントをアップデート
+      updateDoc(docRef, payload);
+    });
+
+    alert("投稿が編集されました！");
+
+    // フォームのクリア
+    setEditedAppName("");
+    setEditedTitle("");
+    setEditedDescription("");
+    setEditedLevel("");
+    setEditedLanguage([]);
+    setEditedAppUrl("");
+    setEditedGithub("");
+    setEditedFile(null!);
+
+    //投稿一覧へリダイレクト
+    router.push("/posts");
   };
 
   //投稿の削除
@@ -176,6 +243,9 @@ const edit: NextPage = () => {
                 rows={10}
               />
             </FormControl>
+
+            {/* スクショ画像アップロード */}
+            <input type="file" onChange={handleImageSelect} />
 
             {/* レベル */}
             <FormControl mb={4}>
