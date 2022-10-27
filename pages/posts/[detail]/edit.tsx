@@ -87,7 +87,6 @@ const edit: NextPage = () => {
 
   // 画像選択関数
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files![0];
     if (!(await validateFile(file))) {
@@ -99,48 +98,76 @@ const edit: NextPage = () => {
     reader.readAsDataURL(file);
   };
 
-  //投稿の編集関数
+  //投稿の編集
   const handleEditButtonClick = async (id: string) => {
-    // アプリイメージ画像の参照とURL生成
-    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const N = 16;
-    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-      .map((n) => S[n % S.length])
-      .join("");
+    // もし、インプットフィールドに新しい画像がアップされている場合
+    if (editedFile) {
+      // アプリイメージ画像の参照とURL生成
+      const S =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join("");
 
-    // Cloud storageへアップロード
-    const storageRef = ref(storage, `images/${randomChar}_${editedFile.name}`);
-    await uploadBytes(storageRef, editedFile)
-      .then((snapshot) => {
-        console.log("画像アップロードに成功しました");
-      })
-      .catch((error) => {
-        console.log("画像アップロードに失敗しました");
+      // Cloud storageへアップロード
+      const storageRef = ref(
+        storage,
+        `images/${randomChar}_${editedFile.name}`
+      );
+      await uploadBytes(storageRef, editedFile)
+        .then((snapshot) => {
+          console.log("画像アップロードに成功しました");
+        })
+        .catch((error) => {
+          console.log("画像アップロードに失敗しました。error: ", error);
+        });
+
+      // cloud storageのURLを取得
+      await getDownloadURL(
+        ref(storage, `images/${randomChar}_${editedFile.name}`)
+      ).then((url) => {
+        const docRef = doc(db, "posts", id);
+        const payload = {
+          appName: editedAppName,
+          title: editedTitle,
+          description: editedDescription,
+          image: url,
+          level: editedLevel,
+          language: editedLanguage,
+          appUrl: editedAppUrl,
+          github: editedGithub,
+        };
+
+        updateDoc(docRef, payload);
+        
+        // もし元画像がある場合は、ファイルをstorageから削除
+        if (image) {
+          const imageRef = ref(storage, image);
+          deleteObject(imageRef)
+            .then(() => {
+              console.log("画像ファイルが、storageから削除されました。");
+            })
+            .catch((error) => {
+              console.log("画像ファイルの削除に失敗しました。error: ", error);
+            });
+        }
       });
-
-    // cloud storageのURLを取得
-    await getDownloadURL(
-      ref(storage, `images/${randomChar}_${editedFile.name}`)
-    ).then((url) => {
-      // firestoreのドキュメントの参照
+    } else {
+      //画像がアップロードされていない場合
       const docRef = doc(db, "posts", id);
-      // 編集内容を定義
       const payload = {
         appName: editedAppName,
         title: editedTitle,
         description: editedDescription,
-        image: url,
         level: editedLevel,
         language: editedLanguage,
         appUrl: editedAppUrl,
         github: editedGithub,
+        // imageは変更なし
       };
-
-      //変更のあった箇所のみ、ドキュメントをアップデート
       updateDoc(docRef, payload);
-    });
-
-    alert("投稿が編集されました！");
+    }
 
     // フォームのクリア
     setEditedAppName("");
@@ -152,6 +179,7 @@ const edit: NextPage = () => {
     setEditedGithub("");
     setEditedFile(null!);
 
+    alert("投稿が編集されました！");
     //投稿一覧へリダイレクト
     router.push("/posts");
   };
@@ -162,16 +190,14 @@ const edit: NextPage = () => {
     const docRef = doc(db, "posts", id); //第３引数は、document id
     await deleteDoc(docRef);
 
-    // 画像ファイルの参照作成
-    const desertRef = ref(storage, image);
-
     // 画像ファイルを削除
-    deleteObject(desertRef)
+    const imageRef = ref(storage, image);
+    deleteObject(imageRef)
       .then(() => {
         console.log("画像ファイルが、storageから削除されました。");
       })
       .catch((error) => {
-        console.log("画像ファイルの削除に失敗しました。");
+        console.log("画像ファイルの削除に失敗しました。error: ", error);
       });
 
     alert("投稿が削除されました！");
