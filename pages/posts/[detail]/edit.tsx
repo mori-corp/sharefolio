@@ -140,7 +140,7 @@ const edit: NextPage = () => {
         };
 
         updateDoc(docRef, payload);
-        
+
         // もし元画像がある場合は、ファイルをstorageから削除
         if (image) {
           const imageRef = ref(storage, image);
@@ -191,14 +191,16 @@ const edit: NextPage = () => {
     await deleteDoc(docRef);
 
     // 画像ファイルを削除
-    const imageRef = ref(storage, image);
-    deleteObject(imageRef)
-      .then(() => {
-        console.log("画像ファイルが、storageから削除されました。");
-      })
-      .catch((error) => {
-        console.log("画像ファイルの削除に失敗しました。error: ", error);
-      });
+    if (image) {
+      const imageRef = ref(storage, image);
+      deleteObject(imageRef)
+        .then(() => {
+          console.log("画像ファイルが、storageから削除されました。");
+        })
+        .catch((error) => {
+          console.log("画像ファイルの削除に失敗しました。error: ", error);
+        });
+    }
 
     alert("投稿が削除されました！");
 
@@ -253,8 +255,10 @@ const edit: NextPage = () => {
           {/* フォーム */}
           <form>
             {/* アプリ名 */}
-            <FormControl mb={4}>
-              <FormLabel>アプリ / サービス名</FormLabel>
+            <FormControl mb={4} isRequired>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                アプリ / サービス名
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="40文字以内で入力してください"
@@ -264,8 +268,10 @@ const edit: NextPage = () => {
             </FormControl>
 
             {/* タイトル */}
-            <FormControl mb={4}>
-              <FormLabel>投稿タイトル</FormLabel>
+            <FormControl mb={4} isRequired>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                投稿タイトル
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="40文字以内で入力してください"
@@ -278,8 +284,10 @@ const edit: NextPage = () => {
             </FormControl>
 
             {/* 説明 */}
-            <FormControl mb={4}>
-              <FormLabel>説明</FormLabel>
+            <FormControl mb={4} isRequired>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                説明
+              </FormLabel>
               <Textarea
                 placeholder="簡単な説明を入力"
                 value={editedDescription}
@@ -289,11 +297,21 @@ const edit: NextPage = () => {
             </FormControl>
 
             {/* スクショ画像アップロード */}
-            <input type="file" onChange={handleImageSelect} />
+            <FormControl mb={4}>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                アプリの画像
+              </FormLabel>
+              <input type="file" onChange={handleImageSelect} />
+              <FormHelperText fontSize={"xs"}>
+                例：トップページのスクリーンショット等
+              </FormHelperText>
+            </FormControl>
 
             {/* レベル */}
-            <FormControl mb={4}>
-              <FormLabel>レベル</FormLabel>
+            <FormControl mb={4} isRequired>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                レベル
+              </FormLabel>
               <Select
                 w={40}
                 value={editedLevel}
@@ -307,7 +325,9 @@ const edit: NextPage = () => {
 
             {/* 言語設定 */}
             <FormControl mb={4}>
-              <FormLabel>使用技術</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                使用技術
+              </FormLabel>
               <CheckboxGroup defaultValue={language}>
                 {displayedLanguages.map((displayedLanguage) => (
                   <Checkbox
@@ -323,8 +343,10 @@ const edit: NextPage = () => {
             </FormControl>
 
             {/* アプリURL */}
-            <FormControl mb={4}>
-              <FormLabel>アプリURL</FormLabel>
+            <FormControl mb={4} isRequired>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                アプリURL
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="URL: "
@@ -335,7 +357,9 @@ const edit: NextPage = () => {
 
             {/* Github */}
             <FormControl mb={4}>
-              <FormLabel>Github</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                Github
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="Github: "
