@@ -207,7 +207,13 @@ const create: NextPage = () => {
           <form onSubmit={submitPost}>
             {/* アプリ名 */}
             <FormControl mb={4} isRequired>
-              <FormLabel htmlFor="appName">アプリ / サービス名</FormLabel>
+              <FormLabel
+                htmlFor="appName"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
+                アプリ / サービス名
+              </FormLabel>
               <Input
                 placeholder="20文字以内で入力してください"
                 id="appName"
@@ -221,7 +227,9 @@ const create: NextPage = () => {
 
             {/* タイトル */}
             <FormControl mb={4} isRequired>
-              <FormLabel>投稿タイトル</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                投稿タイトル
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="40文字以内で入力してください"
@@ -237,7 +245,9 @@ const create: NextPage = () => {
 
             {/* 説明 */}
             <FormControl mb={4} isRequired>
-              <FormLabel>説明</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                説明
+              </FormLabel>
               <Textarea
                 placeholder="簡単な説明を入力。400文字以内"
                 value={description}
@@ -249,11 +259,21 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* スクショ画像アップロード */}
-            <input type="file" onChange={handleImageSelect} />
+            <FormControl mb={4}>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                アプリの画像
+              </FormLabel>
+              <input type="file" onChange={handleImageSelect} />
+              <FormHelperText fontSize={"xs"}>
+                例：トップページのスクリーンショット等
+              </FormHelperText>
+            </FormControl>
 
             {/* レベル */}
             <FormControl mb={4} isRequired>
-              <FormLabel>レベル</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                レベル
+              </FormLabel>
               <Select
                 w={40}
                 value={level}
@@ -269,7 +289,9 @@ const create: NextPage = () => {
 
             {/* 使用言語選択 */}
             <FormControl mb={4}>
-              <FormLabel>使用技術</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                使用技術
+              </FormLabel>
               <CheckboxGroup>
                 {displayedLanguages.map((displayedLanguage) => (
                   <Checkbox
@@ -285,9 +307,10 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* アプリURL */}
-            {/* Val : 必須、url形式 */}
             <FormControl mb={4} isRequired>
-              <FormLabel>アプリURL</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                アプリURL
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="URL: "
@@ -299,9 +322,10 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* Github */}
-            {/* Val : url形式 */}
             <FormControl mb={4}>
-              <FormLabel>Github</FormLabel>
+              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+                Github
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="Github: "
