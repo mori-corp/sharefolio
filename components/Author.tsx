@@ -12,7 +12,7 @@ export const Author: React.FC<AuthorProps> = (props) => {
       {/* プロフィール画像 */}
       <Image
         borderRadius="full"
-        boxSize="28px"
+        boxSize="20px"
         src="/user.png"
         alt={`Avatar of ${props.name}`}
         border="1px"
@@ -20,7 +20,9 @@ export const Author: React.FC<AuthorProps> = (props) => {
       />
 
       {/* ユーザーネーム */}
-      <Text fontWeight="medium">{props.name}</Text>
+      <Text fontWeight="medium" fontSize={"sm"}>
+        {props.name}
+      </Text>
       <Text>—</Text>
     </HStack>
   );

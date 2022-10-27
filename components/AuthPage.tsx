@@ -49,7 +49,15 @@ export const AuthPage: React.FC = () => {
 
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={"gray.50"}>
-      <Stack spacing={8} mx={"auto"} my={0} maxW={"lg"} py={4} px={6}>
+      <Stack
+        spacing={8}
+        mx={"auto"}
+        my={0}
+        maxW={"lg"}
+        py={4}
+        px={{ base: 2 }}
+        w={{ base: "100%", md: "80%" }}
+      >
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
             {isLogin ? "Login" : "Sign up"}
@@ -62,8 +70,8 @@ export const AuthPage: React.FC = () => {
           bg={"white"}
           boxShadow={"lg"}
           py={8}
-          px={12}
-          w={"md"}
+          px={{ base: 4, md: 12 }}
+          w={"full"}
         >
           <Stack spacing={4} h={"full"}>
             {/* フォーム */}

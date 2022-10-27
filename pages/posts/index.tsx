@@ -71,22 +71,25 @@ const index: NextPage = () => {
         投稿一覧
       </Heading>
 
-      <Container maxW={"5xl"} p="12">
-        <UnorderedList styleType="none">
+      <Container display={"flex"} maxW={"5xl"} p={{ base: 1, md: 12 }}>
+        <UnorderedList styleType="none" m={0}>
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
               <Box
-                marginTop={{ base: "1", sm: "5" }}
+                my={{ base: "10", sm: "8" }}
                 display="flex"
                 flexDirection={{ base: "column", md: "row" }}
                 justifyContent="space-between"
+                p={4}
+                bg={"gray.100"}
+                _hover={{ bg: "gray.200" }}
+                borderRadius={"lg"}
               >
                 {/* サムネ画像部分（左半分）のBox */}
                 <Box
                   display="flex"
                   flex="1"
-                  marginRight="3"
                   position="relative"
                   alignItems="center"
                 >
@@ -94,10 +97,14 @@ const index: NextPage = () => {
                   <Box
                     width={{ sm: "100%" }}
                     zIndex="2"
+
                     marginTop="5%"
                     marginRight={4}
                     display="flex"
                     justifyContent={"center"}
+                    my={{ sm: 5, md: 0 }}
+                    marginRight={{ md: "4" }}
+
                   >
                     {/* サムネ画像部分 */}
                     <Link
@@ -120,11 +127,12 @@ const index: NextPage = () => {
                   display="flex"
                   flex="1"
                   flexDirection="column"
-                  justifyContent="center"
-                  marginTop={{ base: "3", sm: "3" }}
+                  justifyContent="space-around"
+                  marginTop={{ base: 3, sm: 3, md: 0 }}
+                  ml={{ sm: 0, md: 4 }}
                 >
                   {/* 投稿タイトル */}
-                  <Heading marginTop="1" fontSize={"2xl"}>
+                  <Heading marginTop="1" fontSize={{ base: "lg", sm: "2xl" }}>
                     <NextLink href={`/posts/${post.id}`}>
                       <Text
                         as="a"
@@ -132,6 +140,7 @@ const index: NextPage = () => {
                         _hover={{ textDecoration: "none", cursor: "pointer" }}
                         // 投稿のドキュメントidをrecoilにセット
                         onClick={() => setPostId(post.id)}
+                        noOfLines={2}
                       >
                         {post.title}
                       </Text>
@@ -139,25 +148,35 @@ const index: NextPage = () => {
                   </Heading>
 
                   {/* アプリの説明部分 */}
-                  <Text as="p" marginTop="2" color="gray.700" fontSize="md">
+                  <Text
+                    as="p"
+                    marginTop="2"
+                    color="gray.700"
+                    fontSize={{ base: "sm", sm: "md" }}
+                    noOfLines={4}
+                  >
                     {post.description}
                   </Text>
 
-                  {/* 言語タグ一覧 */}
-                  <LanguageTags tags={post.language} />
+                  <Box>
+                    {/* 言語タグ一覧 */}
+                    <LanguageTags tags={post.language} />
 
-                  {/* 投稿者情報 */}
-                  <HStack mt={4}>
-                    {/* 投稿者 */}
-                    <Author name="example" />
-                    <Text>{getDisplayTime(post.postedDate)}</Text>
+                    {/* 投稿者情報 */}
+                    <HStack mt={4}>
+                      {/* 投稿者 */}
+                      <Author name="example" />
+                      <Text fontSize={"sm"}>
+                        {getDisplayTime(post.postedDate)}
+                      </Text>
 
-                    {/* ハートアイコン */}
-                    <Icon as={AiOutlineHeart} w={5} h={5} />
+                      {/* ハートアイコン */}
+                      <Icon as={AiOutlineHeart} w={4} h={4} />
 
-                    {/* いいね数 */}
-                    <Text>100</Text>
-                  </HStack>
+                      {/* いいね数 */}
+                      <Text fontSize={"sm"}>100</Text>
+                    </HStack>
+                  </Box>
                 </Box>
               </Box>
             </ListItem>
