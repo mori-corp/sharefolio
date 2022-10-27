@@ -97,14 +97,11 @@ const index: NextPage = () => {
                   <Box
                     width={{ sm: "100%" }}
                     zIndex="2"
-
                     marginTop="5%"
                     marginRight={4}
                     display="flex"
                     justifyContent={"center"}
                     my={{ sm: 5, md: 0 }}
-                    marginRight={{ md: "4" }}
-
                   >
                     {/* サムネ画像部分 */}
                     <Link
