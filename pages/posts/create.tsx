@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "../../firebase";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -51,7 +51,7 @@ const create: NextPage = () => {
     }
   };
 
-  // ファイルのバリデーション関数
+  // アップロードされたファイルのバリデーション関数
   const validateFile = async (file: File) => {
     // 3GBを最大のファイルサイズに設定
     const limitFileSize = 3 * 1024 * 1024;
@@ -81,35 +81,48 @@ const create: NextPage = () => {
     reader.readAsDataURL(file);
   };
 
-  // 投稿作成
+  // 投稿の作成関数
   const submitPost = async (e: any) => {
     e.preventDefault();
-    const collectionRef = collection(db, "posts");
-    const payload = {
-      authorId: userId,
-      appName: appName,
-      title: title,
-      description: description,
-      image: "",
-      level: level,
-      language: selectedLanguage,
-      appUrl: appUrl,
-      github: github,
-      postedDate: serverTimestamp(),
-    };
 
-    // 追加（document_idは、firebaseが自動生成）
-    await addDoc(collectionRef, payload);
+    // アプリイメージ画像の参照とURL生成
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const N = 16;
+    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+      .map((n) => S[n % S.length])
+      .join("");
 
-    // 参照を作成 → 'images/(画像名)'
-    const storageRef = ref(storage, `images/${file.name}`);
+    // Cloud storageへアップロード
+    const storageRef = ref(storage, `images/${randomChar}_${file.name}`);
     await uploadBytes(storageRef, file)
       .then((snapshot) => {
-        console.log("アップロードに成功しました");
+        console.log("画像アップロードに成功しました");
       })
       .catch((error) => {
-        console.log("アップロードに失敗しました");
+        console.log("画像アップロードに失敗しました");
       });
+
+    // cloud storageのURLを取得
+    await getDownloadURL(
+      ref(storage, `images/${randomChar}_${file.name}`)
+    ).then((url) => {
+      // 追加する項目の定義
+      const collectionRef = collection(db, "posts");
+      const payload = {
+        authorId: userId,
+        appName: appName,
+        title: title,
+        description: description,
+        image: url,
+        level: level,
+        language: selectedLanguage,
+        appUrl: appUrl,
+        github: github,
+        postedDate: serverTimestamp(),
+      };
+      // データベースへの追加（document_idは、firebaseが自動生成）
+      addDoc(collectionRef, payload);
+    });
 
     alert("投稿を作成しました");
 
@@ -121,27 +134,11 @@ const create: NextPage = () => {
     setSelectedLanguage([]);
     setAppUrl("");
     setGithub("");
+    setFile(null!);
 
     //投稿一覧へリダイレクト
     router.push("/posts");
   };
-
-  //   if (e.target.files![0]) {
-  //     setAppImage(e.target.files![0]);
-  //     e.target.value = "";
-  //   }
-
-  //   const uploadAppImage = () => {
-  //     const S =
-  //       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  //     const N = 16;
-  //     const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-  //       .map((n) => S[n % S.length])
-  //       .join("");
-  //     const fileName = randomChar + "_" + appImage?.name;
-  //     const uploadImage = ref(storage, `images/${fileName}`);
-  //   };
-  // };
 
   const displayedLanguages = [
     "HTML",
