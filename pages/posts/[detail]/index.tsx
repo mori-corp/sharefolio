@@ -48,6 +48,7 @@ const detail: NextPage = () => {
           title: docSnap.data().title,
           appName: docSnap.data().appName,
           description: docSnap.data().description,
+          image: docSnap.data().image,
           appUrl: docSnap.data().appUrl,
           language: docSnap.data().language,
           level: docSnap.data().level,
@@ -70,6 +71,7 @@ const detail: NextPage = () => {
       title: post?.title,
       appName: post?.appName,
       description: post?.description,
+      image: post?.image,
       appUrl: post?.appUrl,
       language: post?.language,
       level: post?.level,
@@ -137,10 +139,8 @@ const detail: NextPage = () => {
           {/* プレビュー画像 */}
           <Image
             borderRadius="lg"
-            src={
-              "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-            }
-            alt="some good alt text"
+            src={post?.image}
+            alt={`image of ${post?.appName}`}
             objectFit="contain"
           />
 
