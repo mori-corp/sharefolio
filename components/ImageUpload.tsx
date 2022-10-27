@@ -5,10 +5,13 @@ import {
   Heading,
   Input,
   Stack,
+  Wrap,
 } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
 
-export const ImageUpload: React.FC = () => {
+
+
+export const ImageUpload: React.FC= () => {
   const controls = useAnimation();
   const startAnimation = () => controls.start("hover");
   const stopAnimation = () => controls.stop();
@@ -50,9 +53,7 @@ export const ImageUpload: React.FC = () => {
               >
                 <Stack p="8" textAlign="center" spacing="1">
                   <Heading fontSize="sm" color="gray.700" fontWeight="bold">
-                    プロフィール画像を
-                    <br />
-                    アップロード
+                    画像をアップロード
                   </Heading>
                 </Stack>
               </Stack>

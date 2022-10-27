@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage, db } from "../../firebase";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { db } from "../../firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import Layout from "../../components/Layout";
 import {
   FormControl,
@@ -20,6 +21,7 @@ import {
   CheckboxGroup,
 } from "@chakra-ui/react";
 import { useUser } from "../../lib/auth";
+import { validateImage } from "image-validator";
 
 const create: NextPage = () => {
   // 投稿時の各属性の定義
@@ -31,6 +33,7 @@ const create: NextPage = () => {
   const [appUrl, setAppUrl] = useState("");
   const [github, setGithub] = useState("");
   const router = useRouter();
+  const [file, setFile] = useState<File>(null!);
 
   // Recoilで状態管理しているuserのuidを投稿者のid(userId)として設定
   const user = useUser();
@@ -48,24 +51,78 @@ const create: NextPage = () => {
     }
   };
 
-  // 投稿作成
+  // アップロードされたファイルのバリデーション関数
+  const validateFile = async (file: File) => {
+    // 3GBを最大のファイルサイズに設定
+    const limitFileSize = 3 * 1024 * 1024;
+    if (file.size > limitFileSize) {
+      alert("ファイルサイズが大きすぎます。\n3メガバイト以下にしてください。");
+      return false;
+    }
+    const isValidImage = await validateImage(file);
+    if (!isValidImage) {
+      alert("画像ファイル以外はアップロードできません。");
+      return false;
+    }
+    return true;
+  };
+
+  // 画像選択関数
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files![0];
+    if (!(await validateFile(file))) {
+      return;
+    }
+    reader.onloadend = async () => {
+      setFile(file);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 投稿の作成関数
   const submitPost = async (e: any) => {
     e.preventDefault();
-    const collectionRef = collection(db, "posts");
-    const payload = {
-      authorId: userId,
-      appName: appName,
-      title: title,
-      description: description,
-      level: level,
-      language: selectedLanguage,
-      appUrl: appUrl,
-      github: github,
-      postedDate: serverTimestamp(),
-    };
 
-    // 追加（document_idは、firebaseが自動生成）
-    await addDoc(collectionRef, payload);
+    // アプリイメージ画像の参照とURL生成
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const N = 16;
+    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+      .map((n) => S[n % S.length])
+      .join("");
+
+    // Cloud storageへアップロード
+    const storageRef = ref(storage, `images/${randomChar}_${file.name}`);
+    await uploadBytes(storageRef, file)
+      .then((snapshot) => {
+        console.log("画像アップロードに成功しました");
+      })
+      .catch((error) => {
+        console.log("画像アップロードに失敗しました");
+      });
+
+    // cloud storageのURLを取得
+    await getDownloadURL(
+      ref(storage, `images/${randomChar}_${file.name}`)
+    ).then((url) => {
+      // 追加する項目の定義
+      const collectionRef = collection(db, "posts");
+      const payload = {
+        authorId: userId,
+        appName: appName,
+        title: title,
+        description: description,
+        image: url,
+        level: level,
+        language: selectedLanguage,
+        appUrl: appUrl,
+        github: github,
+        postedDate: serverTimestamp(),
+      };
+      // データベースへの追加（document_idは、firebaseが自動生成）
+      addDoc(collectionRef, payload);
+    });
 
     alert("投稿を作成しました");
 
@@ -77,6 +134,7 @@ const create: NextPage = () => {
     setSelectedLanguage([]);
     setAppUrl("");
     setGithub("");
+    setFile(null!);
 
     //投稿一覧へリダイレクト
     router.push("/posts");
@@ -129,7 +187,7 @@ const create: NextPage = () => {
           {/* フォーム */}
           <form onSubmit={submitPost}>
             {/* アプリ名 */}
-            {/* Val : 必須、20文字以内 */}
+
             <FormControl mb={4}>
               <FormLabel htmlFor="appName">アプリ / サービス名</FormLabel>
               <Input
@@ -144,7 +202,6 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* タイトル */}
-            {/* Val : 必須、40文字以内 */}
             <FormControl mb={4} isRequired>
               <FormLabel>投稿タイトル</FormLabel>
               <Input
@@ -161,7 +218,6 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* 説明 */}
-            {/* Val : 必須、400文字以内 */}
             <FormControl mb={4} isRequired>
               <FormLabel>説明</FormLabel>
               <Textarea
@@ -173,6 +229,9 @@ const create: NextPage = () => {
                 rows={10}
               />
             </FormControl>
+
+            {/* スクショ画像アップロード */}
+            <input type="file" onChange={handleImageSelect} />
 
             {/* レベル */}
             <FormControl mb={4} isRequired>

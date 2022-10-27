@@ -39,6 +39,7 @@ const index: NextPage = () => {
           appName: doc.data().appName,
           title: doc.data().title,
           description: doc.data().description,
+          image: doc.data().image,
           level: doc.data().level,
           language: doc.data().language,
           appUrl: doc.data().appUrl,
@@ -96,8 +97,14 @@ const index: NextPage = () => {
                   <Box
                     width={{ sm: "100%" }}
                     zIndex="2"
+
+                    marginTop="5%"
+                    marginRight={4}
+                    display="flex"
+                    justifyContent={"center"}
                     my={{ sm: 5, md: 0 }}
                     marginRight={{ md: "4" }}
+
                   >
                     {/* サムネ画像部分 */}
                     <Link
@@ -106,11 +113,10 @@ const index: NextPage = () => {
                     >
                       <Image
                         borderRadius="lg"
-                        src={
-                          "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-                        }
-                        alt="some good alt text"
-                        objectFit="contain"
+                        src={post.image}
+                        alt={`image of ${post.appName}`}
+                        objectFit="cover"
+                        align={"center"}
                       />
                     </Link>
                   </Box>

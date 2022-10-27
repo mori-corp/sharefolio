@@ -2846,6 +2846,11 @@
   "resolved" "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz"
   "version" "5.2.0"
 
+"image-validator@^1.2.1":
+  "integrity" "sha512-mNV9ABWD9rKaMvBH0BeYOWtZaV6s459RNfPL+WJ+NMDO4qchucbQRFzePVg1+V5c09NjOOOOTMSaU2OtHcX1Ig=="
+  "resolved" "https://registry.npmjs.org/image-validator/-/image-validator-1.2.1.tgz"
+  "version" "1.2.1"
+
 "immediate@~3.0.5":
   "integrity" "sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ=="
   "resolved" "https://registry.npmjs.org/immediate/-/immediate-3.0.6.tgz"
