@@ -11,6 +11,7 @@ export const postState = atom<PostType>({
     appName: "",
     title: "",
     description: "",
+    image: "",
     level: "",
     language: [],
     appUrl: "",
