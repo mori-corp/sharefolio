@@ -5,13 +5,12 @@ import {
   Heading,
   Input,
   Stack,
-  Wrap,
 } from "@chakra-ui/react";
 import { motion, useAnimation } from "framer-motion";
 
 
 
-export const ImageUpload: React.FC= () => {
+export const ImageUpload: React.FC = () => {
   const controls = useAnimation();
   const startAnimation = () => controls.start("hover");
   const stopAnimation = () => controls.stop();
