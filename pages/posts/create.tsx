@@ -85,35 +85,55 @@ const create: NextPage = () => {
   const submitPost = async (e: any) => {
     e.preventDefault();
 
-    // アプリイメージ画像の参照とURL生成
-    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const N = 16;
-    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-      .map((n) => S[n % S.length])
-      .join("");
+    if (file) {
+      // アプリイメージ画像の参照とURL生成
+      const S =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join("");
 
-    // Cloud storageへアップロード
-    const storageRef = ref(storage, `images/${randomChar}_${file.name}`);
-    await uploadBytes(storageRef, file)
-      .then((snapshot) => {
-        console.log("画像アップロードに成功しました");
-      })
-      .catch((error) => {
-        console.log("画像アップロードに失敗しました");
+      // Cloud storageへアップロード
+      const storageRef = ref(storage, `images/${randomChar}_${file.name}`);
+      await uploadBytes(storageRef, file)
+        .then((snapshot) => {
+          console.log("画像アップロードに成功しました");
+        })
+        .catch((error) => {
+          console.log("画像アップロードに失敗しました");
+        });
+
+      // cloud storageのURLを取得
+      await getDownloadURL(
+        ref(storage, `images/${randomChar}_${file.name}`)
+      ).then((url) => {
+        // 追加する項目の定義
+        const collectionRef = collection(db, "posts");
+        const payload = {
+          authorId: userId,
+          appName: appName,
+          title: title,
+          description: description,
+          image: url,
+          level: level,
+          language: selectedLanguage,
+          appUrl: appUrl,
+          github: github,
+          postedDate: serverTimestamp(),
+        };
+        // データベースへの追加（document_idは、firebaseが自動生成）
+        addDoc(collectionRef, payload);
       });
-
-    // cloud storageのURLを取得
-    await getDownloadURL(
-      ref(storage, `images/${randomChar}_${file.name}`)
-    ).then((url) => {
-      // 追加する項目の定義
+    } else {
+      // 画像がアップロードされない場合
       const collectionRef = collection(db, "posts");
       const payload = {
         authorId: userId,
         appName: appName,
         title: title,
         description: description,
-        image: url,
+        image: "",
         level: level,
         language: selectedLanguage,
         appUrl: appUrl,
@@ -122,9 +142,7 @@ const create: NextPage = () => {
       };
       // データベースへの追加（document_idは、firebaseが自動生成）
       addDoc(collectionRef, payload);
-    });
-
-    alert("投稿を作成しました");
+    }
 
     // フォームのクリア
     setAppName("");
@@ -136,6 +154,7 @@ const create: NextPage = () => {
     setGithub("");
     setFile(null!);
 
+    alert("投稿を作成しました");
     //投稿一覧へリダイレクト
     router.push("/posts");
   };
@@ -187,8 +206,7 @@ const create: NextPage = () => {
           {/* フォーム */}
           <form onSubmit={submitPost}>
             {/* アプリ名 */}
-
-            <FormControl mb={4}>
+            <FormControl mb={4} isRequired>
               <FormLabel htmlFor="appName">アプリ / サービス名</FormLabel>
               <Input
                 placeholder="20文字以内で入力してください"
@@ -250,7 +268,6 @@ const create: NextPage = () => {
             </FormControl>
 
             {/* 使用言語選択 */}
-            {/* Val : 必須ではないが、一個以上かならず選択 */}
             <FormControl mb={4}>
               <FormLabel>使用技術</FormLabel>
               <CheckboxGroup>
