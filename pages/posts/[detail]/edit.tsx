@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -56,6 +56,11 @@ const edit: NextPage = () => {
 
   const router = useRouter();
   const { detail } = router.query;
+
+  useEffect(() => {
+    setEditedLanguage(language);
+    console.log(editedLanguage);
+  }, []);
 
   // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
