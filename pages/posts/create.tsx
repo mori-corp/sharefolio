@@ -29,7 +29,7 @@ const create: NextPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [level, setLevel] = useState("beginner");
-  const [selectedLanguage, setSelectedLanguage] = useState<string[]>([]);
+  const [language, setLanguage] = useState<string[]>([]);
   const [appUrl, setAppUrl] = useState("");
   const [github, setGithub] = useState("");
   const router = useRouter();
@@ -44,10 +44,10 @@ const create: NextPage = () => {
     const { checked, value } = e.target;
     if (checked) {
       // case1: 言語にチェックがされた時
-      setSelectedLanguage([...selectedLanguage, value]);
+      setLanguage([...language, value]);
     } else {
       // case2: 言語からチェックがはずされた時
-      setSelectedLanguage(selectedLanguage.filter((e) => e !== value));
+      setLanguage(language.filter((e) => e !== value));
     }
   };
 
@@ -117,7 +117,7 @@ const create: NextPage = () => {
           description: description,
           image: url,
           level: level,
-          language: selectedLanguage,
+          language: language,
           appUrl: appUrl,
           github: github,
           postedDate: serverTimestamp(),
@@ -135,7 +135,7 @@ const create: NextPage = () => {
         description: description,
         image: "",
         level: level,
-        language: selectedLanguage,
+        language: language,
         appUrl: appUrl,
         github: github,
         postedDate: serverTimestamp(),
@@ -149,7 +149,7 @@ const create: NextPage = () => {
     setTitle("");
     setDescription("");
     setLevel("");
-    setSelectedLanguage([]);
+    setLanguage([]);
     setAppUrl("");
     setGithub("");
     setFile(null!);
