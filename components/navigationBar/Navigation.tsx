@@ -1,10 +1,9 @@
 import {
   Box,
   Flex,
-  Text,
+  Image,
   IconButton,
   Collapse,
-  useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -48,8 +47,9 @@ export const Navigation: React.FC = () => {
           w={"full"}
         >
           {/* *** ロゴ  *** */}
+
           <NextLink href="/posts" passHref>
-            <Text
+            {/* <Text
               as="a"
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
@@ -59,11 +59,19 @@ export const Navigation: React.FC = () => {
               }}
             >
               Logo
-            </Text>
+            </Text> */}
+            <Image
+              src="/logo.png"
+              alt="logo"
+              w={"100px"}
+              _hover={{
+                cursor: "pointer",
+              }}
+            />
           </NextLink>
 
           {/* デスクトップ用ナビゲーション */}
-          <Flex display={{ base: "none", md: "flex" }} ml={10} w={"full"}>
+          <Flex display={{ base: "none", md: "flex" }} w={"full"}>
             <DesktopNav />
           </Flex>
         </Flex>
