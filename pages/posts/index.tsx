@@ -23,7 +23,7 @@ import { useSetRecoilState } from "recoil";
 import { postIdState } from "../../lib/atoms";
 import { PostType } from "../../types/post";
 
-const index: NextPage = () => {
+const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const setPostId = useSetRecoilState(postIdState);
 
@@ -185,4 +185,4 @@ const index: NextPage = () => {
     </Layout>
   );
 };
-export default index;
+export default Posts;

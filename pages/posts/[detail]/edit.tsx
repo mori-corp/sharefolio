@@ -29,7 +29,7 @@ import {
 import { db, storage } from "../../../firebase";
 import { validateImage } from "image-validator";
 
-const edit: NextPage = () => {
+const Edit: NextPage = () => {
   const {
     id,
     title,
@@ -59,6 +59,7 @@ const edit: NextPage = () => {
 
   useEffect(() => {
     setEditedLanguage(language);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // チェックボックスの値の取得関数
@@ -421,4 +422,4 @@ const edit: NextPage = () => {
   );
 };
 
-export default edit;
+export default Edit;

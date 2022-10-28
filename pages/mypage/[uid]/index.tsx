@@ -16,7 +16,7 @@ import {
 import NextLink from "next/link";
 import { useUser } from "../../../lib/auth";
 
-const mypage: NextPage = () => {
+const Mypage: NextPage = () => {
   const user = useUser();
   const [username, setUsername] = useState<string | null>(user.displayName);
 
@@ -109,4 +109,4 @@ const mypage: NextPage = () => {
   );
 };
 
-export default mypage;
+export default Mypage;

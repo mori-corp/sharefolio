@@ -23,7 +23,7 @@ import {
 import { useUser } from "../../lib/auth";
 import { validateImage } from "image-validator";
 
-const create: NextPage = () => {
+const Create: NextPage = () => {
   // 投稿時の各属性の定義
   const [appName, setAppName] = useState("");
   const [title, setTitle] = useState("");
@@ -355,4 +355,4 @@ const create: NextPage = () => {
   );
 };
 
-export default create;
+export default Create;

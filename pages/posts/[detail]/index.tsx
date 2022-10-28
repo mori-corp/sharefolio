@@ -29,7 +29,7 @@ import { useRecoilState } from "recoil";
 import { postState, usePostIdValue } from "../../../lib/atoms";
 import { useUser } from "../../../lib/auth";
 
-const detail: NextPage = () => {
+const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>();
   const router = useRouter();
   const { detail } = router.query;
@@ -64,6 +64,7 @@ const detail: NextPage = () => {
       }
     };
     return readDoc;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 各投稿をクリック、Recoilへ状態保持
@@ -289,4 +290,4 @@ const detail: NextPage = () => {
   );
 };
 
-export default detail;
+export default Detail;
