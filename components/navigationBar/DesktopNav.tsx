@@ -34,8 +34,8 @@ export const DesktopNav: React.FC = () => {
     <Stack
       direction={"row"}
       spacing={4}
-      alignItems={"center"}
-      justify={"space-between"}
+      // alignItems={"center"}
+      justify={"right"}
       w={"full"}
     >
       <HStack>
@@ -68,10 +68,8 @@ export const DesktopNav: React.FC = () => {
             ))}
           </>
         )}
-      </HStack>
 
-      {/* Sign upボタン */}
-      <HStack>
+        {/* Sign upボタン */}
         {!isLogin && (
           <NextLink href="/" passHref>
             <Button
