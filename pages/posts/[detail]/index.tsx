@@ -27,6 +27,7 @@ import { LanguageTags } from "../../../components/LanguageTags";
 import { PostType } from "../../../types/post";
 import { useRecoilState } from "recoil";
 import { postState, usePostIdValue } from "../../../lib/atoms";
+import { useUser } from "../../../lib/auth";
 
 const detail: NextPage = () => {
   const [post, setPost] = useState<PostType>();
@@ -34,6 +35,7 @@ const detail: NextPage = () => {
   const { detail } = router.query;
   const postId = usePostIdValue();
   const [postDetail, setPostDetail] = useRecoilState<PostType>(postState);
+  const user = useUser();
 
   // firebaseから、ドキュメントを投稿idで参照
   useEffect((): any => {
@@ -246,22 +248,24 @@ const detail: NextPage = () => {
           </Stack> */}
           {/* ボタン部分 */}
           <Stack>
-            {/* 編集ボタン */}
-            <NextLink href={`/posts/${detail}/edit`} passHref>
-              <Button
-                as="a"
-                loadingText="Submitting"
-                size="lg"
-                bg={"pink.400"}
-                color={"white"}
-                _hover={{
-                  bg: "pink.500",
-                }}
-                onClick={() => handleEditButtonClick(post?.id)}
-              >
-                編集
-              </Button>
-            </NextLink>
+            {/* 編集ボタン：ログインしているユーザーと、投稿者idが一致した場合のみ表示*/}
+            {user.uid === post?.authorId && (
+              <NextLink href={`/posts/${detail}/edit`} passHref>
+                <Button
+                  as="a"
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={"pink.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "pink.500",
+                  }}
+                  onClick={() => handleEditButtonClick(post?.id)}
+                >
+                  編集
+                </Button>
+              </NextLink>
+            )}
 
             {/* 戻るボタン */}
             <NextLink href="/posts" passHref>
