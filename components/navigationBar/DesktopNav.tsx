@@ -22,12 +22,12 @@ export const DesktopNav: React.FC = () => {
   // ログアウト処理
   const handleLogout = async () => {
     alert("ログアウトしました");
+    await signOut(auth);
     setUser({
       uid: "",
       photoUrl: "",
       displayName: "",
     });
-    await signOut(auth);
   };
 
   return (
