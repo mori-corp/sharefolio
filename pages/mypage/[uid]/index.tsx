@@ -48,6 +48,7 @@ const myPage: NextPage = () => {
             <Image
               src={user.photoUrl ? user.photoUrl : "/no-image-icon.png"}
               alt={`profile icon of ${user.displayName}`}
+              borderRadius={"100%"}
             />
             <Text fontSize={"sm"}>
               {!user.photoUrl && "プロフィールアイコンが設定されていません"}
