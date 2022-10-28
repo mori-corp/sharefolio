@@ -59,7 +59,6 @@ const edit: NextPage = () => {
 
   useEffect(() => {
     setEditedLanguage(language);
-    console.log(editedLanguage);
   }, []);
 
   // チェックボックスの値の取得関数
