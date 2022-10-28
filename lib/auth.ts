@@ -21,7 +21,7 @@ export const userState = atom<UserType>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const useUser = () => {
+export const useUser = (): UserType => {
   return useRecoilValue(userState);
 };
 
