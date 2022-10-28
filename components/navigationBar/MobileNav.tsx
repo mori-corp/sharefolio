@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Text,
-  Stack,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, Text, Stack, useDisclosure } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { NAV_ITEMS } from "./NavItems";
 
@@ -27,7 +21,7 @@ export const MobileNav: React.FC = () => {
               <Text
                 as="a"
                 fontWeight={600}
-                color={useColorModeValue("gray.600", "gray.200")}
+                color={"gray.600"}
                 _hover={{
                   cursor: "pointer",
                 }}
