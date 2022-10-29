@@ -222,6 +222,7 @@ const Create: NextPage = () => {
                 onChange={(e) => {
                   setAppName(e.target.value);
                 }}
+                autoComplete="off"
               />
             </FormControl>
 
@@ -237,6 +238,7 @@ const Create: NextPage = () => {
                 onChange={(e) => {
                   setTitle(e.target.value);
                 }}
+                autoComplete="off"
               />
               <FormHelperText fontSize={"xs"}>
                 例：プロジェクトをシェアして共有できるサイト！ShareFolio
@@ -255,6 +257,7 @@ const Create: NextPage = () => {
                   setDescription(e.target.value);
                 }}
                 rows={10}
+                autoComplete="off"
               />
             </FormControl>
 
@@ -318,6 +321,7 @@ const Create: NextPage = () => {
                 onChange={(e) => {
                   setAppUrl(e.target.value);
                 }}
+                autoComplete="off"
               />
             </FormControl>
 
@@ -333,6 +337,7 @@ const Create: NextPage = () => {
                 onChange={(e) => {
                   setGithub(e.target.value);
                 }}
+                autoComplete="off"
               />
             </FormControl>
             <Stack spacing={10} pt={2} mb={4}>
