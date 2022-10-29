@@ -49,7 +49,7 @@ const Edit: NextPage = () => {
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedLevel, setEditedLevel] = useState(level);
-  const [editedLanguage, setEditedLanguage] = useState<string[]>([]);
+  const [editedLanguage, setEditedLanguage] = useState([""]);
   const [editedAppUrl, setEditedAppUrl] = useState(appUrl);
   const [editedGithub, setEditedGithub] = useState(github);
   const [editedFile, setEditedFile] = useState<File>(null!);
@@ -59,7 +59,7 @@ const Edit: NextPage = () => {
 
   useEffect(() => {
     setEditedLanguage(language);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // チェックボックスの値の取得関数

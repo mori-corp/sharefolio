@@ -1,13 +1,13 @@
 export type PostType = {
   id: string;
-  appName: string | undefined;
-  title: string | undefined;
-  description: string | undefined;
-  image: string | undefined;
-  level: string | undefined;
-  language: Array<string> | undefined;
-  appUrl: string | undefined;
-  github: string | undefined;
-  postedDate: any | null;
-  authorId: string | undefined;
+  appName: string;
+  title: string;
+  description: string;
+  image: string;
+  level: string;
+  language: Array<string>;
+  appUrl: string;
+  github: string;
+  postedDate: any;
+  authorId: string;
 };

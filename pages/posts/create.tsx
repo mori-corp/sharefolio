@@ -40,7 +40,7 @@ const Create: NextPage = () => {
   const userId = user.uid;
 
   // チェックボックスの値の取得関数
-  const handleCheckBoxChange = (e: any) => {
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target;
     if (checked) {
       // case1: 言語にチェックがされた時
@@ -82,9 +82,8 @@ const Create: NextPage = () => {
   };
 
   // 投稿の作成関数
-  const submitPost = async (e: any) => {
+  const handleSubmitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (file) {
       // アプリイメージ画像の参照とURL生成
       const S =
@@ -204,7 +203,7 @@ const Create: NextPage = () => {
           w={{ base: "100% ", md: "80%" }}
         >
           {/* フォーム */}
-          <form onSubmit={submitPost}>
+          <form onSubmit={handleSubmitPost}>
             {/* アプリ名 */}
             <FormControl mb={4} isRequired>
               <FormLabel
