@@ -18,7 +18,7 @@ import { useUser } from "../../../lib/auth";
 
 const Mypage: NextPage = () => {
   const user = useUser();
-  const [username, setUsername] = useState<string>(user.displayName);
+  const [username, setUsername] = useState(user.displayName);
 
   console.log(user.photoUrl);
   return (
@@ -62,7 +62,7 @@ const Mypage: NextPage = () => {
               id="username"
               type="username"
               placeholder="Usernameを入力"
-              value={username}
+              value={username ? username : ""}
               onChange={(e) => setUsername(e.target.value)}
             />
           </FormControl>
