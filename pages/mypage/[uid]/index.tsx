@@ -18,7 +18,7 @@ import { useUser } from "../../../lib/auth";
 
 const Mypage: NextPage = () => {
   const user = useUser();
-  const [username, setUsername] = useState<string | null>(user.displayName);
+  const [username, setUsername] = useState<string>(user.displayName);
 
   console.log(user.photoUrl);
   return (
