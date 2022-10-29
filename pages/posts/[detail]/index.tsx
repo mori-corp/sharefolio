@@ -80,7 +80,7 @@ const Detail: NextPage = () => {
   }, []);
 
   // 各投稿をクリック、Recoilへ状態保持
-  const handleEditButtonClick = (postId: any) => {
+  const handleEditButtonClick = (postId: string) => {
     setPostDetail({
       id: postId,
       title: post.title,
