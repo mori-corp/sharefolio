@@ -71,20 +71,20 @@ const Detail: NextPage = () => {
   const handleEditButtonClick = (postId: any) => {
     setPostDetail({
       id: postId,
-      title: post?.title,
-      appName: post?.appName,
-      description: post?.description,
-      image: post?.image,
-      appUrl: post?.appUrl,
-      language: post?.language,
-      level: post?.level,
-      github: post?.github,
-      postedDate: post?.postedDate,
-      authorId: post?.authorId,
+      title: post.title,
+      appName: post.appName,
+      description: post.description,
+      image: post.image,
+      appUrl: post.appUrl,
+      language: post.language,
+      level: post.level,
+      github: post.github,
+      postedDate: post.postedDate,
+      authorId: post.authorId,
     });
   };
 
-  const levels = (level: string | undefined) => {
+  const levels = (level: string) => {
     switch (level) {
       case "beginner":
         return "初級";
