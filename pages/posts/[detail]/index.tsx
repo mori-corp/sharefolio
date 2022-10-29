@@ -30,7 +30,19 @@ import { postState, usePostIdValue } from "../../../lib/atoms";
 import { useUser } from "../../../lib/auth";
 
 const Detail: NextPage = () => {
-  const [post, setPost] = useState<PostType>();
+  const [post, setPost] = useState<PostType>({
+    id: "",
+    appName: "",
+    title: "",
+    description: "",
+    image: "",
+    level: "",
+    language: [""],
+    appUrl: "",
+    github: "",
+    postedDate: "",
+    authorId: "",
+  });
   const router = useRouter();
   const { detail } = router.query;
   const postId = usePostIdValue();
@@ -64,7 +76,7 @@ const Detail: NextPage = () => {
       }
     };
     return readDoc;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 各投稿をクリック、Recoilへ状態保持
@@ -109,7 +121,7 @@ const Detail: NextPage = () => {
           px={{ base: 4, sm: 8 }}
           mt={20}
         >
-          {post?.title}
+          {post.title}
         </Heading>
 
         <Stack
@@ -125,7 +137,7 @@ const Detail: NextPage = () => {
             fontWeight={"bold"}
             color={"blue.400"}
           >
-            {post?.appName}
+            {post.appName}
           </Text>
 
           {/* アプリの説明欄 */}
@@ -136,15 +148,15 @@ const Detail: NextPage = () => {
             py={10}
             px={{ base: 4, md: 10 }}
           >
-            <Text fontSize={{ base: "sm", sm: "md" }}>{post?.description}</Text>
+            <Text fontSize={{ base: "sm", sm: "md" }}>{post.description}</Text>
           </Box>
 
           {/* アプリ画像 */}
-          {post?.image && (
+          {post.image && (
             <Image
               borderRadius="lg"
-              src={post?.image}
-              alt={`image of ${post?.appName}`}
+              src={post.image}
+              alt={`image of ${post.appName}`}
               objectFit="contain"
             />
           )}
@@ -163,8 +175,8 @@ const Detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 アプリURL：
-                <Link href={post?.appUrl} color={"blue.400"} isExternal>
-                  {post?.appUrl}
+                <Link href={post.appUrl} color={"blue.400"} isExternal>
+                  {post.appUrl}
                 </Link>
               </ListItem>
 
@@ -172,8 +184,8 @@ const Detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 GitHub：
-                <Link href={post?.github} color={"blue.400"} isExternal>
-                  {post?.github}
+                <Link href={post.github} color={"blue.400"} isExternal>
+                  {post.github}
                 </Link>
               </ListItem>
 
@@ -181,19 +193,19 @@ const Detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 使用言語：
-                <LanguageTags tags={post?.language} />
+                <LanguageTags tags={post.language} />
               </ListItem>
 
               {/* レベル */}
               <ListItem>
                 <ListIcon color="green.500" />
-                レベル：{levels(post?.level)}
+                レベル：{levels(post.level)}
               </ListItem>
 
               {/* 投稿日時 */}
               {/* <ListItem>
                 <ListIcon color="green.500" />
-                <Text>投稿日時：{getDisplayTime(post?.postedDate)}</Text>
+                <Text>投稿日時：{getDisplayTime(post.postedDate)}</Text>
               </ListItem> */}
             </List>
           </Box>
@@ -250,7 +262,7 @@ const Detail: NextPage = () => {
           {/* ボタン部分 */}
           <Stack>
             {/* 編集ボタン：ログインしているユーザーと、投稿者idが一致した場合のみ表示*/}
-            {user.uid === post?.authorId && (
+            {user.uid === post.authorId && (
               <NextLink href={`/posts/${detail}/edit`} passHref>
                 <Button
                   as="a"
@@ -261,7 +273,7 @@ const Detail: NextPage = () => {
                   _hover={{
                     bg: "pink.500",
                   }}
-                  onClick={() => handleEditButtonClick(post?.id)}
+                  onClick={() => handleEditButtonClick(post.id)}
                 >
                   編集
                 </Button>
