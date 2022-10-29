@@ -3,6 +3,7 @@ import Head from "next/head";
 import type { ReactNode } from "react";
 import { Navigation } from "./navigationBar/Navigation";
 import { Flex } from "@chakra-ui/react";
+import { Footer } from "./Footer";
 
 type Props = {
   children: ReactNode;
@@ -21,6 +22,7 @@ export default function Layout({ children, title }: Props) {
       <Flex flexDirection={"column"} bg={"gray.50"} w={"full"} h={"full"}>
         {children}
       </Flex>
+      <Footer />
     </>
   );
 }
