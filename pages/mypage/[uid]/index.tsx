@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { db } from "../../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import type { NextPage } from "next";
 import Layout from "../../../components/Layout";
 import {
@@ -18,9 +20,28 @@ import { useUser } from "../../../lib/auth";
 
 const Mypage: NextPage = () => {
   const user = useUser();
-  const [username, setUsername] = useState(user.displayName);
+  const [username, setUsername] = useState("");
 
-  console.log(user.photoUrl);
+  // firebaseから、ユーザーのドキュメントをidで参照
+  useEffect((): any => {
+    const readDoc = async () => {
+      try {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUsername(docSnap.data().username);
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    return readDoc;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Layout title={"Mypage - ShareFolio"}>
       <Flex
@@ -47,7 +68,7 @@ const Mypage: NextPage = () => {
           <VStack mb={8}>
             <Image
               src={user.photoUrl ? user.photoUrl : "/no-image-icon.png"}
-              alt={`profile icon of ${user.displayName}`}
+              alt={`profile icon of ${username}`}
               borderRadius={"100%"}
             />
             <Text fontSize={"sm"}>
