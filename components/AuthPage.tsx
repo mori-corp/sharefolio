@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -20,8 +20,10 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { signInWithGoogle } from "../lib/auth";
 import { useRouter } from "next/router";
+import { setDoc, doc } from "firebase/firestore";
 
 export const AuthPage: React.FC = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,8 +38,26 @@ export const AuthPage: React.FC = () => {
 
   // Email,passwordでの新規登録
   const handleSignUpWithEmail = async () => {
-    await createUserWithEmailAndPassword(auth, email, password);
-    router.push("/mypage");
+    try {
+      const newUser = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (newUser) {
+        const uid = newUser.user.uid;
+        // userのuidをdocument idとして指定し、firestoreへデータ格納
+        const docRef = doc(db, "users", uid);
+        await setDoc(docRef, {
+          uid: uid,
+          username: username,
+          photoUrl: "",
+        });
+        router.push(`/mypage/${uid}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Email,passwordでのログイン
@@ -76,6 +96,18 @@ export const AuthPage: React.FC = () => {
           <Stack spacing={4} h={"full"}>
             {/* フォーム */}
             <form>
+              {/* username入力欄 */}
+              <FormControl id="username" isRequired>
+                <FormLabel>Username</FormLabel>
+                <Input
+                  id="username"
+                  type="username"
+                  placeholder="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  mb={4}
+                />
+              </FormControl>
               {/* email入力欄 */}
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
