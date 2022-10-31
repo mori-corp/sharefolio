@@ -146,7 +146,7 @@ const Edit: NextPage = () => {
 
         updateDoc(docRef, payload);
 
-        // もし元画像がある場合は、ファイルをstorageから削除
+        // 既に画像がstorageに存在場合は、元ファイルを削除
         if (image) {
           const imageRef = ref(storage, image);
           deleteObject(imageRef)
