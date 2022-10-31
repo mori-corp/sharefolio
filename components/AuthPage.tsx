@@ -3,6 +3,7 @@ import { auth, db } from "../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
 import {
   Flex,
@@ -36,7 +37,20 @@ export const AuthPage: React.FC = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      router.push("/posts");
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // userのuidをdocument idとして指定し、firestoreへデータ格納
+          const docRef = doc(db, "users", user.uid);
+          setDoc(docRef, {
+            uid: user.uid,
+            username: user.displayName,
+            photoUrl: user.photoURL,
+          });
+          router.push(`/mypage/${user.uid}`);
+        } else {
+          console.log("No user exists!");
+        }
+      });
     } catch (error) {
       alert(error);
     }
@@ -63,14 +77,13 @@ export const AuthPage: React.FC = () => {
         router.push(`/mypage/${uid}`);
       }
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
   // Email,passwordでのログイン
   const handleLoginWithEmail = async () => {
     await signInWithEmailAndPassword(auth, email, password);
-
     router.push("/posts");
   };
 
