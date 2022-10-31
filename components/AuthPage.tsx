@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
 import {
   Flex,
@@ -20,30 +21,69 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { signInWithGoogle } from "../lib/auth";
 import { useRouter } from "next/router";
+import { setDoc, doc } from "firebase/firestore";
+import { useUser } from "../lib/auth";
 
 export const AuthPage: React.FC = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const router = useRouter();
+  const user = useUser();
 
   // googleでサインイン
   const handleGoogleSignIn = async () => {
-    await signInWithGoogle();
-    router.push("/posts");
+    try {
+      await signInWithGoogle();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // userのuidをdocument idとして指定し、firestoreへデータ格納
+          const docRef = doc(db, "users", user.uid);
+          setDoc(docRef, {
+            uid: user.uid,
+            username: user.displayName,
+            photoUrl: user.photoURL,
+          });
+          router.push(`/mypage/${user.uid}`);
+        } else {
+          console.log("No user exists!");
+        }
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   // Email,passwordでの新規登録
   const handleSignUpWithEmail = async () => {
-    await createUserWithEmailAndPassword(auth, email, password);
-    router.push("/mypage");
+    try {
+      const newUser = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (newUser) {
+        const uid = newUser.user.uid;
+        const photoUrl = newUser.user.photoURL;
+        // userのuidをdocument idとして指定し、firestoreへデータ格納
+        const docRef = doc(db, "users", uid);
+        await setDoc(docRef, {
+          uid: uid,
+          username: username,
+          photoUrl: photoUrl,
+        });
+        router.push(`/mypage/${uid}`);
+      }
+    } catch (error) {
+      alert(error);
+    }
   };
 
   // Email,passwordでのログイン
   const handleLoginWithEmail = async () => {
     await signInWithEmailAndPassword(auth, email, password);
-
     router.push("/posts");
   };
 
@@ -76,6 +116,20 @@ export const AuthPage: React.FC = () => {
           <Stack spacing={4} h={"full"}>
             {/* フォーム */}
             <form>
+              {!isLogin && (
+                //username入力欄
+                <FormControl id="username" isRequired>
+                  <FormLabel>Username</FormLabel>
+                  <Input
+                    id="username"
+                    type="username"
+                    placeholder="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    mb={4}
+                  />
+                </FormControl>
+              )}
               {/* email入力欄 */}
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
