@@ -19,6 +19,7 @@ import {
   Select,
   Checkbox,
   CheckboxGroup,
+  Text,
 } from "@chakra-ui/react";
 import { useUser } from "../../lib/auth";
 import { validateImage } from "image-validator";
@@ -32,8 +33,9 @@ const Create: NextPage = () => {
   const [language, setLanguage] = useState<string[]>([]);
   const [appUrl, setAppUrl] = useState("");
   const [github, setGithub] = useState("");
-  const router = useRouter();
   const [file, setFile] = useState<File>(null!);
+  const router = useRouter();
+  const [isUploaded, setIsUploaded] = useState(true);
 
   // Recoilで状態管理しているuserのuidを投稿者のid(userId)として設定
   const user = useUser();
@@ -84,6 +86,7 @@ const Create: NextPage = () => {
   // 投稿の作成関数
   const handleSubmitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsUploaded(false);
     if (file) {
       // アプリイメージ画像の参照とURL生成
       const S =
@@ -153,9 +156,9 @@ const Create: NextPage = () => {
     setGithub("");
     setFile(null!);
 
-    alert("投稿を作成しました");
     //投稿一覧へリダイレクト
     router.push("/posts");
+    setIsUploaded(true);
   };
 
   const displayedLanguages = [
@@ -348,11 +351,17 @@ const Create: NextPage = () => {
                 _hover={{
                   bg: "blue.500",
                 }}
+                isLoading={isUploaded ? false : true}
               >
                 投稿する
               </Button>
             </Stack>
           </form>
+          {!isUploaded && (
+            <Text color={"red.500"} fontWeight={"bold"}>
+              投稿を作成しています...
+            </Text>
+          )}
         </Box>
       </Flex>
     </Layout>

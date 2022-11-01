@@ -17,6 +17,7 @@ import {
   Select,
   Checkbox,
   CheckboxGroup,
+  Text,
 } from "@chakra-ui/react";
 import { usePostValue } from "../../../lib/atoms";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
@@ -53,7 +54,7 @@ const Edit: NextPage = () => {
   const [editedAppUrl, setEditedAppUrl] = useState(appUrl);
   const [editedGithub, setEditedGithub] = useState(github);
   const [editedFile, setEditedFile] = useState<File>(null!);
-
+  const [isUploaded, setIsUploaded] = useState(true);
   const router = useRouter();
   const { detail } = router.query;
 
@@ -105,6 +106,7 @@ const Edit: NextPage = () => {
 
   //投稿の編集
   const handleEditButtonClick = async (id: string) => {
+    setIsUploaded(false);
     // もし、インプットフィールドに新しい画像がアップされている場合
     if (editedFile) {
       // アプリイメージ画像の参照とURL生成
@@ -183,8 +185,8 @@ const Edit: NextPage = () => {
     setEditedAppUrl("");
     setEditedGithub("");
     setEditedFile(null!);
+    setIsUploaded(false);
 
-    alert("投稿が編集されました！");
     //投稿一覧へリダイレクト
     router.push("/posts");
   };
@@ -372,7 +374,11 @@ const Edit: NextPage = () => {
                 onChange={(e) => setEditedGithub(e.target.value)}
               />
             </FormControl>
-
+            {!isUploaded && (
+              <Text color={"red.500"} fontWeight={"bold"} my={2}>
+                投稿を編集しています...
+              </Text>
+            )}
             <Stack>
               {/* 更新ボタン */}
               <Button
@@ -383,6 +389,7 @@ const Edit: NextPage = () => {
                   bg: "blue.500",
                 }}
                 onClick={() => handleEditButtonClick(id)}
+                isLoading={isUploaded ? false : true}
               >
                 編集する
               </Button>
@@ -396,6 +403,7 @@ const Edit: NextPage = () => {
                   bg: "red.400",
                 }}
                 onClick={() => handleDeleteButtonClick(id)}
+                isDisabled={isUploaded ? false : true}
               >
                 削除
               </Button>
