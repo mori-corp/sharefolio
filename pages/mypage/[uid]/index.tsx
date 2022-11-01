@@ -200,6 +200,7 @@ const Mypage: NextPage = () => {
                 placeholder="Usernameを入力"
                 value={username ? username : ""}
                 onChange={(e) => setUsername(e.target.value)}
+                autoComplete="off"  
               />
             </FormControl>
 
