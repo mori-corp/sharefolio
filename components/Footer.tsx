@@ -11,7 +11,16 @@ import * as React from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 
 export const Footer = () => (
-  <Container as="footer" role="contentinfo" py={8} m={0} minW={"100%"}>
+  <Container
+    as="footer"
+    role="contentinfo"
+    py={8}
+    m={0}
+    minW={"100%"}
+    borderTop={1}
+    borderStyle={"solid"}
+    borderColor={"gray.200"}
+  >
     <Stack spacing={{ base: "4", md: "5" }}>
       <Stack justify="start" direction="row" align="center">
         <Image src="/logo.png" alt="logo" w={"100px"} />
