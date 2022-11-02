@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 
-export const Footer = () => (
+export const Footer: React.FC = () => (
   <Container
     as="footer"
     role="contentinfo"
