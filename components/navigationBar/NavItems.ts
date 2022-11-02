@@ -6,12 +6,15 @@ type NavItemType = {
 
 export const NAV_ITEMS: Array<NavItemType> = [
   {
-    label: "投稿する",
+    label: "投稿一覧",
+    href: "/posts",
+  },
+  {
+    label: "投稿作成",
     href: "/posts/create",
   },
   {
     label: "マイページ",
-
     // ログインしているユーザーのuidを取得して、/mypage/以下に設定することで、ユーザー固有のルーティングを設定する
     href: "/mypage/user-uid",
   },
