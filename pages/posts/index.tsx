@@ -112,7 +112,7 @@ const Posts: NextPage = () => {
                         borderRadius="lg"
                         // post.image !== "" ?
 
-                        src={post.image ? post.image : "/no-image-icon.png"}
+                        src={post.image ? post.image : "/sample-icon.png"}
                         alt={`image of ${post.appName}`}
                         objectFit="cover"
                         align={"center"}
