@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 export const DesktopNav: React.FC = () => {
   const linkColor = "gray.600";
   const linkHoverColor = "gray.800";
-  // const setUser = useSetRecoilState(userState);
   const [user, setUser] = useRecoilState(userState);
   const [isLogin, setIsLogin] = useState(false);
 

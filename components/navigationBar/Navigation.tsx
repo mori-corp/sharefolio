@@ -49,17 +49,6 @@ export const Navigation: React.FC = () => {
           {/* *** ロゴ  *** */}
 
           <NextLink href="/posts" passHref>
-            {/* <Text
-              as="a"
-              textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              fontFamily={"heading"}
-              color={"gray.800"}
-              _hover={{
-                cursor: "pointer",
-              }}
-            >
-              Logo
-            </Text> */}
             <Image
               src="/logo.png"
               alt="logo"
