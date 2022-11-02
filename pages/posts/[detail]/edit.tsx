@@ -29,6 +29,7 @@ import {
 } from "firebase/storage";
 import { db, storage } from "../../../firebase";
 import { validateImage } from "image-validator";
+import { DeleteButton } from "../../../components/DeleteButton";
 
 const Edit: NextPage = () => {
   const {
@@ -208,9 +209,6 @@ const Edit: NextPage = () => {
           console.log("画像ファイルの削除に失敗しました。error: ", error);
         });
     }
-
-    alert("投稿が削除されました！");
-
     router.push("/posts");
   };
 
@@ -395,18 +393,13 @@ const Edit: NextPage = () => {
               </Button>
 
               {/* 削除ボタン */}
-              <Button
-                size="lg"
-                bg={"red.500"}
-                color={"white"}
-                _hover={{
-                  bg: "red.400",
-                }}
-                onClick={() => handleDeleteButtonClick(id)}
-                isDisabled={isUploaded ? false : true}
-              >
-                削除
-              </Button>
+              <DeleteButton
+                headerText="投稿の削除"
+                bodyText="投稿を削除します。この操作は取り消すことができませんが、よろしいですか？"
+                onHandleDeleteButtonClick={() => handleDeleteButtonClick(id)}
+                buttonText="削除"
+                isDanger={true}
+              />
 
               {/* 戻るボタン */}
               <NextLink href={`/posts/${detail}`} passHref>
