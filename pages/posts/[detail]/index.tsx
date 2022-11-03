@@ -75,7 +75,7 @@ const Detail: NextPage = () => {
         console.log("No such document!");
       }
     };
-    return readDoc;
+    readDoc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
