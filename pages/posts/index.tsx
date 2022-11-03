@@ -33,6 +33,7 @@ import { PostType } from "../../types/post";
 const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const setPostId = useSetRecoilState(postIdState);
+  const [authorName, setAuthorName] = useState([""]);
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
@@ -60,6 +61,31 @@ const Posts: NextPage = () => {
     return unsub;
   }, []);
 
+  // postsに格納されたauthorIdから、usernameを取得
+  useEffect(() => {
+    posts.map((post) => {
+      getUsernameFromFirebase(post.authorId);
+    });
+  }, []);
+
+  // firebaseから、ユーザーのドキュメントをidで参照
+  const getUsernameFromFirebase = async (id: string) => {
+    try {
+      const docRef = doc(db, "users", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const username = docSnap.data().username;
+        console.log(username);
+        setAuthorName([...authorName, username]);
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
   const getDisplayTime = (e: any) => {
     if (e === null) return;
@@ -71,29 +97,16 @@ const Posts: NextPage = () => {
 
     return `${year}年${month}月${date}日 ${hour}:${min}`;
   };
-
-  // firebaseから、ユーザーのドキュメントをidで参照
-  const getUsernameFromFirebase = async (id: string) => {
-    try {
-      const docRef = doc(db, "users", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const username = docSnap.data().username;
-        return username;
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <Layout title={"Posts - ShareFolio"}>
       <Heading as="h1" textAlign={"center"} mt={16}>
         投稿一覧
       </Heading>
+      <ul>
+        {authorName.map((n, idx) => (
+          <li key={idx}>名前：{n}</li>
+        ))}
+      </ul>
 
       <Container display={"flex"} maxW={"5xl"} p={{ base: 1, md: 12 }}>
         <UnorderedList styleType="none" m={0}>
@@ -188,7 +201,7 @@ const Posts: NextPage = () => {
                     {/* 投稿者情報 */}
                     <HStack mt={4}>
                       {/* 投稿者 */}
-                      <Author name="example" />
+                      <Author name="guest-user" />
                       <Text fontSize={"sm"}>
                         {getDisplayTime(post.postedDate)}
                       </Text>
