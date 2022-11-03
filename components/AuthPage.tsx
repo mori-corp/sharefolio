@@ -46,7 +46,7 @@ export const AuthPage: React.FC = () => {
             username: user.displayName,
             photoUrl: user.photoURL,
           });
-          router.push(`/mypage/${user.uid}`);
+          router.push("/posts");
         } else {
           console.log("No user exists!");
         }
