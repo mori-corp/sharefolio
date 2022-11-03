@@ -41,7 +41,7 @@ const Mypage: NextPage = () => {
       try {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-        console.log(docSnap.data());
+        console.log("data: ", docSnap.data());
         if (docSnap.exists()) {
           setUsername(docSnap.data().username);
           setUserPhotoUrl(docSnap.data().photoUrl);
@@ -57,8 +57,8 @@ const Mypage: NextPage = () => {
     return readDoc;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log("username", username);
-  console.log("userPhotoUrl", userPhotoUrl);
+  console.log("username: ", username);
+  console.log("userPhotoUrl: ", userPhotoUrl);
 
   // アップロードされたファイルのバリデーション関数
   const validateFile = async (file: File) => {
