@@ -51,7 +51,7 @@ const Detail: NextPage = () => {
 
   // firebaseから、ドキュメントを投稿idで参照
   useEffect((): any => {
-    const readDoc = async () => {
+    const readPost = async () => {
       const docRef = doc(db, "posts", postId);
       const docSnap = await getDoc(docRef);
 
@@ -75,7 +75,7 @@ const Detail: NextPage = () => {
         console.log("No such document!");
       }
     };
-    return readDoc;
+    readPost();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

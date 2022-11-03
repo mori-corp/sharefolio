@@ -30,7 +30,7 @@ const Posts: NextPage = () => {
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
     const q = query(collection(db, "posts"), orderBy("postedDate", "desc"));
-    const unsub = onSnapshot(q, (snapshot) => {
+    const readDocs = onSnapshot(q, (snapshot) => {
       setPosts(
         snapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -50,7 +50,7 @@ const Posts: NextPage = () => {
       );
     });
 
-    return unsub;
+    return readDocs;
   }, []);
 
   // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
