@@ -1,7 +1,14 @@
 import type { NextPage } from "next";
 import Layout from "../../components/Layout";
 import React, { useState, useEffect } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import {
   Box,
@@ -63,6 +70,23 @@ const Posts: NextPage = () => {
     const min = ("0" + e.toDate().getMinutes()).slice(-2);
 
     return `${year}年${month}月${date}日 ${hour}:${min}`;
+  };
+
+  // firebaseから、ユーザーのドキュメントをidで参照
+  const getUsernameFromFirebase = async (id: string) => {
+    try {
+      const docRef = doc(db, "users", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const username = docSnap.data().username;
+        return username;
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
