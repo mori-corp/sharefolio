@@ -44,6 +44,7 @@ const Mypage: NextPage = () => {
         if (docSnap.exists()) {
           setUsername(docSnap.data().username);
           setUserPhotoUrl(docSnap.data().photoUrl);
+          console.log('set state')
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -55,6 +56,8 @@ const Mypage: NextPage = () => {
     return readDoc;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log("username", username)
+  console.log("userPhotoUrl", userPhotoUrl)
 
   // アップロードされたファイルのバリデーション関数
   const validateFile = async (file: File) => {
