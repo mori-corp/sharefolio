@@ -45,7 +45,7 @@ const Posts: NextPage = () => {
           appUrl: doc.data().appUrl,
           github: doc.data().github,
           postedDate: doc.data().postedDate,
-          authorId: doc.data().userId,
+          authorId: doc.data().authorId,
         }))
       );
     });
