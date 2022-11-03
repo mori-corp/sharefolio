@@ -189,6 +189,7 @@ const Edit: NextPage = () => {
     setIsUploaded(false);
 
     //投稿一覧へリダイレクト
+    alert("投稿内容が更新されました！");
     router.push("/posts");
   };
 
