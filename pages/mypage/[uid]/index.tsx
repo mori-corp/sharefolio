@@ -37,7 +37,7 @@ const Mypage: NextPage = () => {
 
   // firebaseから、ユーザーのドキュメントをidで参照
   useEffect((): any => {
-    const readDoc = async () => {
+    const readProfile = async () => {
       try {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
@@ -53,7 +53,7 @@ const Mypage: NextPage = () => {
         console.log(error);
       }
     };
-    readDoc();
+    readProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
