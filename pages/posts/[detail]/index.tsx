@@ -211,17 +211,17 @@ const Detail: NextPage = () => {
           </Box>
 
           {/* ハートアイコン */}
-          <Flex align={"center"} justify={"space-between"}>
+          {/* <Flex align={"center"} justify={"space-between"}>
             <HStack>
               <Icon as={AiOutlineHeart} w={6} h={6} />
               <Text fontSize={"sm"}>100 Likes</Text>
-            </HStack>
-            {/* 投稿者 */}
-            <HStack>
+            </HStack> */}
+          {/* 投稿者 */}
+          {/* <HStack>
               <Text fontSize={"sm"}>投稿者:</Text>
               <Author name="example" />
             </HStack>
-          </Flex>
+          </Flex> */}
 
           {/* コメント欄（外枠） */}
           {/* <Stack

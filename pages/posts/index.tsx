@@ -118,7 +118,7 @@ const Posts: NextPage = () => {
                     display="flex"
                     justifyContent={"center"}
                     my={{ sm: 5, md: 0 }}
-                    maxW={"md"}
+                    maxW={{ md: "md" }}
                   >
                     {/* サムネ画像部分 */}
                     <Link
@@ -177,12 +177,12 @@ const Posts: NextPage = () => {
                     <LanguageTags tags={post.language} />
 
                     {/* 投稿者情報 */}
-                    <HStack mt={4}>
+                    <HStack mt={4} spacing={4}>
                       {/* 投稿者情報 */}
                       {authors.map(
                         (author) =>
                           author.uid === post.authorId && (
-                            <>
+                            <HStack>
                               {/* ユーザーのアイコン */}
                               <Image
                                 borderRadius="full"
@@ -198,15 +198,16 @@ const Posts: NextPage = () => {
                               <Text fontWeight="medium" fontSize={"sm"}>
                                 {author.username}
                               </Text>
-                            </>
+                            </HStack>
                           )
                       )}
 
                       <Text fontSize={"sm"}>
-                        {getDisplayTime(post.postedDate)}
+                        投稿日時：{getDisplayTime(post.postedDate)}
                       </Text>
+
                       {/* ハートアイコン */}
-                      <Icon as={AiOutlineHeart} w={4} h={4} />
+                      {/* <Icon as={AiOutlineHeart} w={4} h={4} /> */}
                       {/* いいね数 */}
                       {/* <Text fontSize={"sm"}>10</Text> */}
                     </HStack>
