@@ -5,6 +5,7 @@ import {
   IconButton,
   Collapse,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
@@ -18,9 +19,7 @@ export const Navigation: React.FC = () => {
     <Box>
       <Flex
         bg={"white"}
-        color={"gray.600"}
         minH={"60px"}
-        py={4}
         px={8}
         borderBottom={1}
         borderStyle={"solid"}
@@ -45,18 +44,20 @@ export const Navigation: React.FC = () => {
           justify={{ base: "center", md: "start" }}
           alignItems={"center"}
           w={"full"}
+          h={"60px"}
         >
           {/* *** ロゴ  *** */}
-
           <NextLink href="/posts" passHref>
-            <Image
-              src="/logo.png"
-              alt="logo"
-              w={"100px"}
-              _hover={{
-                cursor: "pointer",
-              }}
-            />
+            <HStack h={"60px"} display="flex" alignItems={"center"}>
+              <Image
+                src="/logo.png"
+                alt="logo"
+                w={"100px"}
+                _hover={{
+                  cursor: "pointer",
+                }}
+              />
+            </HStack>
           </NextLink>
 
           {/* デスクトップ用ナビゲーション */}
