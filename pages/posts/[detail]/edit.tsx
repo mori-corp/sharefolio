@@ -263,7 +263,7 @@ const Edit: NextPage = () => {
             {/* アプリ名 */}
             <FormControl mb={4} isRequired>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリ / サービス名
+                アプリ / サイト名
               </FormLabel>
               <Input
                 type="text"
@@ -295,7 +295,7 @@ const Edit: NextPage = () => {
                 説明
               </FormLabel>
               <Textarea
-                placeholder="簡単な説明を入力"
+                placeholder="アプリやサイトの簡単な説明を記載してください。400文字以内"
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
                 rows={10}
@@ -305,7 +305,7 @@ const Edit: NextPage = () => {
             {/* スクショ画像アップロード */}
             <FormControl mb={4}>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリの画像
+                アプリ / サイトの画像
               </FormLabel>
               <input type="file" onChange={handleImageSelect} />
               <FormHelperText fontSize={"xs"}>
@@ -351,7 +351,7 @@ const Edit: NextPage = () => {
             {/* アプリURL */}
             <FormControl mb={4} isRequired>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリURL
+                アプリ / サイトのURL
               </FormLabel>
               <Input
                 type="text"
@@ -364,11 +364,11 @@ const Edit: NextPage = () => {
             {/* Github */}
             <FormControl mb={4}>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                Github
+                GitHub
               </FormLabel>
               <Input
                 type="text"
-                placeholder="Github: "
+                placeholder="GitHub: "
                 value={editedGithub}
                 onChange={(e) => setEditedGithub(e.target.value)}
               />

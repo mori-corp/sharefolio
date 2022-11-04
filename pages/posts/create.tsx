@@ -214,7 +214,7 @@ const Create: NextPage = () => {
                 fontWeight={"bold"}
                 color={"blue.500"}
               >
-                アプリ / サービス名
+                アプリ / サイト名
               </FormLabel>
               <Input
                 placeholder="20文字以内で入力してください"
@@ -253,7 +253,7 @@ const Create: NextPage = () => {
                 説明
               </FormLabel>
               <Textarea
-                placeholder="簡単な説明を入力。400文字以内"
+                placeholder="アプリやサイトの簡単な説明を記載してください。400文字以内"
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
@@ -266,7 +266,7 @@ const Create: NextPage = () => {
             {/* スクショ画像アップロード */}
             <FormControl mb={4}>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリの画像
+                アプリ / サイトの画像
               </FormLabel>
               <input type="file" onChange={handleImageSelect} />
               <FormHelperText fontSize={"xs"}>
@@ -314,7 +314,7 @@ const Create: NextPage = () => {
             {/* アプリURL */}
             <FormControl mb={4} isRequired>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリURL
+                アプリ / サイトURL
               </FormLabel>
               <Input
                 type="text"
@@ -330,11 +330,11 @@ const Create: NextPage = () => {
             {/* Github */}
             <FormControl mb={4}>
               <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                Github
+                GitHub
               </FormLabel>
               <Input
                 type="text"
-                placeholder="Github: "
+                placeholder="GitHub: "
                 value={github}
                 onChange={(e) => {
                   setGithub(e.target.value);
