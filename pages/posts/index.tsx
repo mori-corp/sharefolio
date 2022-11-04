@@ -1,14 +1,7 @@
 import type { NextPage } from "next";
 import Layout from "../../components/Layout";
 import React, { useState, useEffect } from "react";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
 import {
   Box,
@@ -24,16 +17,16 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
-import { Author } from "../../components/Author";
 import { LanguageTags } from "../../components/LanguageTags";
 import { useSetRecoilState } from "recoil";
 import { postIdState } from "../../lib/atoms";
 import { PostType } from "../../types/post";
+import { AuthorType } from "../../types/author";
 
 const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const setPostId = useSetRecoilState(postIdState);
-  const [authorName, setAuthorName] = useState([""]);
+  const [authors, setAuthors] = useState<AuthorType[]>([]);
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
@@ -61,30 +54,21 @@ const Posts: NextPage = () => {
     return unsub;
   }, []);
 
-  // postsに格納されたauthorIdから、usernameを取得
   useEffect(() => {
-    posts.map((post) => {
-      getUsernameFromFirebase(post.authorId);
+    // firebase usersコレクションより全ユーザーの情報を取得
+    const q = query(collection(db, "users"));
+    const unsub = onSnapshot(q, (snapshot) => {
+      setAuthors(
+        snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          uid: doc.data().uid,
+          username: doc.data().username,
+          photoUrl: doc.data().photoUrl,
+        }))
+      );
     });
+    return unsub;
   }, []);
-
-  // firebaseから、ユーザーのドキュメントをidで参照
-  const getUsernameFromFirebase = async (id: string) => {
-    try {
-      const docRef = doc(db, "users", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const username = docSnap.data().username;
-        console.log(username);
-        setAuthorName([...authorName, username]);
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
   const getDisplayTime = (e: any) => {
@@ -134,6 +118,7 @@ const Posts: NextPage = () => {
                     display="flex"
                     justifyContent={"center"}
                     my={{ sm: 5, md: 0 }}
+                    maxW={"md"}
                   >
                     {/* サムネ画像部分 */}
                     <Link
@@ -142,8 +127,6 @@ const Posts: NextPage = () => {
                     >
                       <Image
                         borderRadius="lg"
-                        // post.image !== "" ?
-
                         src={post.image ? post.image : "/sample-icon.png"}
                         alt={`image of ${post.appName}`}
                         objectFit="cover"
@@ -195,30 +178,37 @@ const Posts: NextPage = () => {
 
                     {/* 投稿者情報 */}
                     <HStack mt={4}>
-                      {/* 投稿者 */}
-                      {/* プロフィール画像 */}
-                      <Image
-                        borderRadius="full"
-                        boxSize="20px"
-                        src="/user.png"
-                        alt={`Avatar of `} //要修正
-                        border="1px"
-                        borderColor="gray.200"
-                      />
+                      {/* 投稿者情報 */}
+                      {authors.map(
+                        (author) =>
+                          author.uid === post.authorId && (
+                            <>
+                              {/* ユーザーのアイコン */}
+                              <Image
+                                borderRadius="full"
+                                boxSize="20px"
+                                src={
+                                  author.photoUrl
+                                    ? author.photoUrl
+                                    : "/user.png"
+                                }
+                                alt={`Avatar of ${author.username}`}
+                              />
+                              {/* ユーザーネーム */}
+                              <Text fontWeight="medium" fontSize={"sm"}>
+                                {author.username}
+                              </Text>
+                            </>
+                          )
+                      )}
 
-                      {/* ユーザーネーム */}
-                      <Text fontWeight="medium" fontSize={"sm"}>
-                        test
-                      </Text>
                       <Text fontSize={"sm"}>
                         {getDisplayTime(post.postedDate)}
                       </Text>
-
                       {/* ハートアイコン */}
                       <Icon as={AiOutlineHeart} w={4} h={4} />
-
                       {/* いいね数 */}
-                      <Text fontSize={"sm"}>100</Text>
+                      {/* <Text fontSize={"sm"}>10</Text> */}
                     </HStack>
                   </Box>
                 </Box>
