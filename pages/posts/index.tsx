@@ -102,11 +102,6 @@ const Posts: NextPage = () => {
       <Heading as="h1" textAlign={"center"} mt={16}>
         投稿一覧
       </Heading>
-      <ul>
-        {authorName.map((n, idx) => (
-          <li key={idx}>名前：{n}</li>
-        ))}
-      </ul>
 
       <Container display={"flex"} maxW={"5xl"} p={{ base: 1, md: 12 }}>
         <UnorderedList styleType="none" m={0}>
@@ -201,7 +196,20 @@ const Posts: NextPage = () => {
                     {/* 投稿者情報 */}
                     <HStack mt={4}>
                       {/* 投稿者 */}
-                      <Author name="guest-user" />
+                      {/* プロフィール画像 */}
+                      <Image
+                        borderRadius="full"
+                        boxSize="20px"
+                        src="/user.png"
+                        alt={`Avatar of `} //要修正
+                        border="1px"
+                        borderColor="gray.200"
+                      />
+
+                      {/* ユーザーネーム */}
+                      <Text fontWeight="medium" fontSize={"sm"}>
+                        test
+                      </Text>
                       <Text fontSize={"sm"}>
                         {getDisplayTime(post.postedDate)}
                       </Text>
