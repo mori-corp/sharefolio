@@ -185,7 +185,7 @@ const Create: NextPage = () => {
     "Python",
   ];
   return (
-    <Layout title={"Create - ShareFolio"}>
+    <Layout title={"投稿作成｜ShareFolio"}>
       <Flex
         flexDirection={"column"}
         align={"center"}

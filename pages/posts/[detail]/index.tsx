@@ -25,7 +25,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Author } from "../../../components/Author";
 import { LanguageTags } from "../../../components/LanguageTags";
 import { PostType } from "../../../types/post";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { postState, usePostIdValue } from "../../../lib/atoms";
 import { useUser } from "../../../lib/auth";
 
@@ -46,7 +46,7 @@ const Detail: NextPage = () => {
   const router = useRouter();
   const { detail } = router.query;
   const postId = usePostIdValue();
-  const [postDetail, setPostDetail] = useRecoilState<PostType>(postState);
+  const setPostDetail = useSetRecoilState<PostType>(postState);
   const user = useUser();
 
   // firebaseから、ドキュメントを投稿idで参照
@@ -111,7 +111,7 @@ const Detail: NextPage = () => {
   };
 
   return (
-    <Layout title={"Detail - ShareFolio"}>
+    <Layout title={post.title}>
       <Flex flexDirection={"column"} align={"center"} w={"full"}>
         {/* 投稿タイトル */}
         <Heading

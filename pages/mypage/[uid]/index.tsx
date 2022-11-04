@@ -154,7 +154,7 @@ const Mypage: NextPage = () => {
   };
 
   return (
-    <Layout title={"Mypage - ShareFolio"}>
+    <Layout title={`マイページ｜${username}`}>
       <Flex
         flexDirection={"column"}
         align={"center"}

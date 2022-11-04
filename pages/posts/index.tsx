@@ -82,7 +82,7 @@ const Posts: NextPage = () => {
     return `${year}年${month}月${date}日 ${hour}:${min}`;
   };
   return (
-    <Layout title={"Posts - ShareFolio"}>
+    <Layout title={"ShareFolio｜ポートフォリオの共有サイト"}>
       <Heading as="h1" textAlign={"center"} mt={16}>
         投稿一覧
       </Heading>

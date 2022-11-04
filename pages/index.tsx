@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
   return (
-    <Layout title={"ShareFolio"}>
+    <Layout title={"ShareFolio｜ポートフォリオの共有サイト"}>
       <AuthPage />
     </Layout>
   );
