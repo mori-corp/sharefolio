@@ -158,6 +158,7 @@ const Detail: NextPage = () => {
               src={post.image}
               alt={`image of ${post.appName}`}
               objectFit="contain"
+              maxH={"lg"}
             />
           )}
 

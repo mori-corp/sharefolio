@@ -92,128 +92,127 @@ const Posts: NextPage = () => {
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
-              <Box
-                my={{ base: "10", sm: "8" }}
-                display="flex"
-                flexDirection={{ base: "column", md: "row" }}
-                justifyContent="space-between"
-                p={4}
-                bg={"gray.100"}
-                _hover={{ bg: "gray.200" }}
-                borderRadius={"lg"}
-              >
-                {/* サムネ画像部分（左半分）のBox */}
+              <NextLink href={`/posts/${post.id}`}>
                 <Box
+                  my={{ base: "10", sm: "8" }}
                   display="flex"
-                  flex="1"
-                  position="relative"
-                  alignItems="center"
+                  flexDirection={{ base: "column", md: "row" }}
+                  justifyContent="space-between"
+                  p={4}
+                  bg={"gray.100"}
+                  _hover={{ bg: "gray.200" }}
+                  borderRadius={"lg"}
+                  onClick={() => setPostId(post.id)} // 投稿のドキュメントidをrecoilにセット
                 >
-                  {/* サムネ画像のBox */}
+                  {/* サムネ画像部分（左半分）のBox */}
                   <Box
-                    width={{ sm: "100%" }}
-                    zIndex="2"
-                    marginTop="5%"
-                    marginRight={4}
                     display="flex"
-                    justifyContent={"center"}
-                    my={{ sm: 5, md: 0 }}
-                    maxW={{ md: "md" }}
+                    flex="1"
+                    position="relative"
+                    alignItems="center"
                   >
-                    {/* サムネ画像部分 */}
-                    <Link
-                      textDecoration="none"
-                      _hover={{ textDecoration: "none" }}
+                    {/* サムネ画像のBox */}
+                    <Box
+                      width={{ sm: "100%" }}
+                      zIndex="2"
+                      marginTop="5%"
+                      marginRight={4}
+                      display="flex"
+                      justifyContent={"center"}
+                      my={{ sm: 5, md: 0 }}
+                      maxW={{ md: "md" }}
                     >
+                      {/* サムネ画像部分 */}
+
                       <Image
                         borderRadius="lg"
                         src={post.image ? post.image : "/sample-icon.png"}
                         alt={`image of ${post.appName}`}
                         objectFit="cover"
                         align={"center"}
+                        _hover={{ cursor: "pointer" }}
                       />
-                    </Link>
+                    </Box>
                   </Box>
-                </Box>
 
-                {/* 文章（コンテンツ）部分（右半分）のBox */}
-                <Box
-                  display="flex"
-                  flex="1"
-                  flexDirection="column"
-                  justifyContent="space-around"
-                  marginTop={{ base: 3, sm: 3, md: 0 }}
-                  ml={{ sm: 0, md: 4 }}
-                >
-                  {/* 投稿タイトル */}
-                  <Heading marginTop="1" fontSize={{ base: "lg", sm: "2xl" }}>
-                    <NextLink href={`/posts/${post.id}`}>
+                  {/* 文章（コンテンツ）部分（右半分）のBox */}
+                  <Box
+                    display="flex"
+                    flex="1"
+                    flexDirection="column"
+                    justifyContent="space-around"
+                    marginTop={{ base: 3, sm: 3, md: 0 }}
+                    ml={{ sm: 0, md: 4 }}
+                  >
+                    {/* 投稿タイトル */}
+                    <Heading marginTop="1" fontSize={{ base: "lg", sm: "2xl" }}>
                       <Text
                         as="a"
                         textDecoration="none"
-                        _hover={{ textDecoration: "none", cursor: "pointer" }}
-                        // 投稿のドキュメントidをrecoilにセット
-                        onClick={() => setPostId(post.id)}
+                        _hover={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
                         noOfLines={2}
                       >
                         {post.title}
                       </Text>
-                    </NextLink>
-                  </Heading>
+                    </Heading>
 
-                  {/* アプリの説明部分 */}
-                  <Text
-                    as="p"
-                    marginTop="2"
-                    color="gray.700"
-                    fontSize={{ base: "sm", sm: "md" }}
-                    noOfLines={4}
-                  >
-                    {post.description}
-                  </Text>
+                    {/* アプリの説明部分 */}
+                    <Text
+                      as="p"
+                      marginTop="2"
+                      color="gray.700"
+                      fontSize={{ base: "sm", sm: "md" }}
+                      noOfLines={4}
+                    >
+                      {post.description}
+                    </Text>
 
-                  <Box>
-                    {/* 言語タグ一覧 */}
-                    <LanguageTags tags={post.language} />
+                    <Box>
+                      {/* 言語タグ一覧 */}
+                      <LanguageTags tags={post.language} />
 
-                    {/* 投稿者情報 */}
-                    <HStack mt={4} spacing={4}>
                       {/* 投稿者情報 */}
-                      {authors.map(
-                        (author) =>
-                          author.uid === post.authorId && (
-                            <HStack>
-                              {/* ユーザーのアイコン */}
-                              <Image
-                                borderRadius="full"
-                                boxSize="20px"
-                                src={
-                                  author.photoUrl
-                                    ? author.photoUrl
-                                    : "/user.png"
-                                }
-                                alt={`Avatar of ${author.username}`}
-                              />
-                              {/* ユーザーネーム */}
-                              <Text fontWeight="medium" fontSize={"sm"}>
-                                {author.username}
-                              </Text>
-                            </HStack>
-                          )
-                      )}
+                      <HStack mt={4} spacing={4}>
+                        {/* 投稿者情報 */}
+                        {authors.map(
+                          (author) =>
+                            author.uid === post.authorId && (
+                              <HStack>
+                                {/* ユーザーのアイコン */}
+                                <Image
+                                  borderRadius="full"
+                                  boxSize="20px"
+                                  src={
+                                    author.photoUrl
+                                      ? author.photoUrl
+                                      : "/user.png"
+                                  }
+                                  alt={`Avatar of ${author.username}`}
+                                />
+                                {/* ユーザーネーム */}
+                                <Text fontWeight="medium" fontSize={"sm"}>
+                                  {author.username}
+                                </Text>
+                              </HStack>
+                            )
+                        )}
 
-                      <Text fontSize={"sm"}>
-                        投稿日時：{getDisplayTime(post.postedDate)}
-                      </Text>
+                        <Text fontSize={"sm"}>
+                          投稿日時：{getDisplayTime(post.postedDate)}
+                        </Text>
 
-                      {/* ハートアイコン */}
-                      {/* <Icon as={AiOutlineHeart} w={4} h={4} /> */}
-                      {/* いいね数 */}
-                      {/* <Text fontSize={"sm"}>10</Text> */}
-                    </HStack>
+                        {/* ハートアイコン */}
+                        {/* <Icon as={AiOutlineHeart} w={4} h={4} /> */}
+                        {/* いいね数 */}
+                        {/* <Text fontSize={"sm"}>10</Text> */}
+                      </HStack>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
+              </NextLink>
             </ListItem>
           ))}
         </UnorderedList>

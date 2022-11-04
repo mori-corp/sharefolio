@@ -8,8 +8,6 @@ import NextLink from "next/link";
 import { useEffect, useState } from "react";
 
 export const DesktopNav: React.FC = () => {
-  const linkColor = "gray.600";
-  const linkHoverColor = "gray.800";
   const [user, setUser] = useRecoilState(userState);
   const [isLogin, setIsLogin] = useState(false);
 
@@ -52,11 +50,11 @@ export const DesktopNav: React.FC = () => {
                     as="a"
                     p={2}
                     fontSize={"sm"}
-                    fontWeight={500}
-                    color={linkColor}
+                    fontWeight={"bold"}
+                    color={"gray.600"}
                     _hover={{
                       textDecoration: "none",
-                      color: linkHoverColor,
+                      color: "blue.600",
                       cursor: "pointer",
                     }}
                   >
