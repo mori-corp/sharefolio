@@ -17,15 +17,16 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { AiOutlineHeart } from "react-icons/ai";
-import { Author } from "../../components/Author";
 import { LanguageTags } from "../../components/LanguageTags";
 import { useSetRecoilState } from "recoil";
 import { postIdState } from "../../lib/atoms";
 import { PostType } from "../../types/post";
+import { AuthorType } from "../../types/author";
 
 const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const setPostId = useSetRecoilState(postIdState);
+  const [authors, setAuthors] = useState<AuthorType[]>([]);
 
   useEffect(() => {
     // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
@@ -53,6 +54,22 @@ const Posts: NextPage = () => {
     return readDocs;
   }, []);
 
+  useEffect(() => {
+    // firebase usersコレクションより全ユーザーの情報を取得
+    const q = query(collection(db, "users"));
+    const unsub = onSnapshot(q, (snapshot) => {
+      setAuthors(
+        snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          uid: doc.data().uid,
+          username: doc.data().username,
+          photoUrl: doc.data().photoUrl,
+        }))
+      );
+    });
+    return unsub;
+  }, []);
+
   // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
   const getDisplayTime = (e: any) => {
     if (e === null) return;
@@ -64,7 +81,6 @@ const Posts: NextPage = () => {
 
     return `${year}年${month}月${date}日 ${hour}:${min}`;
   };
-
   return (
     <Layout title={"Posts - ShareFolio"}>
       <Heading as="h1" textAlign={"center"} mt={16}>
@@ -102,6 +118,7 @@ const Posts: NextPage = () => {
                     display="flex"
                     justifyContent={"center"}
                     my={{ sm: 5, md: 0 }}
+                    maxW={"md"}
                   >
                     {/* サムネ画像部分 */}
                     <Link
@@ -110,8 +127,6 @@ const Posts: NextPage = () => {
                     >
                       <Image
                         borderRadius="lg"
-                        // post.image !== "" ?
-
                         src={post.image ? post.image : "/sample-icon.png"}
                         alt={`image of ${post.appName}`}
                         objectFit="cover"
@@ -163,17 +178,37 @@ const Posts: NextPage = () => {
 
                     {/* 投稿者情報 */}
                     <HStack mt={4}>
-                      {/* 投稿者 */}
-                      <Author name="example" />
+                      {/* 投稿者情報 */}
+                      {authors.map(
+                        (author) =>
+                          author.uid === post.authorId && (
+                            <>
+                              {/* ユーザーのアイコン */}
+                              <Image
+                                borderRadius="full"
+                                boxSize="20px"
+                                src={
+                                  author.photoUrl
+                                    ? author.photoUrl
+                                    : "/user.png"
+                                }
+                                alt={`Avatar of ${author.username}`}
+                              />
+                              {/* ユーザーネーム */}
+                              <Text fontWeight="medium" fontSize={"sm"}>
+                                {author.username}
+                              </Text>
+                            </>
+                          )
+                      )}
+
                       <Text fontSize={"sm"}>
                         {getDisplayTime(post.postedDate)}
                       </Text>
-
                       {/* ハートアイコン */}
                       <Icon as={AiOutlineHeart} w={4} h={4} />
-
                       {/* いいね数 */}
-                      <Text fontSize={"sm"}>100</Text>
+                      {/* <Text fontSize={"sm"}>10</Text> */}
                     </HStack>
                   </Box>
                 </Box>
