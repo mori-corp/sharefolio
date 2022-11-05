@@ -6,10 +6,12 @@ import { NAV_ITEMS } from "./NavItems";
 import { Box, Text, Stack, Button, HStack } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export const DesktopNav: React.FC = () => {
   const [user, setUser] = useRecoilState(userState);
   const [isLogin, setIsLogin] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsLogin(user.uid !== "");
@@ -25,6 +27,8 @@ export const DesktopNav: React.FC = () => {
       photoUrl: "",
       displayName: "",
     });
+
+    router.reload();
   };
 
   return (
