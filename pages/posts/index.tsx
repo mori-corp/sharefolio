@@ -6,17 +6,14 @@ import { db } from "../../firebase";
 import {
   Box,
   Heading,
-  Link,
   Image,
   Text,
   Container,
-  Icon,
   HStack,
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { AiOutlineHeart } from "react-icons/ai";
 import { LanguageTags } from "../../components/LanguageTags";
 import { useSetRecoilState } from "recoil";
 import { postIdState } from "../../lib/atoms";
@@ -29,9 +26,9 @@ const Posts: NextPage = () => {
   const [authors, setAuthors] = useState<AuthorType[]>([]);
 
   useEffect(() => {
-    // firestoreから取得したドキュメント一覧を、追加時間の降順に並べ替え
+    // firestore databaseから投稿一覧を取得
     const q = query(collection(db, "posts"), orderBy("postedDate", "desc"));
-    const readDocs = onSnapshot(q, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       setPosts(
         snapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -51,13 +48,9 @@ const Posts: NextPage = () => {
       );
     });
 
-    return readDocs;
-  }, []);
-
-  useEffect(() => {
-    // firebase usersコレクションより全ユーザーの情報を取得
-    const q = query(collection(db, "users"));
-    const unsub = onSnapshot(q, (snapshot) => {
+    // firestore databaseから登録済みユーザーを取得
+    const docRefs = query(collection(db, "users"));
+    onSnapshot(docRefs, (snapshot) => {
       setAuthors(
         snapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -67,10 +60,9 @@ const Posts: NextPage = () => {
         }))
       );
     });
-    return unsub;
   }, []);
 
-  // firebaseより取得したtimestampを、yy/mm/dd/hh/mm形式へ変換
+  // timestampを、yy/mm/dd/hh/mm形式へ変換
   const getDisplayTime = (e: any) => {
     if (e === null) return;
     const year = e.toDate().getFullYear();
@@ -178,9 +170,9 @@ const Posts: NextPage = () => {
                       <HStack mt={4} spacing={4}>
                         {/* 投稿者情報 */}
                         {authors.map(
-                          (author) =>
+                          (author, idx) =>
                             author.uid === post.authorId && (
-                              <HStack>
+                              <HStack key={idx}>
                                 {/* ユーザーのアイコン */}
                                 <Image
                                   borderRadius="full"
