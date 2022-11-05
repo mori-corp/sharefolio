@@ -150,7 +150,7 @@ const Mypage: NextPage = () => {
     }
 
     alert("プロフィールを更新しました。");
-    router.push("/posts");
+    router.push("/");
   };
 
   return (
@@ -231,7 +231,7 @@ const Mypage: NextPage = () => {
             </Button>
 
             {/* 戻るボタン */}
-            <NextLink href="/posts" passHref>
+            <NextLink href="/" passHref>
               <Button
                 as="a"
                 loadingText="Submitting"

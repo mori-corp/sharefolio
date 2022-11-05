@@ -17,7 +17,7 @@ const AuthUser = ({ children }: Props): any => {
     if (user.uid !== "") {
       return;
     } else {
-      router.push("/posts");
+      router.push("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

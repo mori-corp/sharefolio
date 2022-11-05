@@ -47,7 +47,7 @@ export const Navigation: React.FC = () => {
           h={"60px"}
         >
           {/* *** ロゴ  *** */}
-          <NextLink href="/posts" passHref>
+          <NextLink href="/" passHref>
             <HStack h={"60px"} display="flex" alignItems={"center"}>
               <Image
                 src="/logo.png"

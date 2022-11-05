@@ -72,7 +72,7 @@ export const DesktopNav: React.FC = () => {
 
         {/* Sign upボタン */}
         {!isLogin && (
-          <NextLink href="/" passHref>
+          <NextLink href="/signup" passHref>
             <Button
               as="a"
               display={{ base: "none", md: "inline-flex" }}

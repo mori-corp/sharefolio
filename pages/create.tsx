@@ -1,10 +1,12 @@
+// 投稿作成ページ
+
 import React, { useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage, db } from "../../firebase";
+import { storage, db } from "../firebase";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
+import Layout from "../components/Layout";
 import {
   FormControl,
   FormLabel,
@@ -21,7 +23,7 @@ import {
   CheckboxGroup,
   Text,
 } from "@chakra-ui/react";
-import { useUser } from "../../lib/auth";
+import { useUser } from "../lib/auth";
 import { validateImage } from "image-validator";
 
 const Create: NextPage = () => {
@@ -157,7 +159,7 @@ const Create: NextPage = () => {
     setFile(null!);
 
     //投稿一覧へリダイレクト
-    router.push("/posts");
+    router.push("/");
     setIsUploaded(true);
   };
 
