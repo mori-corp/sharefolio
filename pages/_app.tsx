@@ -15,11 +15,11 @@ const AuthUser = ({ children }: Props): any => {
   const router = useRouter();
   useEffect((): any => {
     if (user.uid !== "") {
-      return
+      return;
     } else {
-      router.push("/");
+      router.push("/posts");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   return children;
 };
