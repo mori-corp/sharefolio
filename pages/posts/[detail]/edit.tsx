@@ -240,7 +240,7 @@ const Edit: NextPage = () => {
   ];
 
   return (
-    <Layout title={"Edit - ShareFolio"}>
+    <Layout title={"投稿の編集｜ShareFolio"}>
       <Flex
         flexDirection={"column"}
         align={"center"}
