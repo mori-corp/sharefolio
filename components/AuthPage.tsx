@@ -84,7 +84,7 @@ export const AuthPage: React.FC = () => {
   // Email,passwordでのログイン
   const handleLoginWithEmail = async () => {
     await signInWithEmailAndPassword(auth, email, password);
-    router.push("/posts");
+    router.push("/");
   };
 
   return (
