@@ -29,7 +29,7 @@ export const AuthPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
   const user = useUser();
 
@@ -46,7 +46,7 @@ export const AuthPage: React.FC = () => {
             username: user.displayName,
             photoUrl: user.photoURL,
           });
-          router.push("/posts");
+          router.push("/");
         } else {
           console.log("No user exists!");
         }
@@ -84,7 +84,7 @@ export const AuthPage: React.FC = () => {
   // Email,passwordでのログイン
   const handleLoginWithEmail = async () => {
     await signInWithEmailAndPassword(auth, email, password);
-    router.push("/posts");
+    router.push("/");
   };
 
   return (
@@ -100,7 +100,7 @@ export const AuthPage: React.FC = () => {
       >
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            {isLogin ? "Login" : "Sign up"}
+            {!isLogin ? "Sign up" : "Login"}
           </Heading>
         </Stack>
 

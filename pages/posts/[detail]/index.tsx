@@ -1,3 +1,5 @@
+//各投稿の詳細ページ
+
 import { useState, useEffect } from "react";
 import { db } from "../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -282,7 +284,7 @@ const Detail: NextPage = () => {
             )}
 
             {/* 戻るボタン */}
-            <NextLink href="/posts" passHref>
+            <NextLink href="/" passHref>
               <Button
                 as="a"
                 loadingText="Submitting"

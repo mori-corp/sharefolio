@@ -1,3 +1,5 @@
+//投稿の編集ページ
+
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import NextLink from "next/link";
@@ -190,7 +192,7 @@ const Edit: NextPage = () => {
 
     //投稿一覧へリダイレクト
     alert("投稿内容が更新されました！");
-    router.push("/posts");
+    router.push("/");
   };
 
   //投稿の削除
@@ -210,7 +212,7 @@ const Edit: NextPage = () => {
           console.log("画像ファイルの削除に失敗しました。error: ", error);
         });
     }
-    router.push("/posts");
+    router.push("/");
   };
 
   const displayedLanguages = [
@@ -238,7 +240,7 @@ const Edit: NextPage = () => {
   ];
 
   return (
-    <Layout title={"Edit - ShareFolio"}>
+    <Layout title={"投稿の編集｜ShareFolio"}>
       <Flex
         flexDirection={"column"}
         align={"center"}
