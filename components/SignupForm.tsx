@@ -255,7 +255,7 @@ export const SignupForm: React.FC = () => {
                 }}
                 onClick={handleGoogleSignIn}
               >
-                SignIn with Google
+                Login with Google
               </Button>
             </Stack>
           </Stack>
