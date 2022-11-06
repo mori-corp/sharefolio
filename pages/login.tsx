@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { useEffect } from "react";
-import { SignupForm } from "../components/SignupForm";
 import Layout from "../components/Layout";
 import { useAuth } from "../lib/auth";
 import { useRouter } from "next/router";
+import { LoginForm } from "../components/LoginForm";
 
-const Signup: NextPage = () => {
+const Login: NextPage = () => {
   const user = useAuth();
   const router = useRouter();
 
@@ -18,9 +18,9 @@ const Signup: NextPage = () => {
   }, []);
   return (
     <Layout title={"ShareFolio｜ポートフォリオの共有サイト"}>
-      <SignupForm />
+      <LoginForm />
     </Layout>
   );
 };
 
-export default Signup;
+export default Login;
