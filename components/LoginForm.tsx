@@ -71,7 +71,9 @@ export const LoginForm: React.FC = () => {
     } catch (erorrs) {
       setIsSubmitting(false);
       console.log(errors);
-      alert("メールアドレスかパスワードに誤りがあります");
+      alert(
+        "ログインに失敗しました。メールアドレスかパスワードに誤りがあります。"
+      );
     }
   };
 
@@ -131,6 +133,10 @@ export const LoginForm: React.FC = () => {
                   id="email"
                   {...register("email", {
                     required: "メールアドレスを入力してください",
+                    pattern: {
+                      value: /^[\w\-._]+@[\w\-._]+\.[A-Za-z]+/,
+                      message: "メールアドレスの形式が正しくありません",
+                    },
                   })}
                   type="email"
                   placeholder="メールアドレス"
