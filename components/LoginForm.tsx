@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { auth, db } from "../firebase";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import NextLink from "next/link";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import {
   Flex,
   Box,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Input,
   InputGroup,
   InputRightElement,
@@ -22,16 +20,24 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { signInWithGoogle } from "../lib/auth";
 import { useRouter } from "next/router";
 import { setDoc, doc } from "firebase/firestore";
-import { useUser } from "../lib/auth";
+import { useForm, SubmitHandler } from "react-hook-form";
 
-export const AuthPage: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+type Inputs = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const user = useUser();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
 
   // googleでサインイン
   const handleGoogleSignIn = async () => {
@@ -56,35 +62,19 @@ export const AuthPage: React.FC = () => {
     }
   };
 
-  // Email,passwordでの新規登録
-  const handleSignUpWithEmail = async () => {
-    try {
-      const newUser = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (newUser) {
-        const uid = newUser.user.uid;
-        const photoUrl = newUser.user.photoURL;
-        // userのuidをdocument idとして指定し、firestoreへデータ格納
-        const docRef = doc(db, "users", uid);
-        await setDoc(docRef, {
-          uid: uid,
-          username: username,
-          photoUrl: photoUrl,
-        });
-        router.push(`/mypage/${uid}`);
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
-
   // Email,passwordでのログイン
-  const handleLoginWithEmail = async () => {
-    await signInWithEmailAndPassword(auth, email, password);
-    router.push("/");
+  const handleLoginWithEmail: SubmitHandler<Inputs> = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      router.push("/");
+    } catch (erorrs) {
+      setIsSubmitting(false);
+      console.log(errors);
+      alert(
+        "ログインに失敗しました。メールアドレスかパスワードに誤りがあります。"
+      );
+    }
   };
 
   return (
@@ -100,7 +90,7 @@ export const AuthPage: React.FC = () => {
       >
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            {!isLogin ? "Sign up" : "Login"}
+            ログインフォーム
           </Heading>
         </Stack>
 
@@ -114,46 +104,64 @@ export const AuthPage: React.FC = () => {
           w={"full"}
         >
           <Stack spacing={4} h={"full"}>
+            {/* 認証方法の切り替えボタン */}
+            <NextLink passHref href="/signup">
+              <Text
+                as="a"
+                my={2}
+                color={"blue.500"}
+                align={"center"}
+                fontSize={"sm"}
+                _hover={{
+                  cursor: "pointer",
+                }}
+              >
+                まだアカウントをお持ちでない方
+              </Text>
+            </NextLink>
+
             {/* フォーム */}
-            <form>
-              {!isLogin && (
-                //username入力欄
-                <FormControl id="username" isRequired>
-                  <FormLabel>Username</FormLabel>
-                  <Input
-                    id="username"
-                    type="username"
-                    placeholder="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    mb={4}
-                  />
-                </FormControl>
-              )}
+            <form onSubmit={handleSubmit(handleLoginWithEmail)}>
               {/* email入力欄 */}
-              <FormControl id="email" isRequired>
+              <FormControl
+                id="email"
+                isInvalid={errors.email ? true : false}
+                mb={4}
+              >
                 <FormLabel>Email address</FormLabel>
                 <Input
                   id="email"
+                  {...register("email", {
+                    required: "メールアドレスを入力してください",
+                    pattern: {
+                      value: /^[\w\-._]+@[\w\-._]+\.[A-Za-z]+/,
+                      message: "メールアドレスの形式が正しくありません",
+                    },
+                  })}
                   type="email"
-                  placeholder="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  mb={4}
+                  placeholder="メールアドレス"
+                  autoComplete="off"
                 />
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
               </FormControl>
 
               {/* パスワード入力欄 */}
-              <FormControl id="password" isRequired>
+              <FormControl
+                id="password"
+                isInvalid={errors.password ? true : false}
+                mb={4}
+              >
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
                   <Input
                     id="password"
+                    {...register("password", {
+                      required: "パスワードを入力してください",
+                    })}
                     type={showPassword ? "text" : "password"}
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    mb={4}
+                    placeholder="パスワード"
                   />
 
                   {/* パスワード可視化ボタン */}
@@ -168,11 +176,15 @@ export const AuthPage: React.FC = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+                <FormErrorMessage>
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
               </FormControl>
 
               {/* Submitボタン */}
               <Stack spacing={10} pt={2}>
                 <Button
+                  type="submit"
                   loadingText="Submitting"
                   size="lg"
                   bg={"blue.400"}
@@ -180,25 +192,9 @@ export const AuthPage: React.FC = () => {
                   _hover={{
                     bg: "blue.500",
                   }}
-                  onClick={
-                    isLogin
-                      ? async () => {
-                          try {
-                            await handleLoginWithEmail();
-                          } catch (err: any) {
-                            alert(err.message);
-                          }
-                        }
-                      : async () => {
-                          try {
-                            await handleSignUpWithEmail();
-                          } catch (err: any) {
-                            alert(err.message);
-                          }
-                        }
-                  }
+                  isLoading={isSubmitting}
                 >
-                  {isLogin ? "Login" : "Sing Up"}
+                  ログイン
                 </Button>
               </Stack>
             </form>
@@ -215,25 +211,9 @@ export const AuthPage: React.FC = () => {
                 }}
                 onClick={handleGoogleSignIn}
               >
-                SignIn with Google
+                Login with Google
               </Button>
             </Stack>
-
-            {/* 認証方法の切り替えボタン */}
-            <Text
-              py={4}
-              color={"blue.500"}
-              align={"center"}
-              fontSize={"sm"}
-              onClick={() => setIsLogin(!isLogin)}
-              _hover={{
-                cursor: "pointer",
-              }}
-            >
-              {isLogin
-                ? "まだアカウントをお持ちでない方"
-                : "既にアカウントをお持ちの方"}
-            </Text>
           </Stack>
         </Box>
       </Stack>
