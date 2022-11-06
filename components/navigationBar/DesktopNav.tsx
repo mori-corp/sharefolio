@@ -72,21 +72,38 @@ export const DesktopNav: React.FC = () => {
 
         {/* Sign upボタン */}
         {!isLogin && (
-          <NextLink href="/signup" passHref>
-            <Button
-              as="a"
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg={"pink.400"}
-              _hover={{
-                bg: "pink.300",
-              }}
-            >
-              Sign up
-            </Button>
-          </NextLink>
+          <>
+            <NextLink href="/login" passHref>
+              <Button
+                as="a"
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"blue.400"}
+                _hover={{
+                  bg: "blue.300",
+                }}
+              >
+                Login
+              </Button>
+            </NextLink>
+            <NextLink href="/signup" passHref>
+              <Button
+                as="a"
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"pink.400"}
+                _hover={{
+                  bg: "pink.300",
+                }}
+              >
+                Sign up
+              </Button>
+            </NextLink>
+          </>
         )}
 
         {/* ログアウトボタン */}

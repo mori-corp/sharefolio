@@ -6,11 +6,13 @@ import { userState } from "../../lib/auth";
 import { Flex, Text, Stack, useDisclosure, Button } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { NAV_ITEMS } from "./NavItems";
+import { useRouter } from "next/router";
 
 export const MobileNav: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
   const [user, setUser] = useRecoilState(userState);
   const [isLogin, setIsLogin] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsLogin(user.uid !== "");
@@ -26,6 +28,7 @@ export const MobileNav: React.FC = () => {
       photoUrl: "",
       displayName: "",
     });
+    router.reload();
   };
 
   return (
@@ -87,24 +90,39 @@ export const MobileNav: React.FC = () => {
         </>
       )}
 
-      {/* ログアウト状態 */}
-
-      {/* Sign upボタン */}
+      {/* ログアウト状態の時 */}
       {!isLogin && (
-        <NextLink href="/" passHref>
-          <Button
-            as="a"
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            _hover={{
-              bg: "pink.300",
-            }}
-          >
-            Sign up
-          </Button>
-        </NextLink>
+        <Flex direction={"column"} maxW={"80px"}>
+          <NextLink href="/login" passHref>
+            <Button
+              as="a"
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"blue.400"}
+              _hover={{
+                bg: "blue.300",
+              }}
+              mb={4}
+            >
+              Login
+            </Button>
+          </NextLink>
+          <NextLink href="/signup" passHref>
+            <Button
+              as="a"
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"pink.400"}
+              _hover={{
+                bg: "pink.300",
+              }}
+            >
+              Sign up
+            </Button>
+          </NextLink>
+        </Flex>
       )}
 
       {/* ログアウトボタン */}
