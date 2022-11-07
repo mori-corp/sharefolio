@@ -81,7 +81,7 @@ const Posts: NextPage = () => {
         投稿一覧
       </Heading>
 
-      <Container display={"flex"} maxW={"5xl"} p={{ base: 1, md: 12 }}>
+      <Container display={"flex"} maxW={"5xl"} p={{ base: 2, md: 12 }}>
         <UnorderedList styleType="none" m={0}>
           {posts.map((post) => (
             <ListItem key={post.id}>
@@ -104,13 +104,14 @@ const Posts: NextPage = () => {
                     flex="1"
                     position="relative"
                     alignItems="center"
+                    justifyContent={"center"}
                   >
                     {/* サムネ画像のBox */}
                     <Box
                       width={{ sm: "100%" }}
                       zIndex="2"
                       marginTop="5%"
-                      marginRight={4}
+                      marginRight={{ base: 0, md: 4 }}
                       display="flex"
                       justifyContent={"center"}
                       my={{ sm: 5, md: 0 }}
@@ -139,7 +140,7 @@ const Posts: NextPage = () => {
                     ml={{ sm: 0, md: 4 }}
                   >
                     {/* 投稿タイトル */}
-                    <Heading marginTop="1" fontSize={{ base: "lg", sm: "2xl" }}>
+                    <Heading marginTop="1" fontSize={{ base: "xl", sm: "2xl" }}>
                       <Text
                         as="a"
                         textDecoration="none"
@@ -153,7 +154,7 @@ const Posts: NextPage = () => {
                       </Text>
                     </Heading>
 
-                    {/* アプリの説明部分 */}
+                    {/* アプリの説明 */}
                     <Text
                       as="p"
                       marginTop="2"
