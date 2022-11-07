@@ -139,12 +139,8 @@ export const SignupForm: React.FC = () => {
             {/* フォーム */}
             <form onSubmit={handleSubmit(handleSignUpWithEmail)}>
               {/* username入力欄 */}
-              <FormControl
-                id="username"
-                isInvalid={errors.username ? true : false}
-                mb={4}
-              >
-                <FormLabel>Username</FormLabel>
+              <FormControl isInvalid={errors.username ? true : false} mb={4}>
+                <FormLabel htmlFor="username">Username</FormLabel>
                 <Input
                   id="username"
                   {...register("username", {
@@ -168,7 +164,7 @@ export const SignupForm: React.FC = () => {
                 isInvalid={errors.email ? true : false}
                 mb={4}
               >
-                <FormLabel>Email address</FormLabel>
+                <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input
                   id="email"
                   {...register("email", {
@@ -193,7 +189,7 @@ export const SignupForm: React.FC = () => {
                 isInvalid={errors.password ? true : false}
                 mb={4}
               >
-                <FormLabel>Password</FormLabel>
+                <FormLabel htmlFor="password">Password</FormLabel>
                 <InputGroup>
                   <Input
                     id="password"

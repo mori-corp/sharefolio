@@ -18,6 +18,7 @@ type Props = {
   bodyText: string;
   buttonText: string;
   isDanger?: boolean;
+  disabled: boolean;
 };
 
 export const DeleteButton: React.FC<Props> = ({
@@ -26,6 +27,7 @@ export const DeleteButton: React.FC<Props> = ({
   headerText,
   bodyText,
   isDanger,
+  disabled,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -36,7 +38,12 @@ export const DeleteButton: React.FC<Props> = ({
 
   return (
     <>
-      <Button size={"lg"} onClick={onOpen} colorScheme={isDanger ? "red" : ""}>
+      <Button
+        size={"lg"}
+        onClick={onOpen}
+        colorScheme={isDanger ? "red" : ""}
+        disabled={disabled}
+      >
         {buttonText}
       </Button>
 

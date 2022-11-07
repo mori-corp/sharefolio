@@ -9,6 +9,7 @@ import {
   FormControl,
   FormLabel,
   FormHelperText,
+  FormErrorMessage,
   Button,
   Input,
   Flex,
@@ -32,6 +33,8 @@ import {
 import { db, storage } from "../../../firebase";
 import { validateImage } from "image-validator";
 import { DeleteButton } from "../../../components/DeleteButton";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { PostType } from "../../../types/post";
 
 const Edit: NextPage = () => {
   const {
@@ -44,22 +47,21 @@ const Edit: NextPage = () => {
     language,
     level,
     github,
-    postedDate,
-    authorId,
   } = usePostValue();
 
   // 編集後のデータの格納
-  const [editedAppName, setEditedAppName] = useState(appName);
-  const [editedTitle, setEditedTitle] = useState(title);
-  const [editedDescription, setEditedDescription] = useState(description);
-  const [editedLevel, setEditedLevel] = useState(level);
   const [editedLanguage, setEditedLanguage] = useState([""]);
-  const [editedAppUrl, setEditedAppUrl] = useState(appUrl);
-  const [editedGithub, setEditedGithub] = useState(github);
   const [editedFile, setEditedFile] = useState<File>(null!);
   const [isUploaded, setIsUploaded] = useState(true);
   const router = useRouter();
   const { detail } = router.query;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PostType>();
 
   useEffect(() => {
     setEditedLanguage(language);
@@ -108,9 +110,9 @@ const Edit: NextPage = () => {
   };
 
   //投稿の編集
-  const handleEditButtonClick = async (id: string) => {
-    setIsUploaded(false);
-    // もし、インプットフィールドに新しい画像がアップされている場合
+  const handleEditPost: SubmitHandler<PostType> = async (data) => {
+    setIsSubmitting(true);
+    // 新しい画像がアップされている場合の投稿動作
     if (editedFile) {
       // アプリイメージ画像の参照とURL生成
       const S =
@@ -139,14 +141,14 @@ const Edit: NextPage = () => {
       ).then((url) => {
         const docRef = doc(db, "posts", id);
         const payload = {
-          appName: editedAppName,
-          title: editedTitle,
-          description: editedDescription,
+          appName: data.appName,
+          title: data.title,
+          description: data.description,
           image: url,
-          level: editedLevel,
+          level: data.level,
           language: editedLanguage,
-          appUrl: editedAppUrl,
-          github: editedGithub,
+          appUrl: data.appUrl,
+          github: data.github,
         };
 
         updateDoc(docRef, payload);
@@ -164,34 +166,22 @@ const Edit: NextPage = () => {
         }
       });
     } else {
-      //画像がアップロードされていない場合
+      //画像がアップロードされていない場合の投稿動作
       const docRef = doc(db, "posts", id);
       const payload = {
-        appName: editedAppName,
-        title: editedTitle,
-        description: editedDescription,
-        level: editedLevel,
+        appName: data.appName,
+        title: data.title,
+        description: data.description,
+        level: data.level,
         language: editedLanguage,
-        appUrl: editedAppUrl,
-        github: editedGithub,
+        appUrl: data.appUrl,
+        github: data.github,
         // imageは変更なし
       };
       updateDoc(docRef, payload);
+      setIsSubmitting(false);
     }
 
-    // フォームのクリア
-    setEditedAppName("");
-    setEditedTitle("");
-    setEditedDescription("");
-    setEditedLevel("");
-    setEditedLanguage([]);
-    setEditedAppUrl("");
-    setEditedGithub("");
-    setEditedFile(null!);
-    setIsUploaded(false);
-
-    //投稿一覧へリダイレクト
-    alert("投稿内容が更新されました！");
     router.push("/");
   };
 
@@ -261,69 +251,104 @@ const Edit: NextPage = () => {
           w={{ base: "100%", md: "80%" }}
         >
           {/* フォーム */}
-          <form>
+          <form onSubmit={handleSubmit(handleEditPost)}>
             {/* アプリ名 */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+            <FormControl mb={4} isInvalid={errors.appName ? true : false}>
+              <FormLabel
+                htmlFor="appName"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
                 アプリ / サイト名
               </FormLabel>
               <Input
+                id="appName"
                 type="text"
-                placeholder="40文字以内で入力してください"
-                value={editedAppName}
-                onChange={(e) => setEditedAppName(e.target.value)}
+                {...register("appName", {
+                  value: appName,
+                  required: "入力が必須の項目です",
+                  maxLength: {
+                    value: 30,
+                    message: "30文字以内で入力してください",
+                  },
+                })}
               />
+              <FormErrorMessage>
+                {errors.appName && errors.appName.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* タイトル */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                投稿タイトル
+            <FormControl mb={4} isInvalid={errors.title ? true : false}>
+              <FormLabel htmlFor="title" fontWeight={"bold"} color={"blue.500"}>
+                投稿タイトル（必須）
               </FormLabel>
               <Input
+                id="title"
                 type="text"
-                placeholder="40文字以内で入力してください"
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
+                {...register("title", {
+                  value: title,
+                  required: "入力が必須の項目です",
+                  maxLength: {
+                    value: 60,
+                    message: "60文字以内で入力してください",
+                  },
+                })}
+                autoComplete="off"
               />
-              <FormHelperText fontSize={"xs"}>
-                例：プロジェクトをシェアして共有できるサイト！ShareFolio
-              </FormHelperText>
+              <FormErrorMessage>
+                {errors.title && errors.title.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* 説明 */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+            <FormControl mb={4} isInvalid={errors.description ? true : false}>
+              <FormLabel
+                htmlFor="description"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
                 説明
               </FormLabel>
               <Textarea
-                placeholder="アプリやサイトの簡単な説明を記載してください。400文字以内"
-                value={editedDescription}
-                onChange={(e) => setEditedDescription(e.target.value)}
+                id="description"
+                placeholder="アプリやサイトの簡単な説明を記載してください。"
+                {...register("description", {
+                  value: description,
+                  required: "入力が必須の項目です",
+                  maxLength: {
+                    value: 1000,
+                    message: "文字数をオーバーしています（1000文字まで）",
+                  },
+                })}
                 rows={10}
+                autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.description && errors.description.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* スクショ画像アップロード */}
             <FormControl mb={4}>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+              <FormLabel htmlFor="image" fontWeight={"bold"} color={"blue.500"}>
                 アプリ / サイトの画像
               </FormLabel>
-              <input type="file" onChange={handleImageSelect} />
+              <input id="image" type="file" onChange={handleImageSelect} />
               <FormHelperText fontSize={"xs"}>
                 例：トップページのスクリーンショット等
               </FormHelperText>
             </FormControl>
 
             {/* レベル */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+            <FormControl mb={4}>
+              <FormLabel htmlFor="level" fontWeight={"bold"} color={"blue.500"}>
                 レベル
               </FormLabel>
               <Select
                 w={40}
-                value={editedLevel}
-                onChange={(e) => setEditedLevel(e.target.value)}
+                id="level"
+                {...register("level", { value: level })}
               >
                 <option value="beginner">初心者</option>
                 <option value="intermediate">中級者</option>
@@ -333,12 +358,17 @@ const Edit: NextPage = () => {
 
             {/* 言語設定 */}
             <FormControl mb={4}>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+              <FormLabel
+                htmlFor="language"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
                 使用技術
               </FormLabel>
               <CheckboxGroup defaultValue={language}>
                 {displayedLanguages.map((displayedLanguage) => (
                   <Checkbox
+                    id="language"
                     m={2}
                     key={displayedLanguage}
                     onChange={handleCheckBoxChange}
@@ -351,31 +381,62 @@ const Edit: NextPage = () => {
             </FormControl>
 
             {/* アプリURL */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリ / サイトのURL
+            <FormControl mb={4} isInvalid={errors.appUrl ? true : false}>
+              <FormLabel
+                htmlFor="appUrl"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
+                アプリ / サイトURL（必須）
               </FormLabel>
               <Input
+                id="appUrl"
                 type="text"
                 placeholder="URL: "
-                value={editedAppUrl}
-                onChange={(e) => setEditedAppUrl(e.target.value)}
+                {...register("appUrl", {
+                  value: appUrl,
+                  required: "入力が必須の項目です",
+                  pattern: {
+                    value:
+                      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/,
+                    message: "アドレスの形式が正しくありません",
+                  },
+                })}
+                autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.appUrl && errors.appUrl.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* Github */}
-            <FormControl mb={4}>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+            <FormControl mb={4} isInvalid={errors.github ? true : false}>
+              <FormLabel
+                htmlFor="github"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
                 GitHub
               </FormLabel>
               <Input
+                id="github"
                 type="text"
                 placeholder="GitHub: "
-                value={editedGithub}
-                onChange={(e) => setEditedGithub(e.target.value)}
+                {...register("github", {
+                  value: github,
+                  pattern: {
+                    value:
+                      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/,
+                    message: "アドレスの形式が正しくありません",
+                  },
+                })}
+                autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.github && errors.github.message}
+              </FormErrorMessage>
             </FormControl>
-            {!isUploaded && (
+            {isSubmitting && (
               <Text color={"red.500"} fontWeight={"bold"} my={2}>
                 投稿を編集しています...
               </Text>
@@ -383,14 +444,14 @@ const Edit: NextPage = () => {
             <Stack>
               {/* 更新ボタン */}
               <Button
+                type="submit"
                 size="lg"
                 bg={"blue.400"}
                 color={"white"}
                 _hover={{
                   bg: "blue.500",
                 }}
-                onClick={() => handleEditButtonClick(id)}
-                isLoading={isUploaded ? false : true}
+                isLoading={isSubmitting ? true : false}
               >
                 編集する
               </Button>
@@ -402,6 +463,7 @@ const Edit: NextPage = () => {
                 onHandleDeleteButtonClick={() => handleDeleteButtonClick(id)}
                 buttonText="削除"
                 isDanger={true}
+                disabled={isSubmitting ? true : false}
               />
 
               {/* 戻るボタン */}
@@ -414,6 +476,7 @@ const Edit: NextPage = () => {
                   _hover={{
                     bg: "gray.500",
                   }}
+                  disabled={isSubmitting ? true : false}
                 >
                   戻る
                 </Button>
