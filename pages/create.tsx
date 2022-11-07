@@ -11,6 +11,7 @@ import {
   FormControl,
   FormLabel,
   FormHelperText,
+  FormErrorMessage,
   Button,
   Input,
   Flex,
@@ -25,23 +26,24 @@ import {
 } from "@chakra-ui/react";
 import { useUser } from "../lib/auth";
 import { validateImage } from "image-validator";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { PostType } from "../types/post";
 
 const Create: NextPage = () => {
-  // 投稿時の各属性の定義
-  const [appName, setAppName] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [level, setLevel] = useState("beginner");
   const [language, setLanguage] = useState<string[]>([]);
-  const [appUrl, setAppUrl] = useState("");
-  const [github, setGithub] = useState("");
   const [file, setFile] = useState<File>(null!);
   const router = useRouter();
-  const [isUploaded, setIsUploaded] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Recoilで状態管理しているuserのuidを投稿者のid(userId)として設定
   const user = useUser();
   const userId = user.uid;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PostType>();
 
   // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,9 +88,8 @@ const Create: NextPage = () => {
   };
 
   // 投稿の作成関数
-  const handleSubmitPost = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsUploaded(false);
+  const handleSubmitPost: SubmitHandler<PostType> = async (data) => {
+    setIsSubmitting(true);
     if (file) {
       // アプリイメージ画像の参照とURL生成
       const S =
@@ -101,11 +102,11 @@ const Create: NextPage = () => {
       // Cloud storageへアップロード
       const storageRef = ref(storage, `images/${randomChar}_${file.name}`);
       await uploadBytes(storageRef, file)
-        .then((snapshot) => {
+        .then(() => {
           console.log("画像アップロードに成功しました");
         })
         .catch((error) => {
-          console.log("画像アップロードに失敗しました");
+          console.log("画像アップロードに失敗しました", error);
         });
 
       // cloud storageのURLを取得
@@ -116,14 +117,14 @@ const Create: NextPage = () => {
         const collectionRef = collection(db, "posts");
         const payload = {
           authorId: userId,
-          appName: appName,
-          title: title,
-          description: description,
+          appName: data.appName,
+          title: data.title,
+          description: data.description,
           image: url,
-          level: level,
+          level: data.level,
           language: language,
-          appUrl: appUrl,
-          github: github,
+          appUrl: data.appUrl,
+          github: data.github,
           postedDate: serverTimestamp(),
         };
         // データベースへの追加（document_idは、firebaseが自動生成）
@@ -134,33 +135,23 @@ const Create: NextPage = () => {
       const collectionRef = collection(db, "posts");
       const payload = {
         authorId: userId,
-        appName: appName,
-        title: title,
-        description: description,
+        appName: data.appName,
+        title: data.title,
+        description: data.description,
         image: "",
-        level: level,
+        level: data.level,
         language: language,
-        appUrl: appUrl,
-        github: github,
+        appUrl: data.appUrl,
+        github: data.github,
         postedDate: serverTimestamp(),
       };
       // データベースへの追加（document_idは、firebaseが自動生成）
       addDoc(collectionRef, payload);
     }
 
-    // フォームのクリア
-    setAppName("");
-    setTitle("");
-    setDescription("");
-    setLevel("");
-    setLanguage([]);
-    setAppUrl("");
-    setGithub("");
-    setFile(null!);
-
     //投稿一覧へリダイレクト
     router.push("/");
-    setIsUploaded(true);
+    setIsSubmitting(false);
   };
 
   const displayedLanguages = [
@@ -208,86 +199,102 @@ const Create: NextPage = () => {
           w={{ base: "100% ", md: "80%" }}
         >
           {/* フォーム */}
-          <form onSubmit={handleSubmitPost}>
+          <form onSubmit={handleSubmit(handleSubmitPost)}>
             {/* アプリ名 */}
-            <FormControl mb={4} isRequired>
+            <FormControl mb={4} isInvalid={errors.appName ? true : false}>
               <FormLabel
                 htmlFor="appName"
                 fontWeight={"bold"}
                 color={"blue.500"}
               >
-                アプリ / サイト名
+                アプリ / サイト名（必須）
               </FormLabel>
               <Input
-                placeholder="20文字以内で入力してください"
                 id="appName"
                 type="text"
-                value={appName}
-                onChange={(e) => {
-                  setAppName(e.target.value);
-                }}
+                {...register("appName", {
+                  required: "入力が必須の項目です",
+                  maxLength: {
+                    value: 30,
+                    message: "30文字以内で入力してください",
+                  },
+                })}
                 autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.appName && errors.appName.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* タイトル */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                投稿タイトル
+            <FormControl mb={4} isInvalid={errors.title ? true : false}>
+              <FormLabel htmlFor="title" fontWeight={"bold"} color={"blue.500"}>
+                投稿タイトル（必須）
               </FormLabel>
               <Input
+                id="title"
                 type="text"
-                placeholder="40文字以内で入力してください"
-                value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
+                {...register("title", {
+                  required: "入力が必須の項目です",
+                  maxLength: {
+                    value: 60,
+                    message: "60文字以内で入力してください",
+                  },
+                })}
                 autoComplete="off"
               />
               <FormHelperText fontSize={"xs"}>
                 例：プロジェクトをシェアして共有できるサイト！ShareFolio
               </FormHelperText>
+              <FormErrorMessage>
+                {errors.title && errors.title.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* 説明 */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                説明
+            <FormControl mb={4} isInvalid={errors.description ? true : false}>
+              <FormLabel
+                htmlFor="description"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
+                説明（必須）
               </FormLabel>
               <Textarea
-                placeholder="アプリやサイトの簡単な説明を記載してください。400文字以内"
-                value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
+                id="description"
+                placeholder="アプリやサイトの簡単な説明を記載してください。"
+                {...register("description", {
+                  required: "入力が必須の項目です",
+                  maxLength: {
+                    value: 1000,
+                    message: "文字数をオーバーしています（1000文字まで）",
+                  },
+                })}
                 rows={10}
                 autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.description && errors.description.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* スクショ画像アップロード */}
             <FormControl mb={4}>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+              <FormLabel htmlFor="image" fontWeight={"bold"} color={"blue.500"}>
                 アプリ / サイトの画像
               </FormLabel>
-              <input type="file" onChange={handleImageSelect} />
+              <input id="image" type="file" onChange={handleImageSelect} />
               <FormHelperText fontSize={"xs"}>
                 例：トップページのスクリーンショット等
               </FormHelperText>
             </FormControl>
 
             {/* レベル */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+            <FormControl mb={4}>
+              <FormLabel htmlFor="level" fontWeight={"bold"} color={"blue.500"}>
                 レベル
               </FormLabel>
-              <Select
-                w={40}
-                value={level}
-                onChange={(e) => {
-                  setLevel(e.target.value);
-                }}
-              >
+              <Select w={40} id="level" {...register("level", {})}>
                 <option value="beginner">初心者</option>
                 <option value="intermediate">中級者</option>
                 <option value="advanced">上級者</option>
@@ -296,12 +303,17 @@ const Create: NextPage = () => {
 
             {/* 使用言語選択 */}
             <FormControl mb={4}>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+              <FormLabel
+                htmlFor="language"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
                 使用技術
               </FormLabel>
               <CheckboxGroup>
                 {displayedLanguages.map((displayedLanguage) => (
                   <Checkbox
+                    id="language"
                     m={2}
                     key={displayedLanguage}
                     onChange={handleCheckBoxChange}
@@ -314,35 +326,58 @@ const Create: NextPage = () => {
             </FormControl>
 
             {/* アプリURL */}
-            <FormControl mb={4} isRequired>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
-                アプリ / サイトURL
+            <FormControl mb={4} isInvalid={errors.appUrl ? true : false}>
+              <FormLabel
+                htmlFor="appUrl"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
+                アプリ / サイトURL（必須）
               </FormLabel>
               <Input
+                id="appUrl"
                 type="text"
                 placeholder="URL: "
-                value={appUrl}
-                onChange={(e) => {
-                  setAppUrl(e.target.value);
-                }}
+                {...register("appUrl", {
+                  required: "入力が必須の項目です",
+                  pattern: {
+                    value:
+                      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/,
+                    message: "アドレスの形式が正しくありません",
+                  },
+                })}
                 autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.appUrl && errors.appUrl.message}
+              </FormErrorMessage>
             </FormControl>
 
             {/* Github */}
-            <FormControl mb={4}>
-              <FormLabel fontWeight={"bold"} color={"blue.500"}>
+            <FormControl mb={4} isInvalid={errors.github ? true : false}>
+              <FormLabel
+                htmlFor="github"
+                fontWeight={"bold"}
+                color={"blue.500"}
+              >
                 GitHub
               </FormLabel>
               <Input
+                id="github"
                 type="text"
                 placeholder="GitHub: "
-                value={github}
-                onChange={(e) => {
-                  setGithub(e.target.value);
-                }}
+                {...register("github", {
+                  pattern: {
+                    value:
+                      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/,
+                    message: "アドレスの形式が正しくありません",
+                  },
+                })}
                 autoComplete="off"
               />
+              <FormErrorMessage>
+                {errors.github && errors.github.message}
+              </FormErrorMessage>
             </FormControl>
             <Stack spacing={10} pt={2} mb={4}>
               <Button
@@ -353,13 +388,13 @@ const Create: NextPage = () => {
                 _hover={{
                   bg: "blue.500",
                 }}
-                isLoading={isUploaded ? false : true}
+                isLoading={isSubmitting ? true : false}
               >
                 投稿する
               </Button>
             </Stack>
           </form>
-          {!isUploaded && (
+          {isSubmitting && (
             <Text color={"red.500"} fontWeight={"bold"}>
               投稿を作成しています...
             </Text>
