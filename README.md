@@ -2,6 +2,8 @@
 
 ### ShareFolio（シェアフォリオ）
 
+![アプリ画像](https://github.com/mori-corp/sharefolio/blob/images/ShareFolio.png)
+
 <br>
 
 # アプリケーション概要
