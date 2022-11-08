@@ -42,7 +42,7 @@ const Detail: NextPage = () => {
     language: [""],
     appUrl: "",
     github: "",
-    postedDate: "",
+    postedDate: 0,
     authorId: "",
   });
   const router = useRouter();
@@ -52,7 +52,7 @@ const Detail: NextPage = () => {
   const user = useUser();
 
   // firebaseから、ドキュメントを投稿idで参照
-  useEffect((): any => {
+  useEffect(() => {
     const readPost = async () => {
       const docRef = doc(db, "posts", postId);
       const docSnap = await getDoc(docRef);

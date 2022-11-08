@@ -36,7 +36,7 @@ const Mypage: NextPage = () => {
   const router = useRouter();
 
   // firebaseから、ユーザーのドキュメントをidで参照
-  useEffect((): any => {
+  useEffect(() => {
     const readProfile = async () => {
       try {
         const docRef = doc(db, "users", user.uid);

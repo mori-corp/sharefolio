@@ -10,10 +10,10 @@ type Props = {
   children: JSX.Element;
 };
 
-const AuthUser = ({ children }: Props): any => {
+const AuthUser = ({ children }: Props) => {
   const user = useAuth();
   const router = useRouter();
-  useEffect((): any => {
+  useEffect(() => {
     if (user.uid !== "") {
       return;
     } else {
