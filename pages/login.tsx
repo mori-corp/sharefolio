@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import { useEffect } from "react";
-import Layout from "../components/Layout";
-import { useAuth } from "../lib/auth";
+import Layout from "@/components/Layout";
+import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
-import { LoginForm } from "../components/LoginForm";
+import { LoginForm } from "@/components/LoginForm";
 
 const Login: NextPage = () => {
   const user = useAuth();

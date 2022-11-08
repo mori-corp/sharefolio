@@ -2,7 +2,7 @@ import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { userState } from "../../lib/auth";
+import { userState } from "@/lib/auth";
 import { Flex, Text, Stack, useDisclosure, Button } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { NAV_ITEMS } from "./NavItems";
