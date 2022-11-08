@@ -8,6 +8,6 @@ export type PostType = {
   language: Array<string>;
   appUrl: string;
   github: string;
-  postedDate: number;
+  postedDate: number | null;
   authorId: string;
 };

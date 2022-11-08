@@ -42,7 +42,7 @@ const Detail: NextPage = () => {
     language: [""],
     appUrl: "",
     github: "",
-    postedDate: 0,
+    postedDate: null,
     authorId: "",
   });
   const router = useRouter();
