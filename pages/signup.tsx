@@ -15,7 +15,8 @@ const Signup: NextPage = () => {
     } else {
       return;
     }
-  }, []);
+  }, [user]);
+  
   return (
     <Layout title={"ShareFolio｜ポートフォリオの共有サイト"}>
       <SignupForm />
