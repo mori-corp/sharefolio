@@ -19,8 +19,6 @@ import {
   ListIcon,
   Link,
   Stack,
-  Icon,
-  HStack,
   Image,
 } from "@chakra-ui/react";
 import { LanguageTags } from "@/components/LanguageTags";
@@ -76,7 +74,6 @@ const Detail: NextPage = () => {
       }
     };
     readPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 各投稿をクリック、Recoilへ状態保持
