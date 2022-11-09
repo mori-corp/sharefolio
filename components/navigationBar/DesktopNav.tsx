@@ -1,7 +1,7 @@
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { useRecoilState } from "recoil";
-import { userState } from "../../lib/auth";
+import { userState } from "@/lib/auth";
 import { NAV_ITEMS } from "./NavItems";
 import { Box, Text, Stack, Button, HStack } from "@chakra-ui/react";
 import NextLink from "next/link";

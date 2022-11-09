@@ -1,6 +1,6 @@
 import { atom, useRecoilValue } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { PostType } from "../types/post";
+import { PostType } from "@/types/post";
 
 const { persistAtom } = recoilPersist();
 

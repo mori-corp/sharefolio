@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, HStack, Icon } from "@chakra-ui/react";
+import { Image, Text, HStack } from "@chakra-ui/react";
 
 // 投稿者のデータ型定義
 type AuthorProps = {

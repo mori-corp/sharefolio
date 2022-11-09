@@ -7,7 +7,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import type { NextPage } from "next";
-import Layout from "../../../components/Layout";
+import Layout from "@/components/Layout";
 import {
   Flex,
   Box,
@@ -23,13 +23,11 @@ import {
   HStack,
   Image,
 } from "@chakra-ui/react";
-import { AiOutlineHeart } from "react-icons/ai";
-import { Author } from "../../../components/Author";
-import { LanguageTags } from "../../../components/LanguageTags";
-import { PostType } from "../../../types/post";
+import { LanguageTags } from "@/components/LanguageTags";
+import { PostType } from "@/types/post";
 import { useSetRecoilState } from "recoil";
-import { postState, usePostIdValue } from "../../../lib/atoms";
-import { useUser } from "../../../lib/auth";
+import { postState, usePostIdValue } from "@/lib/atoms";
+import { useUser } from "@/lib/auth";
 
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({

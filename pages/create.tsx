@@ -6,7 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage, db } from "../firebase";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import Layout from "../components/Layout";
+import Layout from "@/components/Layout";
 import {
   FormControl,
   FormLabel,
@@ -24,10 +24,10 @@ import {
   CheckboxGroup,
   Text,
 } from "@chakra-ui/react";
-import { useUser } from "../lib/auth";
+import { useUser } from "@/lib/auth";
 import { validateImage } from "image-validator";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { PostType } from "../types/post";
+import { PostType } from "@/types/post";
 
 const Create: NextPage = () => {
   const [language, setLanguage] = useState<string[]>([]);

@@ -7,7 +7,7 @@ import {
 import { useEffect } from "react";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { UserType } from "../types/user";
+import { UserType } from "@/types/user";
 
 const { persistAtom } = recoilPersist();
 

@@ -1,7 +1,7 @@
 // 投稿一覧ページ
 
 import type { NextPage } from "next";
-import Layout from "../components/Layout";
+import Layout from "@/components/Layout";
 import React, { useState, useEffect } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
@@ -16,11 +16,11 @@ import {
   ListItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { LanguageTags } from "../components/LanguageTags";
+import { LanguageTags } from "@/components/LanguageTags";
 import { useSetRecoilState } from "recoil";
-import { postIdState } from "../lib/atoms";
-import { PostType } from "../types/post";
-import { AuthorType } from "../types/author";
+import { postIdState } from "@/lib/atoms";
+import { PostType } from "@/types/post";
+import { AuthorType } from "@/types/author";
 
 const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);

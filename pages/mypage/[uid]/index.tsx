@@ -8,7 +8,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import type { NextPage } from "next";
-import Layout from "../../../components/Layout";
+import Layout from "@/components/Layout";
 import {
   Flex,
   Heading,
@@ -22,7 +22,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useUser } from "../../../lib/auth";
+import { useUser } from "@/lib/auth";
 import { validateImage } from "image-validator";
 import { useRouter } from "next/router";
 

@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import { useEffect } from "react";
-import { SignupForm } from "../components/SignupForm";
-import Layout from "../components/Layout";
-import { useAuth } from "../lib/auth";
+import { SignupForm } from "@/components/SignupForm";
+import Layout from "@/components/Layout";
+import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 
 const Signup: NextPage = () => {

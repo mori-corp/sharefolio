@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import Layout from "../../../components/Layout";
+import Layout from "@/components/Layout";
 import {
   FormControl,
   FormLabel,
@@ -22,7 +22,7 @@ import {
   CheckboxGroup,
   Text,
 } from "@chakra-ui/react";
-import { usePostValue } from "../../../lib/atoms";
+import { usePostValue } from "@/lib/atoms";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -32,9 +32,9 @@ import {
 } from "firebase/storage";
 import { db, storage } from "../../../firebase";
 import { validateImage } from "image-validator";
-import { DeleteButton } from "../../../components/DeleteButton";
+import { DeleteButton } from "@/components/DeleteButton";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { PostType } from "../../../types/post";
+import { PostType } from "@/types/post";
 
 const Edit: NextPage = () => {
   const {
