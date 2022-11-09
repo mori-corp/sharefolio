@@ -29,6 +29,7 @@ import { useRouter } from "next/router";
 const Mypage: NextPage = () => {
   const user = useUser();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [userPhotoUrl, setUserPhotoUrl] = useState("");
   const [file, setFile] = useState<File>(null!);
   const [isUploaded, setIsUploaded] = useState(true);
@@ -44,6 +45,7 @@ const Mypage: NextPage = () => {
 
         if (docSnap.exists()) {
           setUsername(docSnap.data().username);
+          setEmail(docSnap.data().email);
           setUserPhotoUrl(docSnap.data().photoUrl);
         } else {
           // doc.data() will be undefined in this case
@@ -161,7 +163,6 @@ const Mypage: NextPage = () => {
         w={"full"}
         p={{ base: 2, sm: 4, md: 8 }}
       >
-        {/* ヘディング部分 */}
         <Heading fontSize={"4xl"} mb={8}>
           マイページ
         </Heading>
@@ -175,7 +176,7 @@ const Mypage: NextPage = () => {
           w={{ base: "100%", sm: "80%", md: "55%" }}
           maxW={"lg"}
         >
-          {/* 選択されているプロフィール画像 */}
+          {/* プロフィールアイコン */}
           <VStack mb={8}>
             <Image
               src={userPhotoUrl ? userPhotoUrl : "/no-image-icon.png"}
@@ -188,7 +189,13 @@ const Mypage: NextPage = () => {
               {!userPhotoUrl && "プロフィールアイコンが設定されていません"}
             </Text>
           </VStack>
-
+          <Box mb={8}>
+            <Text fontWeight={"bold"} color={"blue.400"}>
+              メールアドレス
+            </Text>
+            <Text mt={2}>{email}</Text>
+          </Box>
+          {/* プロフィール編集フォーム */}
           <form onSubmit={handleUpdateButtonClick}>
             {/* ユーザーネーム入力欄 */}
             <FormControl id="username" isRequired mb={8}>
