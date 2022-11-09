@@ -6,9 +6,9 @@ import {
   Text,
   Image,
   Link,
-} from "@chakra-ui/react";
-import * as React from "react";
-import { FaGithub, FaTwitter } from "react-icons/fa";
+} from '@chakra-ui/react'
+import * as React from 'react'
+import { FaGithub } from 'react-icons/fa'
 
 export const Footer: React.FC = () => (
   <Container
@@ -16,14 +16,14 @@ export const Footer: React.FC = () => (
     role="contentinfo"
     py={8}
     m={0}
-    minW={"100%"}
+    minW={'100%'}
     borderTop={1}
-    borderStyle={"solid"}
-    borderColor={"gray.200"}
+    borderStyle={'solid'}
+    borderColor={'gray.200'}
   >
-    <Stack spacing={{ base: "4", md: "5" }}>
+    <Stack spacing={{ base: '4', md: '5' }}>
       <Stack justify="start" direction="row" align="center">
-        <Image src="/logo.png" alt="logo" w={"100px"} />
+        <Image src="/logo.png" alt="logo" w={'100px'} />
         <ButtonGroup variant="ghost">
           <Link href="https://github.com/mori-corp/sharefolio" isExternal>
             <IconButton
@@ -43,4 +43,4 @@ export const Footer: React.FC = () => (
       </Text>
     </Stack>
   </Container>
-);
+)

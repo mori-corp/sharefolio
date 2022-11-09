@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box } from '@chakra-ui/layout'
 import {
   Button,
   Modal,
@@ -9,17 +9,17 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-} from "@chakra-ui/react";
-import React from "react";
+} from '@chakra-ui/react'
+import React from 'react'
 
 type Props = {
-  onHandleDeleteButtonClick: () => void;
-  headerText: string;
-  bodyText: string;
-  buttonText: string;
-  isDanger?: boolean;
-  disabled: boolean;
-};
+  onHandleDeleteButtonClick: () => void
+  headerText: string
+  bodyText: string
+  buttonText: string
+  isDanger?: boolean
+  disabled: boolean
+}
 
 export const DeleteButton: React.FC<Props> = ({
   onHandleDeleteButtonClick,
@@ -29,19 +29,19 @@ export const DeleteButton: React.FC<Props> = ({
   isDanger,
   disabled,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const onSubmit = () => {
-    onHandleDeleteButtonClick();
-    onClose();
-  };
+    onHandleDeleteButtonClick()
+    onClose()
+  }
 
   return (
     <>
       <Button
-        size={"lg"}
+        size={'lg'}
         onClick={onOpen}
-        colorScheme={isDanger ? "red" : ""}
+        colorScheme={isDanger ? 'red' : ''}
         disabled={disabled}
       >
         {buttonText}
@@ -60,12 +60,12 @@ export const DeleteButton: React.FC<Props> = ({
             <Button variant="ghost" onClick={onClose} mr={3}>
               Close
             </Button>
-            <Button colorScheme={isDanger ? "red" : ""} onClick={onSubmit}>
+            <Button colorScheme={isDanger ? 'red' : ''} onClick={onSubmit}>
               {buttonText}
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  );
-};
+  )
+}

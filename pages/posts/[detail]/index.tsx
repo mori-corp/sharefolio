@@ -1,13 +1,13 @@
 //各投稿の詳細ページ
 
-import { useState, useEffect } from "react";
-import { db } from "../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import type { NextPage } from "next";
-import Layout from "@/components/Layout";
+import { useState, useEffect } from 'react'
+import { db } from '../../../firebase'
+import { doc, getDoc } from 'firebase/firestore'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
+import type { NextPage } from 'next'
+import Layout from '@/components/Layout'
 import {
   Flex,
   Box,
@@ -20,38 +20,38 @@ import {
   Link,
   Stack,
   Image,
-} from "@chakra-ui/react";
-import { LanguageTags } from "@/components/LanguageTags";
-import { PostType } from "@/types/post";
-import { useSetRecoilState } from "recoil";
-import { postState, usePostIdValue } from "@/lib/atoms";
-import { useUser } from "@/lib/auth";
+} from '@chakra-ui/react'
+import { LanguageTags } from '@/components/LanguageTags'
+import { PostType } from '@/types/post'
+import { useSetRecoilState } from 'recoil'
+import { postState, usePostIdValue } from '@/lib/atoms'
+import { useUser } from '@/lib/auth'
 
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({
-    id: "",
-    appName: "",
-    title: "",
-    description: "",
-    image: "",
-    level: "",
-    language: [""],
-    appUrl: "",
-    github: "",
+    id: '',
+    appName: '',
+    title: '',
+    description: '',
+    image: '',
+    level: '',
+    language: [''],
+    appUrl: '',
+    github: '',
     postedDate: null,
-    authorId: "",
-  });
-  const router = useRouter();
-  const { detail } = router.query;
-  const postId = usePostIdValue();
-  const setPostDetail = useSetRecoilState<PostType>(postState);
-  const user = useUser();
+    authorId: '',
+  })
+  const router = useRouter()
+  const { detail } = router.query
+  const postId = usePostIdValue()
+  const setPostDetail = useSetRecoilState<PostType>(postState)
+  const user = useUser()
 
   // firebaseから、ドキュメントを投稿idで参照
   useEffect(() => {
     const readPost = async () => {
-      const docRef = doc(db, "posts", postId);
-      const docSnap = await getDoc(docRef);
+      const docRef = doc(db, 'posts', postId)
+      const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
         setPost({
@@ -67,14 +67,14 @@ const Detail: NextPage = () => {
           github: docSnap.data().github,
           postedDate: docSnap.data().postedDate,
           authorId: docSnap.data().authorId,
-        });
+        })
       } else {
         // doc.data() will be undefined in this case
-        console.log("No such document!");
+        console.log('No such document!')
       }
-    };
-    readPost();
-  }, []);
+    }
+    readPost()
+  }, [])
 
   // 各投稿をクリック、Recoilへ状態保持
   const handleEditButtonClick = (postId: string) => {
@@ -90,31 +90,31 @@ const Detail: NextPage = () => {
       github: post.github,
       postedDate: post.postedDate,
       authorId: post.authorId,
-    });
-  };
+    })
+  }
 
   const levels = (level: string) => {
     switch (level) {
-      case "beginner":
-        return "初級";
-        break;
-      case "intermediate":
-        return "中級";
-        break;
-      case "advanced":
-        return "上級";
-        break;
+      case 'beginner':
+        return '初級'
+        break
+      case 'intermediate':
+        return '中級'
+        break
+      case 'advanced':
+        return '上級'
+        break
     }
-  };
+  }
 
   return (
     <Layout title={post.title}>
-      <Flex flexDirection={"column"} align={"center"} w={"full"}>
+      <Flex flexDirection={'column'} align={'center'} w={'full'}>
         {/* 投稿タイトル */}
         <Heading
-          maxW={"2xl"}
-          textAlign={"center"}
-          fontSize={{ base: "lg", sm: "2xl" }}
+          maxW={'2xl'}
+          textAlign={'center'}
+          fontSize={{ base: 'lg', sm: '2xl' }}
           px={{ base: 4, sm: 8 }}
           mt={20}
         >
@@ -122,30 +122,30 @@ const Detail: NextPage = () => {
         </Heading>
 
         <Stack
-          textAlign={"center"}
-          w={{ base: "100%", md: "80%" }}
+          textAlign={'center'}
+          w={{ base: '100%', md: '80%' }}
           p={4}
           spacing="4"
         >
           {/* アプリ名 */}
           <Text
             my={4}
-            fontSize={{ base: "2xl", sm: "4xl" }}
-            fontWeight={"bold"}
-            color={"blue.400"}
+            fontSize={{ base: '2xl', sm: '4xl' }}
+            fontWeight={'bold'}
+            color={'blue.400'}
           >
             {post.appName}
           </Text>
 
           {/* アプリの説明欄 */}
           <Box
-            rounded={"lg"}
-            bg={"white"}
-            boxShadow={"lg"}
+            rounded={'lg'}
+            bg={'white'}
+            boxShadow={'lg'}
             py={10}
             px={{ base: 4, md: 10 }}
           >
-            <Text fontSize={{ base: "sm", sm: "md" }}>{post.description}</Text>
+            <Text fontSize={{ base: 'sm', sm: 'md' }}>{post.description}</Text>
           </Box>
 
           {/* アプリ画像 */}
@@ -155,25 +155,25 @@ const Detail: NextPage = () => {
               src={post.image}
               alt={`image of ${post.appName}`}
               objectFit="contain"
-              maxH={"lg"}
+              maxH={'lg'}
             />
           )}
 
           {/* アプリの詳細情報 */}
           <Box
-            rounded={"lg"}
-            bg={"white"}
-            boxShadow={"lg"}
+            rounded={'lg'}
+            bg={'white'}
+            boxShadow={'lg'}
             py={10}
             px={{ base: 4, md: 10 }}
-            textAlign={"left"}
+            textAlign={'left'}
           >
-            <List spacing={4} fontSize={{ base: "sm", sm: "md" }}>
+            <List spacing={4} fontSize={{ base: 'sm', sm: 'md' }}>
               {/* アプリURL */}
               <ListItem>
                 <ListIcon color="green.500" />
                 アプリURL：
-                <Link href={post.appUrl} color={"blue.400"} isExternal>
+                <Link href={post.appUrl} color={'blue.400'} isExternal>
                   {post.appUrl}
                 </Link>
               </ListItem>
@@ -182,7 +182,7 @@ const Detail: NextPage = () => {
               <ListItem>
                 <ListIcon color="green.500" />
                 GitHub：
-                <Link href={post.github} color={"blue.400"} isExternal>
+                <Link href={post.github} color={'blue.400'} isExternal>
                   {post.github}
                 </Link>
               </ListItem>
@@ -266,10 +266,10 @@ const Detail: NextPage = () => {
                   as="a"
                   loadingText="Submitting"
                   size="lg"
-                  bg={"pink.400"}
-                  color={"white"}
+                  bg={'pink.400'}
+                  color={'white'}
                   _hover={{
-                    bg: "pink.500",
+                    bg: 'pink.500',
                   }}
                   onClick={() => handleEditButtonClick(post.id)}
                 >
@@ -284,10 +284,10 @@ const Detail: NextPage = () => {
                 as="a"
                 loadingText="Submitting"
                 size="lg"
-                bg={"blue.400"}
-                color={"white"}
+                bg={'blue.400'}
+                color={'white'}
                 _hover={{
-                  bg: "blue.500",
+                  bg: 'blue.500',
                 }}
               >
                 戻る
@@ -297,7 +297,7 @@ const Detail: NextPage = () => {
         </Stack>
       </Flex>
     </Layout>
-  );
-};
+  )
+}
 
-export default Detail;
+export default Detail
