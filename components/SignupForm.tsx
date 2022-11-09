@@ -59,6 +59,7 @@ export const SignupForm: React.FC = () => {
         await setDoc(docRef, {
           uid: uid,
           username: data.username,
+          email: data.email,
           photoUrl: photoUrl,
         });
 
