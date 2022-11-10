@@ -32,6 +32,7 @@ import {
   UnorderedList,
   ListItem,
   ListIcon,
+  VStack,
 } from "@chakra-ui/react";
 import { LanguageTags } from "@/components/LanguageTags";
 import { PostType } from "@/types/post";
@@ -342,37 +343,64 @@ const Detail: NextPage = () => {
           </Flex> */}
 
           {/* コメント欄 */}
-          <form>
-            <Flex alignItems={"center"}>
-              {/* 入力欄フォーム */}
-              <Input
-                id="comment"
-                type="text"
-                placeholder="コメントを入力"
-                autoComplete="off"
-                bg={"white"}
-                my={4}
-                value={comment}
-                onChange={(e) => {
-                  setComment(e.target.value);
-                }}
-              />
+          <Text fontWeight={"bold"} fontSize={"2xl"} py={4} color={"gray.600"}>
+            コメント一覧
+          </Text>
+          {user.uid ? (
+            <form>
+              <Flex alignItems={"center"}>
+                {/* 入力欄フォーム */}
+                <Input
+                  id="comment"
+                  type="text"
+                  placeholder="コメントを入力"
+                  autoComplete="off"
+                  bg={"white"}
+                  my={4}
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                />
 
-              {/* コメント送信ボタン */}
-              <Button
-                isDisabled={!comment}
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-                ml={2}
-                onClick={newComment}
-              >
-                送信
-              </Button>
-            </Flex>
-          </form>
+                {/* コメント送信ボタン */}
+                <Button
+                  isDisabled={!comment}
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  ml={2}
+                  onClick={newComment}
+                >
+                  送信
+                </Button>
+              </Flex>
+            </form>
+          ) : (
+            <VStack py={4}>
+              <Text fontWeight={"bold"} color={"gray.400"}>
+                ログインするとコメントできます
+              </Text>
+              <NextLink href="/login" passHref>
+                <Button
+                  px={10}
+                  as="a"
+                  display={{ base: "none", md: "inline-flex" }}
+                  fontSize={"sm"}
+                  fontWeight={600}
+                  color={"white"}
+                  bg={"blue.400"}
+                  _hover={{
+                    bg: "blue.300",
+                  }}
+                >
+                  Login
+                </Button>
+              </NextLink>
+            </VStack>
+          )}
 
           {/* 各コメント */}
           <UnorderedList styleType="none" m={0}>
@@ -437,10 +465,10 @@ const Detail: NextPage = () => {
                 as="a"
                 loadingText="Submitting"
                 size="lg"
-                bg={"blue.400"}
+                bg={"gray.400"}
                 color={"white"}
                 _hover={{
-                  bg: "blue.500",
+                  bg: "gray.500",
                 }}
               >
                 戻る
