@@ -1,10 +1,10 @@
-import React from "react";
-import { Image, Text, HStack } from "@chakra-ui/react";
+import React from 'react'
+import { Image, Text, HStack } from '@chakra-ui/react'
 
 // 投稿者のデータ型定義
 type AuthorProps = {
-  name: string;
-};
+  name: string
+}
 
 export const Author: React.FC<AuthorProps> = (props) => {
   return (
@@ -20,10 +20,10 @@ export const Author: React.FC<AuthorProps> = (props) => {
       />
 
       {/* ユーザーネーム */}
-      <Text fontWeight="medium" fontSize={"sm"}>
+      <Text fontWeight="medium" fontSize={'sm'}>
         {props.name}
       </Text>
       <Text>—</Text>
     </HStack>
-  );
-};
+  )
+}

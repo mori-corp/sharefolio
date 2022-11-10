@@ -1,10 +1,10 @@
 // 投稿一覧ページ
 
-import type { NextPage } from "next";
-import Layout from "@/components/Layout";
-import React, { useState, useEffect } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase";
+import type { NextPage } from 'next'
+import Layout from '@/components/Layout'
+import React, { useState, useEffect } from 'react'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { db } from '../firebase'
 import {
   Box,
   Heading,
@@ -14,6 +14,7 @@ import {
   HStack,
   UnorderedList,
   ListItem,
+
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { LanguageTags } from "@/components/LanguageTags";
@@ -21,7 +22,6 @@ import { useSetRecoilState } from "recoil";
 import { authorIdState, postIdState } from "@/lib/atoms";
 import { PostType } from "@/types/post";
 import { AuthorType } from "@/types/author";
-
 const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const setPostId = useSetRecoilState(postIdState);
@@ -30,7 +30,7 @@ const Posts: NextPage = () => {
 
   useEffect(() => {
     // firestore databaseから投稿一覧を取得
-    const q = query(collection(db, "posts"), orderBy("postedDate", "desc"));
+    const q = query(collection(db, 'posts'), orderBy('postedDate', 'desc'))
     onSnapshot(q, (snapshot) => {
       setPosts(
         snapshot.docs.map((doc) => ({
@@ -48,11 +48,11 @@ const Posts: NextPage = () => {
           postedDate: doc.data().postedDate,
           authorId: doc.data().authorId,
         }))
-      );
-    });
+      )
+    })
 
     // firestore databaseから登録済みユーザーを取得
-    const docRefs = query(collection(db, "users"));
+    const docRefs = query(collection(db, 'users'))
     onSnapshot(docRefs, (snapshot) => {
       setAuthors(
         snapshot.docs.map((doc) => ({
@@ -61,37 +61,37 @@ const Posts: NextPage = () => {
           username: doc.data().username,
           photoUrl: doc.data().photoUrl,
         }))
-      );
-    });
-  }, []);
+      )
+    })
+  }, [])
 
   // timestampを、yy/mm/dd/hh/mm形式へ変換
   const getDisplayTime = (e: any) => {
-    if (e === null) return;
-    const year = e.toDate().getFullYear();
-    const month = ("0" + (e.toDate().getMonth() + 1)).slice(-2);
-    const date = ("0" + e.toDate().getDate()).slice(-2);
-    const hour = ("0" + e.toDate().getHours()).slice(-2);
-    const min = ("0" + e.toDate().getMinutes()).slice(-2);
+    if (e === null) return
+    const year = e.toDate().getFullYear()
+    const month = ('0' + (e.toDate().getMonth() + 1)).slice(-2)
+    const date = ('0' + e.toDate().getDate()).slice(-2)
+    const hour = ('0' + e.toDate().getHours()).slice(-2)
+    const min = ('0' + e.toDate().getMinutes()).slice(-2)
 
-    return `${year}年${month}月${date}日 ${hour}:${min}`;
-  };
+    return `${year}年${month}月${date}日 ${hour}:${min}`
+  }
   return (
-    <Layout title={"ShareFolio｜ポートフォリオの共有サイト"}>
-      <Heading as="h1" textAlign={"center"} mt={16}>
+    <Layout title={'ShareFolio｜ポートフォリオの共有サイト'}>
+      <Heading as="h1" textAlign={'center'} mt={16}>
         投稿一覧
       </Heading>
 
-      <Container display={"flex"} maxW={"5xl"} p={{ base: 2, md: 12 }}>
+      <Container display={'flex'} maxW={'5xl'} p={{ base: 2, md: 12 }}>
         <UnorderedList styleType="none" m={0}>
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
               <NextLink href={`/posts/${post.id}`}>
                 <Box
-                  my={{ base: "10", sm: "8" }}
+                  my={{ base: '10', sm: '8' }}
                   display="flex"
-                  flexDirection={{ base: "column", md: "row" }}
+                  flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent="space-between"
                   p={4}
                   bg={"gray.100"}
@@ -109,28 +109,28 @@ const Posts: NextPage = () => {
                     flex="1"
                     position="relative"
                     alignItems="center"
-                    justifyContent={"center"}
+                    justifyContent={'center'}
                   >
                     {/* サムネ画像のBox */}
                     <Box
-                      width={{ sm: "100%" }}
+                      width={{ sm: '100%' }}
                       zIndex="2"
                       marginTop="5%"
                       marginRight={{ base: 0, md: 4 }}
                       display="flex"
-                      justifyContent={"center"}
+                      justifyContent={'center'}
                       my={{ sm: 5, md: 0 }}
-                      maxW={{ md: "md" }}
+                      maxW={{ md: 'md' }}
                     >
                       {/* サムネ画像部分 */}
 
                       <Image
                         borderRadius="lg"
-                        src={post.image ? post.image : "/sample-icon.png"}
+                        src={post.image ? post.image : '/sample-icon.png'}
                         alt={`image of ${post.appName}`}
                         objectFit="cover"
-                        align={"center"}
-                        _hover={{ cursor: "pointer" }}
+                        align={'center'}
+                        _hover={{ cursor: 'pointer' }}
                       />
                     </Box>
                   </Box>
@@ -145,13 +145,13 @@ const Posts: NextPage = () => {
                     ml={{ sm: 0, md: 4 }}
                   >
                     {/* 投稿タイトル */}
-                    <Heading marginTop="1" fontSize={{ base: "xl", sm: "2xl" }}>
+                    <Heading marginTop="1" fontSize={{ base: 'xl', sm: '2xl' }}>
                       <Text
                         as="a"
                         textDecoration="none"
                         _hover={{
-                          textDecoration: "underline",
-                          cursor: "pointer",
+                          textDecoration: 'underline',
+                          cursor: 'pointer',
                         }}
                         noOfLines={2}
                       >
@@ -164,7 +164,7 @@ const Posts: NextPage = () => {
                       as="p"
                       marginTop="2"
                       color="gray.700"
-                      fontSize={{ base: "sm", sm: "md" }}
+                      fontSize={{ base: 'sm', sm: 'md' }}
                       noOfLines={4}
                     >
                       {post.description}
@@ -188,19 +188,19 @@ const Posts: NextPage = () => {
                                   src={
                                     author.photoUrl
                                       ? author.photoUrl
-                                      : "/user.png"
+                                      : '/user.png'
                                   }
                                   alt={`Avatar of ${author.username}`}
                                 />
                                 {/* ユーザーネーム */}
-                                <Text fontWeight="medium" fontSize={"sm"}>
+                                <Text fontWeight="medium" fontSize={'sm'}>
                                   {author.username}
                                 </Text>
                               </HStack>
                             )
                         )}
 
-                        <Text fontSize={"sm"}>
+                        <Text fontSize={'sm'}>
                           投稿日時：{getDisplayTime(post.postedDate)}
                         </Text>
 
@@ -218,6 +218,6 @@ const Posts: NextPage = () => {
         </UnorderedList>
       </Container>
     </Layout>
-  );
-};
-export default Posts;
+  )
+}
+export default Posts
