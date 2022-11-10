@@ -2,14 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { db } from "../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  serverTimestamp,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import type { NextPage } from "next";
 import Layout from "@/components/Layout";
 import {
-  FormControl,
   Divider,
   Input,
   Flex,
@@ -18,11 +26,12 @@ import {
   Heading,
   Button,
   List,
-  ListItem,
-  ListIcon,
   Link,
   Stack,
   Image,
+  UnorderedList,
+  ListItem,
+  ListIcon,
 } from "@chakra-ui/react";
 import { LanguageTags } from "@/components/LanguageTags";
 import { PostType } from "@/types/post";
@@ -30,6 +39,13 @@ import { useSetRecoilState } from "recoil";
 import { postState, usePostIdValue, useAuhotrIdValue } from "@/lib/atoms";
 import { useUser } from "@/lib/auth";
 import { AuthorType } from "@/types/author";
+
+type CommentType = {
+  username: string;
+  avator: string;
+  text: string;
+  timestamp: number;
+};
 
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({
@@ -50,6 +66,9 @@ const Detail: NextPage = () => {
     username: "",
     photoUrl: "",
   });
+
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<CommentType[]>([]);
   const router = useRouter();
   const { detail } = router.query;
   const postIdValue = usePostIdValue();
@@ -59,8 +78,8 @@ const Detail: NextPage = () => {
 
   // postsコレクションから、投稿データを参照
   useEffect(() => {
+    const docRef = doc(db, "posts", postIdValue);
     const readPost = async () => {
-      const docRef = doc(db, "posts", postIdValue);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -102,11 +121,57 @@ const Detail: NextPage = () => {
       }
     };
 
+    // コメントを参照
+    // 各投稿のdocRefはとれている
+    const readComments = () => {
+      const collectionRef = collection(docRef, "comments");
+      const q = query(collectionRef, orderBy("timestamp", "desc"));
+
+      onSnapshot(q, (snapshot) => {
+        setComments(
+          snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            username: doc.data().username,
+            avator: doc.data().photoUrl,
+            text: doc.data().text,
+            timestamp: doc.data().timestamp,
+          }))
+        );
+      });
+    };
+
     readPost();
     readAuthor();
+    readComments();
   }, []);
 
-  // 各投稿をクリック、Recoilへ状態保持
+  // コメントの追加機能
+  const newComment = async () => {
+    try {
+      // ログインユーザー情報を取得
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const username = docSnap.data().username;
+        const userPhoto = docSnap.data().photoUrl;
+
+        // コメントの追加
+        const postRef = doc(db, "posts", postIdValue);
+        const collectionRef = collection(postRef, "comments");
+        await addDoc(collectionRef, {
+          username: username,
+          photoUrl: userPhoto,
+          text: comment,
+          timestamp: serverTimestamp(),
+        });
+      }
+      setComment("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //編集画面遷移時に、Recoilへ状態保持
   const handleEditButtonClick = (postId: string) => {
     setPostDetail({
       id: postId,
@@ -121,6 +186,18 @@ const Detail: NextPage = () => {
       postedDate: post.postedDate,
       authorId: post.authorId,
     });
+  };
+
+  // timestampを、yy/mm/dd/hh/mm形式へ変換
+  const getDisplayTime = (e: any) => {
+    if (e === null) return;
+    const year = e.toDate().getFullYear();
+    const month = ("0" + (e.toDate().getMonth() + 1)).slice(-2);
+    const date = ("0" + e.toDate().getDate()).slice(-2);
+    const hour = ("0" + e.toDate().getHours()).slice(-2);
+    const min = ("0" + e.toDate().getMinutes()).slice(-2);
+
+    return `${year}年${month}月${date}日 ${hour}:${min}`;
   };
 
   const levels = (level: string) => {
@@ -265,56 +342,73 @@ const Detail: NextPage = () => {
           </Flex> */}
 
           {/* コメント欄 */}
-          <Flex alignItems={"center"}>
-            {/* 入力欄フォーム */}
-            <FormControl id="comment" my={4}>
+          <form>
+            <Flex alignItems={"center"}>
+              {/* 入力欄フォーム */}
               <Input
                 id="comment"
                 type="text"
                 placeholder="コメントを入力"
                 autoComplete="off"
                 bg={"white"}
+                my={4}
+                value={comment}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                }}
               />
-            </FormControl>
-            {/* コメント送信ボタン */}
-            <Button
-              bg={"blue.400"}
-              color={"white"}
-              _hover={{
-                bg: "blue.500",
-              }}
-              ml={2}
-            >
-              送信
-            </Button>
-          </Flex>
+
+              {/* コメント送信ボタン */}
+              <Button
+                isDisabled={!comment}
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+                ml={2}
+                onClick={newComment}
+              >
+                送信
+              </Button>
+            </Flex>
+          </form>
 
           {/* 各コメント */}
-          <Stack
-            rounded={"lg"}
-            bg={"white"}
-            boxShadow={"lg"}
-            py={4}
-            px={{ base: 4, sm: 8 }}
-            textAlign={"left"}
-          >
-            <Flex alignItems={"center"} justifyContent={"start"}>
-              <Image
-                src={author.photoUrl}
-                boxSize={"28px"}
-                borderRadius={"full"}
-                alt={`icon of ${author.username}`}
-                mr={2}
-              />
-              <Text fontSize={"sm"}>{author.username}さん</Text>
-              <Text ml={2} fontSize={"sm"} color={"gray.500"}>
-                2022年11月10日
-              </Text>
-            </Flex>
-            <Text fontSize={"sm"} py={4}>
-              ここにコメント。ここにコメント。（１２０文字まで）
-            </Text>
-          </Stack>
+          <UnorderedList styleType="none" m={0}>
+            {comments.map((comment, idx) => (
+              <>
+                <Stack
+                  rounded={"lg"}
+                  bg={"white"}
+                  boxShadow={"lg"}
+                  py={4}
+                  px={{ base: 4, sm: 8 }}
+                  textAlign={"left"}
+                  mb={4}
+                >
+                  <ListItem key={idx}>
+                    <Flex alignItems={"center"} justifyContent={"start"}>
+                      <Image
+                        src={comment.avator}
+                        boxSize={"28px"}
+                        borderRadius={"full"}
+                        alt={`icon of ${comment.username}`}
+                        mr={2}
+                      />
+                      <Text fontSize={"sm"}>{comment.username}さん</Text>
+                      <Text ml={2} fontSize={"sm"} color={"gray.500"}>
+                        {getDisplayTime(comment.timestamp)}
+                      </Text>
+                    </Flex>
+                    <Text fontSize={"sm"} py={4}>
+                      {comment.text}
+                    </Text>
+                  </ListItem>
+                </Stack>
+              </>
+            ))}
+          </UnorderedList>
 
           {/* 戻る/編集ボタン部分 */}
           <Stack>
