@@ -79,6 +79,17 @@ https://sharefolio2022.web.app/
 
 <br>
 
+# ローカルでの動作方法
+
+### 以下のコマンドを順に実行 <br>
+
+% git clone https://github.com/mori-corp/sharefolio.git <br>
+% cd sharefolio<br>
+% npm install<br>
+% npm run dev
+
+<br>
+
 # 工夫した点
 
 ### 1. 投稿とユーザーの紐付け

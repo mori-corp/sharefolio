@@ -20,12 +20,14 @@ import {
   Link,
   Stack,
   Image,
-} from '@chakra-ui/react'
-import { LanguageTags } from '@/components/LanguageTags'
-import { PostType } from '@/types/post'
-import { useSetRecoilState } from 'recoil'
-import { postState, usePostIdValue } from '@/lib/atoms'
-import { useUser } from '@/lib/auth'
+} from "@chakra-ui/react";
+import { LanguageTags } from "@/components/LanguageTags";
+import { PostType } from "@/types/post";
+import { useSetRecoilState } from "recoil";
+import { postState, usePostIdValue, useAuhotrIdValue } from "@/lib/atoms";
+import { useUser } from "@/lib/auth";
+import { AuthorType } from "@/types/author";
+
 
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({
@@ -39,24 +41,31 @@ const Detail: NextPage = () => {
     appUrl: '',
     github: '',
     postedDate: null,
-    authorId: '',
-  })
-  const router = useRouter()
-  const { detail } = router.query
-  const postId = usePostIdValue()
-  const setPostDetail = useSetRecoilState<PostType>(postState)
-  const user = useUser()
 
-  // firebaseから、ドキュメントを投稿idで参照
+    authorId: "",
+  });
+  const [author, setAuthor] = useState<AuthorType>({
+    uid: "",
+    username: "",
+    photoUrl: "",
+  });
+  const router = useRouter();
+  const { detail } = router.query;
+  const postIdValue = usePostIdValue();
+  const authorIdValue = useAuhotrIdValue();
+  const setPostDetail = useSetRecoilState<PostType>(postState);
+  const user = useUser();
+
+  // postsコレクションから、投稿データを参照
   useEffect(() => {
     const readPost = async () => {
-      const docRef = doc(db, 'posts', postId)
-      const docSnap = await getDoc(docRef)
+      const docRef = doc(db, "posts", postIdValue);
+      const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         setPost({
           ...docSnap.data(),
-          id: postId,
+          id: postIdValue,
           title: docSnap.data().title,
           appName: docSnap.data().appName,
           description: docSnap.data().description,
@@ -72,9 +81,30 @@ const Detail: NextPage = () => {
         // doc.data() will be undefined in this case
         console.log('No such document!')
       }
-    }
-    readPost()
-  }, [])
+
+    };
+    // usersコレクションから、投稿者情報を参照
+    const readAuthor = async () => {
+      const userRef = doc(db, "users", authorIdValue);
+      const userDocSnap = await getDoc(userRef);
+
+      if (userDocSnap.exists()) {
+        setAuthor({
+          ...userDocSnap.data(),
+          uid: userDocSnap.data().uid,
+          username: userDocSnap.data().username,
+          photoUrl: userDocSnap.data().photoUrl,
+        });
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such user!");
+      }
+    };
+
+    readPost();
+    readAuthor();
+  }, []);
+
 
   // 各投稿をクリック、Recoilへ状態保持
   const handleEditButtonClick = (postId: string) => {
@@ -120,7 +150,6 @@ const Detail: NextPage = () => {
         >
           {post.title}
         </Heading>
-
         <Stack
           textAlign={'center'}
           w={{ base: '100%', md: '80%' }}
@@ -257,6 +286,20 @@ const Detail: NextPage = () => {
             </Box>
             <hr />
           </Stack> */}
+
+          {/* 投稿者情報 */}
+          <Flex alignItems={"center"}>
+            <Text>投稿者：</Text>
+            <Image
+              src={author.photoUrl}
+              boxSize={"40px"}
+              borderRadius={"full"}
+              alt={`icon of ${author.username}`}
+              mr={2}
+            />
+            <Text fontWeight={"bold"}>{author.username}</Text>
+          </Flex>
+
           {/* ボタン部分 */}
           <Stack>
             {/* 編集ボタン：ログインしているユーザーと、投稿者idが一致した場合のみ表示*/}

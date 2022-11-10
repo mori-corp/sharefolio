@@ -50,6 +50,7 @@ export const LoginForm: React.FC = () => {
           setDoc(docRef, {
             uid: user.uid,
             username: user.displayName,
+            email: user.email,
             photoUrl: user.photoURL,
           })
           router.push('/')
