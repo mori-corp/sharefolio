@@ -9,6 +9,9 @@ import React from "react";
 import type { NextPage } from "next";
 import Layout from "@/components/Layout";
 import {
+  FormControl,
+  Divider,
+  Input,
   Flex,
   Box,
   Text,
@@ -234,6 +237,20 @@ const Detail: NextPage = () => {
             </List>
           </Box>
 
+          {/* 投稿者情報 */}
+          <Flex alignItems={"center"}>
+            <Text>投稿者：</Text>
+            <Image
+              src={author.photoUrl}
+              boxSize={"40px"}
+              borderRadius={"full"}
+              alt={`icon of ${author.username}`}
+              mr={2}
+            />
+            <Text fontWeight={"bold"}>{author.username}</Text>
+          </Flex>
+          <Divider h={4} />
+
           {/* ハートアイコン */}
           {/* <Flex align={"center"} justify={"space-between"}>
             <HStack>
@@ -247,57 +264,59 @@ const Detail: NextPage = () => {
             </HStack>
           </Flex> */}
 
-          {/* コメント欄（外枠） */}
-          {/* <Stack
-            spacing="8"
+          {/* コメント欄 */}
+          <Flex alignItems={"center"}>
+            {/* 入力欄フォーム */}
+            <FormControl id="comment" my={4}>
+              <Input
+                id="comment"
+                type="text"
+                placeholder="コメントを入力"
+                autoComplete="off"
+                bg={"white"}
+              />
+            </FormControl>
+            {/* コメント送信ボタン */}
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+              ml={2}
+            >
+              送信
+            </Button>
+          </Flex>
+
+          {/* 各コメント */}
+          <Stack
             rounded={"lg"}
             bg={"white"}
             boxShadow={"lg"}
-            py={10}
-            px={{ lg: 14, md: 14, sm: 4 }}
+            py={4}
+            px={{ base: 4, sm: 8 }}
             textAlign={"left"}
           >
-            <Text
-              as="h2"
-              textAlign={"center"}
-              fontSize={"xl"}
-              fontWeight={"bold"}
-              color={"gray.600"}
-            >
-              コメント
+            <Flex alignItems={"center"} justifyContent={"start"}>
+              <Image
+                src={author.photoUrl}
+                boxSize={"28px"}
+                borderRadius={"full"}
+                alt={`icon of ${author.username}`}
+                mr={2}
+              />
+              <Text fontSize={"sm"}>{author.username}さん</Text>
+              <Text ml={2} fontSize={"sm"} color={"gray.500"}>
+                2022年11月10日
+              </Text>
+            </Flex>
+            <Text fontSize={"sm"} py={4}>
+              ここにコメント。ここにコメント。（１２０文字まで）
             </Text>
-            <Box>
-              <Author name="John Doe" date={null} />
-              <Box>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-                minima.
-              </Box>
-            </Box>
-            <hr />
-            <Box>
-              <Author name="John Doe" date={null} />
-              <Box>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque,
-                sint!
-              </Box>
-            </Box>
-            <hr />
-          </Stack> */}
+          </Stack>
 
-          {/* 投稿者情報 */}
-          <Flex alignItems={"center"}>
-            <Text>投稿者：</Text>
-            <Image
-              src={author.photoUrl}
-              boxSize={"40px"}
-              borderRadius={"full"}
-              alt={`icon of ${author.username}`}
-              mr={2}
-            />
-            <Text fontWeight={"bold"}>{author.username}</Text>
-          </Flex>
-
-          {/* ボタン部分 */}
+          {/* 戻る/編集ボタン部分 */}
           <Stack>
             {/* 編集ボタン：ログインしているユーザーと、投稿者idが一致した場合のみ表示*/}
             {user.uid === post.authorId && (
