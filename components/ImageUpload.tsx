@@ -5,18 +5,16 @@ import {
   Heading,
   Input,
   Stack,
-} from "@chakra-ui/react";
-import { motion, useAnimation } from "framer-motion";
-
-
+} from '@chakra-ui/react'
+import { motion, useAnimation } from 'framer-motion'
 
 export const ImageUpload: React.FC = () => {
-  const controls = useAnimation();
-  const startAnimation = () => controls.start("hover");
-  const stopAnimation = () => controls.stop();
+  const controls = useAnimation()
+  const startAnimation = () => controls.start('hover')
+  const stopAnimation = () => controls.stop()
   return (
     <Container my="8" p={0}>
-      <AspectRatio w={"60"} ratio={1}>
+      <AspectRatio w={'60'} ratio={1}>
         <Box
           borderColor="gray.300"
           borderStyle="dashed"
@@ -26,7 +24,7 @@ export const ImageUpload: React.FC = () => {
           role="group"
           transition="all 150ms ease-in-out"
           _hover={{
-            shadow: "md",
+            shadow: 'md',
           }}
           as={motion.div}
           initial="rest"
@@ -74,5 +72,5 @@ export const ImageUpload: React.FC = () => {
         </Box>
       </AspectRatio>
     </Container>
-  );
-};
+  )
+}

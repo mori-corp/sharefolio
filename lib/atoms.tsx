@@ -1,32 +1,32 @@
-import { atom, useRecoilValue } from "recoil";
-import { recoilPersist } from "recoil-persist";
-import { PostType } from "@/types/post";
+import { atom, useRecoilValue } from 'recoil'
+import { recoilPersist } from 'recoil-persist'
+import { PostType } from '@/types/post'
 
-const { persistAtom } = recoilPersist();
+const { persistAtom } = recoilPersist()
 
 export const postState = atom<PostType>({
-  key: "postState",
+  key: 'postState',
   default: {
-    id: "",
-    appName: "",
-    title: "",
-    description: "",
-    image: "",
-    level: "",
+    id: '',
+    appName: '',
+    title: '',
+    description: '',
+    image: '',
+    level: '',
     language: [],
-    appUrl: "",
-    github: "",
+    appUrl: '',
+    github: '',
     postedDate: null,
-    authorId: "",
+    authorId: '',
   },
   effects_UNSTABLE: [persistAtom],
-});
+})
 
 export const postIdState = atom({
-  key: "idState",
-  default: "",
+  key: 'idState',
+  default: '',
   effects_UNSTABLE: [persistAtom],
-});
+})
 
 export const authorIdState = atom({
   key: "authorState",
@@ -35,8 +35,8 @@ export const authorIdState = atom({
 });
 
 export const usePostValue = () => {
-  return useRecoilValue(postState);
-};
+  return useRecoilValue(postState)
+}
 
 export const usePostIdValue = () => {
   return useRecoilValue(postIdState);
@@ -45,3 +45,4 @@ export const usePostIdValue = () => {
 export const useAuhotrIdValue = () => {
   return useRecoilValue(authorIdState);
 };
+
