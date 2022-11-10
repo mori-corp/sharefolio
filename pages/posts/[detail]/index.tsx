@@ -387,7 +387,7 @@ const Detail: NextPage = () => {
                 <Button
                   px={10}
                   as="a"
-                  display={{ base: 'none', md: 'inline-flex' }}
+
                   fontSize={'sm'}
                   fontWeight={600}
                   color={'white'}
@@ -407,6 +407,7 @@ const Detail: NextPage = () => {
             {comments.map((comment, idx) => (
               <>
                 <Stack
+                  key={idx}
                   rounded={'lg'}
                   bg={'white'}
                   boxShadow={'lg'}
@@ -415,7 +416,7 @@ const Detail: NextPage = () => {
                   textAlign={'left'}
                   mb={4}
                 >
-                  <ListItem key={idx}>
+                  <ListItem>
                     <Flex alignItems={'center'} justifyContent={'start'}>
                       <Image
                         src={comment.avator}
