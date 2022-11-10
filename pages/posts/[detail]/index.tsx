@@ -1,7 +1,7 @@
 //各投稿の詳細ページ
 
-import { useState, useEffect } from "react";
-import { db } from "../../../firebase";
+import { useState, useEffect } from 'react'
+import { db } from '../../../firebase'
 import {
   doc,
   getDoc,
@@ -11,12 +11,12 @@ import {
   query,
   orderBy,
   onSnapshot,
-} from "firebase/firestore";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import type { NextPage } from "next";
-import Layout from "@/components/Layout";
+} from 'firebase/firestore'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
+import type { NextPage } from 'next'
+import Layout from '@/components/Layout'
 import {
   Divider,
   Input,
@@ -33,20 +33,20 @@ import {
   ListItem,
   ListIcon,
   VStack,
-} from "@chakra-ui/react";
-import { LanguageTags } from "@/components/LanguageTags";
-import { PostType } from "@/types/post";
-import { useSetRecoilState } from "recoil";
-import { postState, usePostIdValue, useAuhotrIdValue } from "@/lib/atoms";
-import { useUser } from "@/lib/auth";
-import { AuthorType } from "@/types/author";
+} from '@chakra-ui/react'
+import { LanguageTags } from '@/components/LanguageTags'
+import { PostType } from '@/types/post'
+import { useSetRecoilState } from 'recoil'
+import { postState, usePostIdValue, useAuhotrIdValue } from '@/lib/atoms'
+import { useUser } from '@/lib/auth'
+import { AuthorType } from '@/types/author'
 
 type CommentType = {
-  username: string;
-  avator: string;
-  text: string;
-  timestamp: number;
-};
+  username: string
+  avator: string
+  text: string
+  timestamp: number
+}
 
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({
@@ -61,28 +61,28 @@ const Detail: NextPage = () => {
     github: '',
     postedDate: null,
 
-    authorId: "",
-  });
+    authorId: '',
+  })
   const [author, setAuthor] = useState<AuthorType>({
-    uid: "",
-    username: "",
-    photoUrl: "",
-  });
+    uid: '',
+    username: '',
+    photoUrl: '',
+  })
 
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<CommentType[]>([]);
-  const router = useRouter();
-  const { detail } = router.query;
-  const postIdValue = usePostIdValue();
-  const authorIdValue = useAuhotrIdValue();
-  const setPostDetail = useSetRecoilState<PostType>(postState);
-  const user = useUser();
+  const [comment, setComment] = useState('')
+  const [comments, setComments] = useState<CommentType[]>([])
+  const router = useRouter()
+  const { detail } = router.query
+  const postIdValue = usePostIdValue()
+  const authorIdValue = useAuhotrIdValue()
+  const setPostDetail = useSetRecoilState<PostType>(postState)
+  const user = useUser()
 
   // postsコレクションから、投稿データを参照
   useEffect(() => {
-    const docRef = doc(db, "posts", postIdValue);
+    const docRef = doc(db, 'posts', postIdValue)
     const readPost = async () => {
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
         setPost({
@@ -103,12 +103,11 @@ const Detail: NextPage = () => {
         // doc.data() will be undefined in this case
         console.log('No such document!')
       }
-
-    };
+    }
     // usersコレクションから、投稿者情報を参照
     const readAuthor = async () => {
-      const userRef = doc(db, "users", authorIdValue);
-      const userDocSnap = await getDoc(userRef);
+      const userRef = doc(db, 'users', authorIdValue)
+      const userDocSnap = await getDoc(userRef)
 
       if (userDocSnap.exists()) {
         setAuthor({
@@ -116,18 +115,18 @@ const Detail: NextPage = () => {
           uid: userDocSnap.data().uid,
           username: userDocSnap.data().username,
           photoUrl: userDocSnap.data().photoUrl,
-        });
+        })
       } else {
         // doc.data() will be undefined in this case
-        console.log("No such user!");
+        console.log('No such user!')
       }
-    };
+    }
 
     // コメントを参照
     // 各投稿のdocRefはとれている
     const readComments = () => {
-      const collectionRef = collection(docRef, "comments");
-      const q = query(collectionRef, orderBy("timestamp", "desc"));
+      const collectionRef = collection(docRef, 'comments')
+      const q = query(collectionRef, orderBy('timestamp', 'desc'))
 
       onSnapshot(q, (snapshot) => {
         setComments(
@@ -138,40 +137,40 @@ const Detail: NextPage = () => {
             text: doc.data().text,
             timestamp: doc.data().timestamp,
           }))
-        );
-      });
-    };
+        )
+      })
+    }
 
-    readPost();
-    readAuthor();
-    readComments();
-  }, []);
+    readPost()
+    readAuthor()
+    readComments()
+  }, [])
 
   // コメントの追加機能
   const newComment = async () => {
     try {
       // ログインユーザー情報を取得
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
+      const docRef = doc(db, 'users', user.uid)
+      const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
-        const username = docSnap.data().username;
-        const userPhoto = docSnap.data().photoUrl;
+        const username = docSnap.data().username
+        const userPhoto = docSnap.data().photoUrl
 
         // コメントの追加
-        const postRef = doc(db, "posts", postIdValue);
-        const collectionRef = collection(postRef, "comments");
+        const postRef = doc(db, 'posts', postIdValue)
+        const collectionRef = collection(postRef, 'comments')
         await addDoc(collectionRef, {
           username: username,
           photoUrl: userPhoto,
           text: comment,
           timestamp: serverTimestamp(),
-        });
+        })
       }
-      setComment("");
+      setComment('')
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   //編集画面遷移時に、Recoilへ状態保持
   const handleEditButtonClick = (postId: string) => {
@@ -192,15 +191,15 @@ const Detail: NextPage = () => {
 
   // timestampを、yy/mm/dd/hh/mm形式へ変換
   const getDisplayTime = (e: any) => {
-    if (e === null) return;
-    const year = e.toDate().getFullYear();
-    const month = ("0" + (e.toDate().getMonth() + 1)).slice(-2);
-    const date = ("0" + e.toDate().getDate()).slice(-2);
-    const hour = ("0" + e.toDate().getHours()).slice(-2);
-    const min = ("0" + e.toDate().getMinutes()).slice(-2);
+    if (e === null) return
+    const year = e.toDate().getFullYear()
+    const month = ('0' + (e.toDate().getMonth() + 1)).slice(-2)
+    const date = ('0' + e.toDate().getDate()).slice(-2)
+    const hour = ('0' + e.toDate().getHours()).slice(-2)
+    const min = ('0' + e.toDate().getMinutes()).slice(-2)
 
-    return `${year}年${month}月${date}日 ${hour}:${min}`;
-  };
+    return `${year}年${month}月${date}日 ${hour}:${min}`
+  }
 
   const levels = (level: string) => {
     switch (level) {
@@ -317,16 +316,16 @@ const Detail: NextPage = () => {
           </Box>
 
           {/* 投稿者情報 */}
-          <Flex alignItems={"center"}>
+          <Flex alignItems={'center'}>
             <Text>投稿者：</Text>
             <Image
               src={author.photoUrl}
-              boxSize={"40px"}
-              borderRadius={"full"}
+              boxSize={'40px'}
+              borderRadius={'full'}
               alt={`icon of ${author.username}`}
               mr={2}
             />
-            <Text fontWeight={"bold"}>{author.username}</Text>
+            <Text fontWeight={'bold'}>{author.username}</Text>
           </Flex>
           <Divider h={4} />
 
@@ -344,33 +343,33 @@ const Detail: NextPage = () => {
           </Flex> */}
 
           {/* コメント欄 */}
-          <Text fontWeight={"bold"} fontSize={"2xl"} py={4} color={"gray.600"}>
+          <Text fontWeight={'bold'} fontSize={'2xl'} py={4} color={'gray.600'}>
             コメント一覧
           </Text>
           {user.uid ? (
             <form>
-              <Flex alignItems={"center"}>
+              <Flex alignItems={'center'}>
                 {/* 入力欄フォーム */}
                 <Input
                   id="comment"
                   type="text"
                   placeholder="コメントを入力"
                   autoComplete="off"
-                  bg={"white"}
+                  bg={'white'}
                   my={4}
                   value={comment}
                   onChange={(e) => {
-                    setComment(e.target.value);
+                    setComment(e.target.value)
                   }}
                 />
 
                 {/* コメント送信ボタン */}
                 <Button
                   isDisabled={!comment}
-                  bg={"blue.400"}
-                  color={"white"}
+                  bg={'blue.400'}
+                  color={'white'}
                   _hover={{
-                    bg: "blue.500",
+                    bg: 'blue.500',
                   }}
                   ml={2}
                   onClick={newComment}
@@ -381,20 +380,20 @@ const Detail: NextPage = () => {
             </form>
           ) : (
             <VStack py={4}>
-              <Text fontWeight={"bold"} color={"gray.400"}>
+              <Text fontWeight={'bold'} color={'gray.400'}>
                 ログインするとコメントできます
               </Text>
               <NextLink href="/login" passHref>
                 <Button
                   px={10}
                   as="a"
-                  display={{ base: "none", md: "inline-flex" }}
-                  fontSize={"sm"}
+                  display={{ base: 'none', md: 'inline-flex' }}
+                  fontSize={'sm'}
                   fontWeight={600}
-                  color={"white"}
-                  bg={"blue.400"}
+                  color={'white'}
+                  bg={'blue.400'}
                   _hover={{
-                    bg: "blue.300",
+                    bg: 'blue.300',
                   }}
                 >
                   Login
@@ -408,29 +407,29 @@ const Detail: NextPage = () => {
             {comments.map((comment, idx) => (
               <>
                 <Stack
-                  rounded={"lg"}
-                  bg={"white"}
-                  boxShadow={"lg"}
+                  rounded={'lg'}
+                  bg={'white'}
+                  boxShadow={'lg'}
                   py={4}
                   px={{ base: 4, sm: 8 }}
-                  textAlign={"left"}
+                  textAlign={'left'}
                   mb={4}
                 >
                   <ListItem key={idx}>
-                    <Flex alignItems={"center"} justifyContent={"start"}>
+                    <Flex alignItems={'center'} justifyContent={'start'}>
                       <Image
                         src={comment.avator}
-                        boxSize={"28px"}
-                        borderRadius={"full"}
+                        boxSize={'28px'}
+                        borderRadius={'full'}
                         alt={`icon of ${comment.username}`}
                         mr={2}
                       />
-                      <Text fontSize={"sm"}>{comment.username}さん</Text>
-                      <Text ml={2} fontSize={"sm"} color={"gray.500"}>
+                      <Text fontSize={'sm'}>{comment.username}さん</Text>
+                      <Text ml={2} fontSize={'sm'} color={'gray.500'}>
                         {getDisplayTime(comment.timestamp)}
                       </Text>
                     </Flex>
-                    <Text fontSize={"sm"} py={4}>
+                    <Text fontSize={'sm'} py={4}>
                       {comment.text}
                     </Text>
                   </ListItem>
@@ -466,10 +465,10 @@ const Detail: NextPage = () => {
                 as="a"
                 loadingText="Submitting"
                 size="lg"
-                bg={"gray.400"}
-                color={"white"}
+                bg={'gray.400'}
+                color={'white'}
                 _hover={{
-                  bg: "gray.500",
+                  bg: 'gray.500',
                 }}
               >
                 戻る

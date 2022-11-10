@@ -14,19 +14,18 @@ import {
   HStack,
   UnorderedList,
   ListItem,
-
-} from "@chakra-ui/react";
-import NextLink from "next/link";
-import { LanguageTags } from "@/components/LanguageTags";
-import { useSetRecoilState } from "recoil";
-import { authorIdState, postIdState } from "@/lib/atoms";
-import { PostType } from "@/types/post";
-import { AuthorType } from "@/types/author";
+} from '@chakra-ui/react'
+import NextLink from 'next/link'
+import { LanguageTags } from '@/components/LanguageTags'
+import { useSetRecoilState } from 'recoil'
+import { authorIdState, postIdState } from '@/lib/atoms'
+import { PostType } from '@/types/post'
+import { AuthorType } from '@/types/author'
 const Posts: NextPage = () => {
-  const [posts, setPosts] = useState<PostType[]>([]);
-  const setPostId = useSetRecoilState(postIdState);
-  const setAuthorId = useSetRecoilState(authorIdState);
-  const [authors, setAuthors] = useState<AuthorType[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([])
+  const setPostId = useSetRecoilState(postIdState)
+  const setAuthorId = useSetRecoilState(authorIdState)
+  const [authors, setAuthors] = useState<AuthorType[]>([])
 
   useEffect(() => {
     // firestore databaseから投稿一覧を取得
@@ -94,12 +93,12 @@ const Posts: NextPage = () => {
                   flexDirection={{ base: 'column', md: 'row' }}
                   justifyContent="space-between"
                   p={4}
-                  bg={"gray.100"}
-                  _hover={{ bg: "gray.200" }}
-                  borderRadius={"lg"}
+                  bg={'gray.100'}
+                  _hover={{ bg: 'gray.200' }}
+                  borderRadius={'lg'}
                   onClick={() => {
-                    setPostId(post.id);
-                    setAuthorId(post.authorId);
+                    setPostId(post.id)
+                    setAuthorId(post.authorId)
                   }}
                   // 投稿のドキュメントidをrecoilにセット
                 >

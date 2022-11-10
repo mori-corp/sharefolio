@@ -29,20 +29,19 @@ export const postIdState = atom({
 })
 
 export const authorIdState = atom({
-  key: "authorState",
-  default: "",
+  key: 'authorState',
+  default: '',
   effects_UNSTABLE: [persistAtom],
-});
+})
 
 export const usePostValue = () => {
   return useRecoilValue(postState)
 }
 
 export const usePostIdValue = () => {
-  return useRecoilValue(postIdState);
-};
+  return useRecoilValue(postIdState)
+}
 
 export const useAuhotrIdValue = () => {
-  return useRecoilValue(authorIdState);
-};
-
+  return useRecoilValue(authorIdState)
+}
