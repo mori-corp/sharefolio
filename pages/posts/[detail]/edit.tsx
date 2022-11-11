@@ -51,7 +51,7 @@ const Edit: NextPage = () => {
 
   // 編集後のデータの格納
   const [editedLanguage, setEditedLanguage] = useState([''])
-  const [editedFile, setEditedFile] = useState<File>(null!)
+  const [editedFile, setEditedFile] = useState<File>()
   const router = useRouter()
   const { detail } = router.query
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -97,14 +97,16 @@ const Edit: NextPage = () => {
   // 画像選択関数
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader()
-    const file = e.target.files![0]
-    if (!(await validateFile(file))) {
-      return
+    if (e.target.files !== null) {
+      const file = e.target.files[0]
+      if (!(await validateFile(file))) {
+        return
+      }
+      reader.onloadend = async () => {
+        setEditedFile(file)
+      }
+      reader.readAsDataURL(file)
     }
-    reader.onloadend = async () => {
-      setEditedFile(file)
-    }
-    reader.readAsDataURL(file)
   }
 
   //投稿の編集

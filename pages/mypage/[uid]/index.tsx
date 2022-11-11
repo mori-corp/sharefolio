@@ -31,7 +31,7 @@ const Mypage: NextPage = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [userPhotoUrl, setUserPhotoUrl] = useState('')
-  const [file, setFile] = useState<File>(null!)
+  const [uploadedFile, setUploadedFile] = useState<File>()
   const [isUploaded, setIsUploaded] = useState(true)
 
   const router = useRouter()
@@ -79,14 +79,16 @@ const Mypage: NextPage = () => {
     e.preventDefault()
     setIsUploaded(false)
     const reader = new FileReader()
-    const file = e.target.files![0]
-    if (!(await validateFile(file))) {
-      return
+    if (e.target.files !== null) {
+      const file = e.target.files[0]
+      if (!(await validateFile(file))) {
+        return
+      }
+      reader.onloadend = async () => {
+        setUploadedFile(file)
+      }
+      reader.readAsDataURL(file)
     }
-    reader.onloadend = async () => {
-      setFile(file)
-    }
-    reader.readAsDataURL(file)
     setIsUploaded(true)
   }
 
@@ -96,7 +98,7 @@ const Mypage: NextPage = () => {
   ) => {
     e.preventDefault()
     //画像がアップロードされる場合
-    if (file) {
+    if (uploadedFile) {
       // アプリイメージ画像の参照とURL生成
       const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
       const N = 16
@@ -105,8 +107,11 @@ const Mypage: NextPage = () => {
         .join('')
 
       // Cloud storageへアップロード
-      const storageRef = ref(storage, `icons/${randomChar}_${file.name}`)
-      await uploadBytes(storageRef, file)
+      const storageRef = ref(
+        storage,
+        `icons/${randomChar}_${uploadedFile.name}`
+      )
+      await uploadBytes(storageRef, uploadedFile)
         .then(() => {
           console.log('画像アップロードに成功しました')
         })
@@ -116,7 +121,7 @@ const Mypage: NextPage = () => {
 
       // cloud storageのURLを取得
       await getDownloadURL(
-        ref(storage, `icons/${randomChar}_${file.name}`)
+        ref(storage, `icons/${randomChar}_${uploadedFile.name}`)
       ).then((url) => {
         // 追加する項目の定義
         const docRef = doc(db, 'users', user.uid)
