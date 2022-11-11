@@ -387,7 +387,6 @@ const Detail: NextPage = () => {
                 <Button
                   px={10}
                   as="a"
-
                   fontSize={'sm'}
                   fontWeight={600}
                   color={'white'}
