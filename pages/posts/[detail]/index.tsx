@@ -306,12 +306,6 @@ const Detail: NextPage = () => {
                 <ListIcon color="green.500" />
                 レベル：{levels(post.level)}
               </ListItem>
-
-              {/* 投稿日時 */}
-              {/* <ListItem>
-                <ListIcon color="green.500" />
-                <Text>投稿日時：{getDisplayTime(post.postedDate)}</Text>
-              </ListItem> */}
             </List>
           </Box>
 
@@ -319,7 +313,7 @@ const Detail: NextPage = () => {
           <Flex alignItems={'center'}>
             <Text>投稿者：</Text>
             <Image
-              src={author.photoUrl}
+              src={author.photoUrl ? author.photoUrl : '/user.png'}
               boxSize={'40px'}
               borderRadius={'full'}
               alt={`icon of ${author.username}`}
@@ -335,12 +329,6 @@ const Detail: NextPage = () => {
               <Icon as={AiOutlineHeart} w={6} h={6} />
               <Text fontSize={"sm"}>100 Likes</Text>
             </HStack> */}
-          {/* 投稿者 */}
-          {/* <HStack>
-              <Text fontSize={"sm"}>投稿者:</Text>
-              <Author name="example" />
-            </HStack>
-          </Flex> */}
 
           {/* コメント欄 */}
           <Text fontWeight={'bold'} fontSize={'2xl'} py={4} color={'gray.600'}>
@@ -403,10 +391,9 @@ const Detail: NextPage = () => {
 
           {/* 各コメント */}
           <UnorderedList styleType="none" m={0}>
-            {comments.map((comment, idx) => (
+            {comments.map((comment) => (
               <>
                 <Stack
-                  key={idx}
                   rounded={'lg'}
                   bg={'white'}
                   boxShadow={'lg'}
@@ -414,21 +401,25 @@ const Detail: NextPage = () => {
                   px={{ base: 4, sm: 8 }}
                   textAlign={'left'}
                   mb={4}
+                  key={comment.timestamp}
                 >
                   <ListItem>
                     <Flex alignItems={'center'} justifyContent={'start'}>
+                      {/* アイコン */}
                       <Image
-                        src={comment.avator}
+                        src={comment.avator ? comment.avator : '/user.png'}
                         boxSize={'28px'}
                         borderRadius={'full'}
                         alt={`icon of ${comment.username}`}
                         mr={2}
                       />
+                      {/* ユーザー名 */}
                       <Text fontSize={'sm'}>{comment.username}さん</Text>
                       <Text ml={2} fontSize={'sm'} color={'gray.500'}>
                         {getDisplayTime(comment.timestamp)}
                       </Text>
                     </Flex>
+                    {/* コメント内容 */}
                     <Text fontSize={'sm'} py={4}>
                       {comment.text}
                     </Text>
