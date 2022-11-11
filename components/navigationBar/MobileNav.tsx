@@ -9,7 +9,7 @@ import { NAV_ITEMS } from './NavItems'
 import { useRouter } from 'next/router'
 
 export const MobileNav: React.FC = () => {
-  const { isOpen, onToggle } = useDisclosure()
+  const { onToggle } = useDisclosure()
   const [user, setUser] = useRecoilState(userState)
   const [isLogin, setIsLogin] = useState(false)
   const router = useRouter()
