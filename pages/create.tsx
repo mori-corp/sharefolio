@@ -31,7 +31,7 @@ import { PostType } from '@/types/post'
 
 const Create: NextPage = () => {
   const [language, setLanguage] = useState<string[]>([])
-  const [file, setFile] = useState<File>(null!)
+  const [uploadedFile, setUploadedFile] = useState<File>()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -77,20 +77,22 @@ const Create: NextPage = () => {
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     const reader = new FileReader()
-    const file = e.target.files![0]
-    if (!(await validateFile(file))) {
-      return
+    if (e.target.files !== null) {
+      const file = e.target.files[0]
+      if (!(await validateFile(file))) {
+        return
+      }
+      reader.onloadend = async () => {
+        setUploadedFile(file)
+      }
+      reader.readAsDataURL(file)
     }
-    reader.onloadend = async () => {
-      setFile(file)
-    }
-    reader.readAsDataURL(file)
   }
 
   // 投稿の作成関数
   const handleSubmitPost: SubmitHandler<PostType> = async (data) => {
     setIsSubmitting(true)
-    if (file) {
+    if (uploadedFile) {
       // アプリイメージ画像の参照とURL生成
       const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
       const N = 16
@@ -99,8 +101,11 @@ const Create: NextPage = () => {
         .join('')
 
       // Cloud storageへアップロード
-      const storageRef = ref(storage, `images/${randomChar}_${file.name}`)
-      await uploadBytes(storageRef, file)
+      const storageRef = ref(
+        storage,
+        `images/${randomChar}_${uploadedFile.name}`
+      )
+      await uploadBytes(storageRef, uploadedFile)
         .then(() => {
           console.log('画像アップロードに成功しました')
         })
@@ -110,7 +115,7 @@ const Create: NextPage = () => {
 
       // cloud storageのURLを取得
       await getDownloadURL(
-        ref(storage, `images/${randomChar}_${file.name}`)
+        ref(storage, `images/${randomChar}_${uploadedFile.name}`)
       ).then((url) => {
         // 追加する項目の定義
         const collectionRef = collection(db, 'posts')
