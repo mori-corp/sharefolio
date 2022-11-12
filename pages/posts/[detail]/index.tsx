@@ -42,6 +42,7 @@ import { useUser } from '@/lib/auth'
 import { AuthorType } from '@/types/author'
 
 type CommentType = {
+  uid: string
   username: string
   avator: string
   text: string
@@ -132,6 +133,7 @@ const Detail: NextPage = () => {
         setComments(
           snapshot.docs.map((doc) => ({
             ...doc.data(),
+            uid: doc.id,
             username: doc.data().username,
             avator: doc.data().photoUrl,
             text: doc.data().text,
@@ -401,7 +403,7 @@ const Detail: NextPage = () => {
                   px={{ base: 4, sm: 8 }}
                   textAlign={'left'}
                   mb={4}
-                  key={comment.timestamp}
+                  key={comment.uid}
                 >
                   <ListItem>
                     <Flex alignItems={'center'} justifyContent={'start'}>
