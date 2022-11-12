@@ -77,8 +77,14 @@ const Posts: NextPage = () => {
   }
   return (
     <Layout title={'ShareFolio｜ポートフォリオの共有サイト'}>
-      <Heading as="h1" textAlign={'center'} mt={16}>
-        投稿一覧
+      <Heading
+        fontSize={'lg'}
+        color={'gray.500'}
+        textAlign={'center'}
+        mt={16}
+        mx={4}
+      >
+        エンジニアのための、オリジナルアプリ・ポートフォリオの共有コミュニティ
       </Heading>
 
       <Container display={'flex'} maxW={'5xl'} p={{ base: 2, md: 12 }}>
