@@ -395,17 +395,16 @@ const Detail: NextPage = () => {
           <UnorderedList styleType="none" m={0}>
             {comments.map((comment) => (
               <>
-                <Stack
-                  rounded={'lg'}
-                  bg={'white'}
-                  boxShadow={'lg'}
-                  py={4}
-                  px={{ base: 4, sm: 8 }}
-                  textAlign={'left'}
-                  mb={4}
-                  key={comment.uid}
-                >
-                  <ListItem>
+                <ListItem key={comment.uid}>
+                  <Stack
+                    rounded={'lg'}
+                    bg={'white'}
+                    boxShadow={'lg'}
+                    py={4}
+                    px={{ base: 4, sm: 8 }}
+                    textAlign={'left'}
+                    mb={4}
+                  >
                     <Flex alignItems={'center'} justifyContent={'start'}>
                       {/* アイコン */}
                       <Image
@@ -425,8 +424,8 @@ const Detail: NextPage = () => {
                     <Text fontSize={'sm'} py={4}>
                       {comment.text}
                     </Text>
-                  </ListItem>
-                </Stack>
+                  </Stack>
+                </ListItem>
               </>
             ))}
           </UnorderedList>
