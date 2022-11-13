@@ -84,7 +84,6 @@ export const SignupForm: React.FC = () => {
             username: user.displayName,
             photoUrl: user.photoURL,
           })
-          router.push('/')
         } else {
           console.log('No user exists!')
         }
