@@ -394,39 +394,37 @@ const Detail: NextPage = () => {
           {/* 各コメント */}
           <UnorderedList styleType="none" m={0}>
             {comments.map((comment) => (
-              <>
-                <ListItem key={comment.uid}>
-                  <Stack
-                    rounded={'lg'}
-                    bg={'white'}
-                    boxShadow={'lg'}
-                    py={4}
-                    px={{ base: 4, sm: 8 }}
-                    textAlign={'left'}
-                    mb={4}
-                  >
-                    <Flex alignItems={'center'} justifyContent={'start'}>
-                      {/* アイコン */}
-                      <Image
-                        src={comment.avator ? comment.avator : '/user.png'}
-                        boxSize={'28px'}
-                        borderRadius={'full'}
-                        alt={`icon of ${comment.username}`}
-                        mr={2}
-                      />
-                      {/* ユーザー名 */}
-                      <Text fontSize={'sm'}>{comment.username}さん</Text>
-                      <Text ml={2} fontSize={'sm'} color={'gray.500'}>
-                        {getDisplayTime(comment.timestamp)}
-                      </Text>
-                    </Flex>
-                    {/* コメント内容 */}
-                    <Text fontSize={'sm'} py={4}>
-                      {comment.text}
+              <ListItem key={comment.uid}>
+                <Stack
+                  rounded={'lg'}
+                  bg={'white'}
+                  boxShadow={'lg'}
+                  py={4}
+                  px={{ base: 4, sm: 8 }}
+                  textAlign={'left'}
+                  mb={4}
+                >
+                  <Flex alignItems={'center'} justifyContent={'start'}>
+                    {/* アイコン */}
+                    <Image
+                      src={comment.avator ? comment.avator : '/user.png'}
+                      boxSize={'28px'}
+                      borderRadius={'full'}
+                      alt={`icon of ${comment.username}`}
+                      mr={2}
+                    />
+                    {/* ユーザー名 */}
+                    <Text fontSize={'sm'}>{comment.username}さん</Text>
+                    <Text ml={2} fontSize={'sm'} color={'gray.500'}>
+                      {getDisplayTime(comment.timestamp)}
                     </Text>
-                  </Stack>
-                </ListItem>
-              </>
+                  </Flex>
+                  {/* コメント内容 */}
+                  <Text fontSize={'sm'} py={4}>
+                    {comment.text}
+                  </Text>
+                </Stack>
+              </ListItem>
             ))}
           </UnorderedList>
 
