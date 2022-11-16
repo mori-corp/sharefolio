@@ -78,6 +78,21 @@ export const LoginForm: React.FC = () => {
     }
   }
 
+  // ゲストログイン
+  const handleGuestLogin = async () => {
+    setIsSubmitting(true)
+    try {
+      await signInWithEmailAndPassword(auth, 'guest@test.com', 'guestuser')
+      router.push('/')
+    } catch (erorrs) {
+      setIsSubmitting(false)
+      console.log(errors)
+      alert(
+        'ログインに失敗しました。メールアドレスかパスワードに誤りがあります。'
+      )
+    }
+  }
+
   return (
     <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.50'}>
       <Stack
@@ -152,7 +167,7 @@ export const LoginForm: React.FC = () => {
               <FormControl
                 id="password"
                 isInvalid={errors.password ? true : false}
-                mb={4}
+                mb={8}
               >
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
@@ -182,12 +197,12 @@ export const LoginForm: React.FC = () => {
                 </FormErrorMessage>
               </FormControl>
 
-              {/* Submitボタン */}
-              <Stack spacing={10} pt={2}>
+              {/* ログインボタン */}
+              <Stack>
                 <Button
                   type="submit"
                   loadingText="Submitting"
-                  size="lg"
+                  size="md"
                   bg={'blue.400'}
                   color={'white'}
                   _hover={{
@@ -200,21 +215,35 @@ export const LoginForm: React.FC = () => {
               </Stack>
             </form>
 
+            {/* ゲストログインボタン */}
+            <Button
+              onClick={handleGuestLogin}
+              loadingText="Submitting"
+              size="md"
+              bg={'green.400'}
+              color={'white'}
+              _hover={{
+                bg: 'green.500',
+              }}
+              isLoading={isSubmitting}
+            >
+              ゲストログイン
+            </Button>
+
             {/* Google Sign inボタン */}
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={'pink.400'}
-                color={'white'}
-                _hover={{
-                  bg: ' pink.500',
-                }}
-                onClick={handleGoogleSignIn}
-              >
-                Login with Google
-              </Button>
-            </Stack>
+            <Button
+              loadingText="Submitting"
+              size="md"
+              bg={'pink.400'}
+              color={'white'}
+              _hover={{
+                bg: ' pink.500',
+              }}
+              onClick={handleGoogleSignIn}
+              isLoading={isSubmitting}
+            >
+              Login with Google
+            </Button>
           </Stack>
         </Box>
       </Stack>
