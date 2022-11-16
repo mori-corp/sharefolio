@@ -26,8 +26,8 @@ https://sharefolio2022.web.app/
 
 # テスト用アカウント
 
-- メールアドレス　： test@test.com
-- パスワード　　　： test2022
+- メールアドレス　： guest@test.com
+- パスワード　　　： guestuser
 
 <br>
 
