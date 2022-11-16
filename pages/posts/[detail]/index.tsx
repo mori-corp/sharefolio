@@ -254,7 +254,9 @@ const Detail: NextPage = () => {
             py={10}
             px={{ base: 4, md: 10 }}
           >
-            <Text fontSize={{ base: 'sm', sm: 'md' }}>{post.description}</Text>
+            <Text fontSize={{ base: 'sm', sm: 'md' }} align={'left'}>
+              {post.description}
+            </Text>
           </Box>
 
           {/* アプリ画像 */}
