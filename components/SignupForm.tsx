@@ -222,11 +222,11 @@ export const SignupForm: React.FC = () => {
               </FormControl>
 
               {/* Submitボタン */}
-              <Stack spacing={10} pt={2}>
+              <Stack pt={2}>
                 <Button
                   type="submit"
                   loadingText="Submitting"
-                  size="lg"
+                  size="md"
                   bg={'blue.400'}
                   color={'white'}
                   _hover={{
@@ -240,10 +240,10 @@ export const SignupForm: React.FC = () => {
             </form>
 
             {/* Google Sign inボタン */}
-            <Stack spacing={10} pt={2}>
+            <Stack>
               <Button
                 loadingText="Submitting"
-                size="lg"
+                size="md"
                 bg={'pink.400'}
                 color={'white'}
                 _hover={{
