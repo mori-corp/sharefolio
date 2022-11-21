@@ -1,5 +1,3 @@
-// 投稿作成ページ
-
 import React, { useState } from 'react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
@@ -29,6 +27,9 @@ import { validateImage } from 'image-validator'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { PostType } from '@/types/post'
 
+/**
+    投稿作成ページ
+ */
 const Create: NextPage = () => {
   const [language, setLanguage] = useState<string[]>([])
   const [uploadedFile, setUploadedFile] = useState<File>()
@@ -48,17 +49,17 @@ const Create: NextPage = () => {
   // チェックボックスの値の取得関数
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target
+    // case1: 言語にチェックがされた時
     if (checked) {
-      // case1: 言語にチェックがされた時
       setLanguage([...language, value])
-    } else {
       // case2: 言語からチェックがはずされた時
+    } else {
       setLanguage(language.filter((e) => e !== value))
     }
   }
 
   // アップロードされたファイルのバリデーション関数
-  const validateFile = async (file: File) => {
+  const getValidateFileResult = async (file: File) => {
     // 3GBを最大のファイルサイズに設定
     const limitFileSize = 3 * 1024 * 1024
     if (file.size > limitFileSize) {
@@ -79,7 +80,7 @@ const Create: NextPage = () => {
     const reader = new FileReader()
     if (e.target.files !== null) {
       const file = e.target.files[0]
-      if (!(await validateFile(file))) {
+      if (!(await getValidateFileResult(file))) {
         return
       }
       reader.onloadend = async () => {
@@ -111,6 +112,7 @@ const Create: NextPage = () => {
         })
         .catch((error) => {
           console.log('画像アップロードに失敗しました', error)
+          alert('画像ファイルのアップロードに問題が発生しました。')
         })
 
       // cloud storageのURLを取得
@@ -133,9 +135,17 @@ const Create: NextPage = () => {
         }
         // データベースへの追加（document_idは、firebaseが自動生成）
         addDoc(collectionRef, payload)
+          .then(() => {
+            alert('投稿を作成しました！')
+            router.push('/')
+          })
+          .catch((error) => {
+            alert('投稿の作成に失敗しました。もう一度、やり直してください。')
+            console.log(error)
+          })
       })
     } else {
-      // 画像がアップロードされない場合
+      // 画像情報がない場合
       const collectionRef = collection(db, 'posts')
       const payload = {
         authorId: userId,
@@ -151,10 +161,16 @@ const Create: NextPage = () => {
       }
       // データベースへの追加（document_idは、firebaseが自動生成）
       addDoc(collectionRef, payload)
+        .then(() => {
+          alert('投稿を作成しました！')
+          router.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('投稿の作成に失敗しました。もう一度やり直してください。')
+        })
     }
 
-    //投稿一覧へリダイレクト
-    router.push('/')
     setIsSubmitting(false)
   }
 

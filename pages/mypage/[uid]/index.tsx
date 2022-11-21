@@ -26,8 +26,16 @@ import { useUser } from '@/lib/auth'
 import { validateImage } from 'image-validator'
 import { useRouter } from 'next/router'
 
+/**
+    ユーザープロフィールページ
+ */
 const Mypage: NextPage = () => {
+  /**
+   * Recoilで状態管理された、ログインユーザーの情報
+   * @type {UserType}
+   */
   const user = useUser()
+
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [userPhotoUrl, setUserPhotoUrl] = useState('')
@@ -48,10 +56,12 @@ const Mypage: NextPage = () => {
           setEmail(docSnap.data().email)
           setUserPhotoUrl(docSnap.data().photoUrl)
         } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!')
+          // doc.data()がundefinedの場合
+          console.log('ユーザーが存在しません。')
+          alert('ユーザー情報が存在しません。')
         }
       } catch (error) {
+        alert('ユーザー情報の読み込みに失敗しました。')
         console.log(error)
       }
     }
@@ -97,7 +107,7 @@ const Mypage: NextPage = () => {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault()
-    //画像がアップロードされる場合
+    // ユーザーアイコンの画像情報が存在する場合
     if (uploadedFile) {
       // アプリイメージ画像の参照とURL生成
       const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -131,8 +141,17 @@ const Mypage: NextPage = () => {
         }
         // firebase databaseの更新
         updateDoc(docRef, payload)
+          .then(() => {
+            alert('プロフィールを更新しました。')
+            router.push('/')
+          })
+          .catch((error) => {
+            console.log(error)
+            alert('問題が発生しました。もう一度やり直してください。')
+            router.reload()
+          })
 
-        // もし、既にicon画像がstorageにある場合は、ファイルを削除
+        // 既にicon画像がstorageにある場合は、ファイルを削除
         if (userPhotoUrl) {
           const imageRef = ref(storage, userPhotoUrl)
           deleteObject(imageRef)
@@ -145,17 +164,23 @@ const Mypage: NextPage = () => {
         }
       })
     } else {
-      // ユーザーのアイコン画像がファイル選択されていない場合
+      // ユーザーアイコンの画像情報が存在しない場合
       const docRef = doc(db, 'users', user.uid)
       const payload = {
         username: username,
       }
       // firebase databaseの更新
       updateDoc(docRef, payload)
+        .then(() => {
+          alert('プロフィールを更新しました。')
+          router.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('問題が発生しました。もう一度やり直してください。')
+          router.reload()
+        })
     }
-
-    alert('プロフィールを更新しました。')
-    router.push('/')
   }
 
   return (
