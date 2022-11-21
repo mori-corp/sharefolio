@@ -5,6 +5,9 @@ import { useAuth } from '@/lib/auth'
 import { useRouter } from 'next/router'
 import { LoginForm } from '@/components/LoginForm'
 
+/**
+    ログインページ
+ */
 const Login: NextPage = () => {
   const user = useAuth()
   const router = useRouter()

@@ -1,5 +1,3 @@
-// 投稿一覧ページ
-
 import type { NextPage } from 'next'
 import Layout from '@/components/Layout'
 import React, { useState, useEffect } from 'react'
@@ -21,6 +19,10 @@ import { useSetRecoilState } from 'recoil'
 import { authorIdState, postIdState } from '@/lib/atoms'
 import { PostType } from '@/types/post'
 import { AuthorType } from '@/types/author'
+
+/**
+    投稿一覧ページ
+ */
 const Posts: NextPage = () => {
   const [posts, setPosts] = useState<PostType[]>([])
   const setPostId = useSetRecoilState(postIdState)
