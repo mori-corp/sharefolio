@@ -77,6 +77,9 @@ const Detail: NextPage = () => {
   const postIdValue = usePostIdValue()
   const authorIdValue = useAuhotrIdValue()
   const setPostDetail = useSetRecoilState<PostType>(postState)
+  /**
+   * Recoilで状態管理された、ログインユーザーの情報
+   */
   const user = useUser()
 
   // postsコレクションから、投稿データを参照

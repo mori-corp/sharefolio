@@ -36,7 +36,9 @@ const Create: NextPage = () => {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Recoilで状態管理しているuserのuidを投稿者のid(userId)として設定
+  /**
+   * Recoilで状態管理された、ログインユーザーの情報
+   */
   const user = useUser()
   const userId = user.uid
 

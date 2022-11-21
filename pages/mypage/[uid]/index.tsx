@@ -32,7 +32,6 @@ import { useRouter } from 'next/router'
 const Mypage: NextPage = () => {
   /**
    * Recoilで状態管理された、ログインユーザーの情報
-   * @type {UserType}
    */
   const user = useUser()
 
