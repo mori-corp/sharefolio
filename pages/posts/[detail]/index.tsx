@@ -1,5 +1,3 @@
-//各投稿の詳細ページ
-
 import { useState, useEffect } from 'react'
 import { db } from '../../../firebase'
 import {
@@ -48,7 +46,9 @@ type CommentType = {
   text: string
   timestamp: number
 }
-
+/**
+    各投稿の詳細ページ
+ */
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({
     id: '',
@@ -101,8 +101,9 @@ const Detail: NextPage = () => {
           authorId: docSnap.data().authorId,
         })
       } else {
-        // doc.data() will be undefined in this case
+        // doc.data() が undefined のケース
         console.log('No such document!')
+        alert('投稿情報の読み込みに失敗しました。')
       }
     }
     // usersコレクションから、投稿者情報を参照
@@ -124,7 +125,6 @@ const Detail: NextPage = () => {
     }
 
     // コメントを参照
-    // 各投稿のdocRefはとれている
     const readComments = () => {
       const collectionRef = collection(docRef, 'comments')
       const q = query(collectionRef, orderBy('timestamp', 'desc'))
@@ -149,7 +149,7 @@ const Detail: NextPage = () => {
   }, [])
 
   // コメントの追加機能
-  const newComment = async () => {
+  const addComment = async () => {
     try {
       // ログインユーザー情報を取得
       const docRef = doc(db, 'users', user.uid)
@@ -168,9 +168,11 @@ const Detail: NextPage = () => {
           timestamp: serverTimestamp(),
         })
       }
+    } catch (error) {
+      console.log(error)
+      alert('投稿に失敗しました。もう一度、やり直してください。')
+    } finally {
       setComment('')
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -207,13 +209,10 @@ const Detail: NextPage = () => {
     switch (level) {
       case 'beginner':
         return '初級'
-        break
       case 'intermediate':
         return '中級'
-        break
       case 'advanced':
         return '上級'
-        break
     }
   }
 
@@ -364,7 +363,7 @@ const Detail: NextPage = () => {
                     bg: 'blue.500',
                   }}
                   ml={2}
-                  onClick={newComment}
+                  onClick={addComment}
                 >
                   送信
                 </Button>
