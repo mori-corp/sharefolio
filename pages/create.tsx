@@ -307,7 +307,7 @@ const Create: NextPage = () => {
               </FormLabel>
               <input id='image' type='file' onChange={handleImageSelect} />
               <FormHelperText fontSize={'xs'}>
-                例：トップページのスクリーンショット等
+                例：トップページのスクリーンショット等（アスペクト比16:9など、横長の画像推奨）
               </FormHelperText>
             </FormControl>
 
