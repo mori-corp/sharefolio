@@ -26,8 +26,15 @@ import { useUser } from '@/lib/auth'
 import { validateImage } from 'image-validator'
 import { useRouter } from 'next/router'
 
+/**
+    ユーザープロフィールページ
+ */
 const Mypage: NextPage = () => {
+  /**
+   * Recoilで状態管理された、ログインユーザーの情報
+   */
   const user = useUser()
+
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [userPhotoUrl, setUserPhotoUrl] = useState('')
@@ -48,10 +55,12 @@ const Mypage: NextPage = () => {
           setEmail(docSnap.data().email)
           setUserPhotoUrl(docSnap.data().photoUrl)
         } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!')
+          // doc.data()がundefinedの場合
+          console.log('ユーザーが存在しません。')
+          alert('ユーザー情報が存在しません。')
         }
       } catch (error) {
+        alert('ユーザー情報の読み込みに失敗しました。')
         console.log(error)
       }
     }
@@ -97,7 +106,7 @@ const Mypage: NextPage = () => {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault()
-    //画像がアップロードされる場合
+    // ユーザーアイコンの画像情報が存在する場合
     if (uploadedFile) {
       // アプリイメージ画像の参照とURL生成
       const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -131,8 +140,17 @@ const Mypage: NextPage = () => {
         }
         // firebase databaseの更新
         updateDoc(docRef, payload)
+          .then(() => {
+            alert('プロフィールを更新しました。')
+            router.push('/')
+          })
+          .catch((error) => {
+            console.log(error)
+            alert('問題が発生しました。もう一度やり直してください。')
+            router.reload()
+          })
 
-        // もし、既にicon画像がstorageにある場合は、ファイルを削除
+        // 既にicon画像がstorageにある場合は、ファイルを削除
         if (userPhotoUrl) {
           const imageRef = ref(storage, userPhotoUrl)
           deleteObject(imageRef)
@@ -145,17 +163,23 @@ const Mypage: NextPage = () => {
         }
       })
     } else {
-      // ユーザーのアイコン画像がファイル選択されていない場合
+      // ユーザーアイコンの画像情報が存在しない場合
       const docRef = doc(db, 'users', user.uid)
       const payload = {
         username: username,
       }
       // firebase databaseの更新
       updateDoc(docRef, payload)
+        .then(() => {
+          alert('プロフィールを更新しました。')
+          router.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('問題が発生しました。もう一度やり直してください。')
+          router.reload()
+        })
     }
-
-    alert('プロフィールを更新しました。')
-    router.push('/')
   }
 
   return (
@@ -201,17 +225,17 @@ const Mypage: NextPage = () => {
           {/* プロフィール編集フォーム */}
           <form onSubmit={handleUpdateButtonClick}>
             {/* ユーザーネーム入力欄 */}
-            <FormControl id="username" isRequired mb={8}>
+            <FormControl id='username' isRequired mb={8}>
               <FormLabel fontWeight={'bold'} color={'blue.400'}>
                 ユーザーネーム
               </FormLabel>
               <Input
-                id="username"
-                type="username"
-                placeholder="Usernameを入力"
+                id='username'
+                type='username'
+                placeholder='Usernameを入力'
                 value={username ? username : ''}
                 onChange={(e) => setUsername(e.target.value)}
-                autoComplete="off"
+                autoComplete='off'
               />
             </FormControl>
 
@@ -220,7 +244,7 @@ const Mypage: NextPage = () => {
               <FormLabel fontWeight={'bold'} color={'blue.400'}>
                 プロフィールアイコンを変更する
               </FormLabel>
-              <input type="file" onChange={handleImageSelect} />
+              <input type='file' onChange={handleImageSelect} />
               <Text fontSize={'sm'} mt={2} color={'red.500'}>
                 {!isUploaded && '画像をアップロードしています...'}
               </Text>
@@ -228,8 +252,8 @@ const Mypage: NextPage = () => {
 
             {/* 更新ボタン */}
             <Button
-              type="submit"
-              loadingText="Submitting"
+              type='submit'
+              loadingText='Submitting'
               bg={'blue.400'}
               color={'white'}
               _hover={{
@@ -241,10 +265,10 @@ const Mypage: NextPage = () => {
             </Button>
 
             {/* 戻るボタン */}
-            <NextLink href="/" passHref>
+            <NextLink href='/' passHref>
               <Button
-                as="a"
-                loadingText="Submitting"
+                as='a'
+                loadingText='Submitting'
                 bg={'gray.400'}
                 color={'white'}
                 _hover={{

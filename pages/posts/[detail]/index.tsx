@@ -1,5 +1,3 @@
-//各投稿の詳細ページ
-
 import { useState, useEffect } from 'react'
 import { db } from '../../../firebase'
 import {
@@ -48,7 +46,9 @@ type CommentType = {
   text: string
   timestamp: number
 }
-
+/**
+    各投稿の詳細ページ
+ */
 const Detail: NextPage = () => {
   const [post, setPost] = useState<PostType>({
     id: '',
@@ -77,6 +77,9 @@ const Detail: NextPage = () => {
   const postIdValue = usePostIdValue()
   const authorIdValue = useAuhotrIdValue()
   const setPostDetail = useSetRecoilState<PostType>(postState)
+  /**
+   * Recoilで状態管理された、ログインユーザーの情報
+   */
   const user = useUser()
 
   // postsコレクションから、投稿データを参照
@@ -101,8 +104,9 @@ const Detail: NextPage = () => {
           authorId: docSnap.data().authorId,
         })
       } else {
-        // doc.data() will be undefined in this case
+        // doc.data() が undefined のケース
         console.log('No such document!')
+        alert('投稿情報の読み込みに失敗しました。')
       }
     }
     // usersコレクションから、投稿者情報を参照
@@ -124,7 +128,6 @@ const Detail: NextPage = () => {
     }
 
     // コメントを参照
-    // 各投稿のdocRefはとれている
     const readComments = () => {
       const collectionRef = collection(docRef, 'comments')
       const q = query(collectionRef, orderBy('timestamp', 'desc'))
@@ -149,7 +152,7 @@ const Detail: NextPage = () => {
   }, [])
 
   // コメントの追加機能
-  const newComment = async () => {
+  const addComment = async () => {
     try {
       // ログインユーザー情報を取得
       const docRef = doc(db, 'users', user.uid)
@@ -168,9 +171,11 @@ const Detail: NextPage = () => {
           timestamp: serverTimestamp(),
         })
       }
+    } catch (error) {
+      console.log(error)
+      alert('投稿に失敗しました。もう一度、やり直してください。')
+    } finally {
       setComment('')
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -207,13 +212,10 @@ const Detail: NextPage = () => {
     switch (level) {
       case 'beginner':
         return '初級'
-        break
       case 'intermediate':
         return '中級'
-        break
       case 'advanced':
         return '上級'
-        break
     }
   }
 
@@ -234,7 +236,7 @@ const Detail: NextPage = () => {
           textAlign={'center'}
           w={{ base: '100%', md: '80%' }}
           p={4}
-          spacing="4"
+          spacing='4'
         >
           {/* アプリ名 */}
           <Text
@@ -262,10 +264,10 @@ const Detail: NextPage = () => {
           {/* アプリ画像 */}
           {post.image && (
             <Image
-              borderRadius="lg"
+              borderRadius='lg'
               src={post.image}
               alt={`image of ${post.appName}`}
-              objectFit="contain"
+              objectFit='contain'
               maxH={'lg'}
             />
           )}
@@ -282,7 +284,7 @@ const Detail: NextPage = () => {
             <List spacing={4} fontSize={{ base: 'sm', sm: 'md' }}>
               {/* アプリURL */}
               <ListItem>
-                <ListIcon color="green.500" />
+                <ListIcon color='green.500' />
                 アプリURL：
                 <Link href={post.appUrl} color={'blue.400'} isExternal>
                   {post.appUrl}
@@ -291,7 +293,7 @@ const Detail: NextPage = () => {
 
               {/* GitHub */}
               <ListItem>
-                <ListIcon color="green.500" />
+                <ListIcon color='green.500' />
                 GitHub：
                 <Link href={post.github} color={'blue.400'} isExternal>
                   {post.github}
@@ -300,14 +302,14 @@ const Detail: NextPage = () => {
 
               {/* 使用言語 */}
               <ListItem>
-                <ListIcon color="green.500" />
+                <ListIcon color='green.500' />
                 使用言語：
                 <LanguageTags tags={post.language} />
               </ListItem>
 
               {/* レベル */}
               <ListItem>
-                <ListIcon color="green.500" />
+                <ListIcon color='green.500' />
                 レベル：{levels(post.level)}
               </ListItem>
             </List>
@@ -343,10 +345,10 @@ const Detail: NextPage = () => {
               <Flex alignItems={'center'}>
                 {/* 入力欄フォーム */}
                 <Input
-                  id="comment"
-                  type="text"
-                  placeholder="コメントを入力"
-                  autoComplete="off"
+                  id='comment'
+                  type='text'
+                  placeholder='コメントを入力'
+                  autoComplete='off'
                   bg={'white'}
                   my={4}
                   value={comment}
@@ -364,7 +366,7 @@ const Detail: NextPage = () => {
                     bg: 'blue.500',
                   }}
                   ml={2}
-                  onClick={newComment}
+                  onClick={addComment}
                 >
                   送信
                 </Button>
@@ -375,10 +377,10 @@ const Detail: NextPage = () => {
               <Text fontWeight={'bold'} color={'gray.400'}>
                 ログインするとコメントできます
               </Text>
-              <NextLink href="/login" passHref>
+              <NextLink href='/login' passHref>
                 <Button
                   px={10}
-                  as="a"
+                  as='a'
                   fontSize={'sm'}
                   fontWeight={600}
                   color={'white'}
@@ -394,7 +396,7 @@ const Detail: NextPage = () => {
           )}
 
           {/* 各コメント */}
-          <UnorderedList styleType="none" m={0}>
+          <UnorderedList styleType='none' m={0}>
             {comments.map((comment) => (
               <ListItem key={comment.uid}>
                 <Stack
@@ -436,9 +438,9 @@ const Detail: NextPage = () => {
             {user.uid === post.authorId && (
               <NextLink href={`/posts/${detail}/edit`} passHref>
                 <Button
-                  as="a"
-                  loadingText="Submitting"
-                  size="lg"
+                  as='a'
+                  loadingText='Submitting'
+                  size='lg'
                   bg={'pink.400'}
                   color={'white'}
                   _hover={{
@@ -452,11 +454,11 @@ const Detail: NextPage = () => {
             )}
 
             {/* 戻るボタン */}
-            <NextLink href="/" passHref>
+            <NextLink href='/' passHref>
               <Button
-                as="a"
-                loadingText="Submitting"
-                size="lg"
+                as='a'
+                loadingText='Submitting'
+                size='lg'
                 bg={'gray.400'}
                 color={'white'}
                 _hover={{

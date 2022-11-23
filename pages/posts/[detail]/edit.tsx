@@ -1,5 +1,3 @@
-//投稿の編集ページ
-
 import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import NextLink from 'next/link'
@@ -36,6 +34,9 @@ import { DeleteButton } from '@/components/DeleteButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { PostType } from '@/types/post'
 
+/**
+    投稿の編集ページ
+ */
 const Edit: NextPage = () => {
   const {
     id,
@@ -112,7 +113,7 @@ const Edit: NextPage = () => {
   //投稿の編集
   const handleEditPost: SubmitHandler<PostType> = async (data) => {
     setIsSubmitting(true)
-    // 新しい画像がアップされている場合の投稿動作
+    // 新しく画像がアップされている場合の投稿動作
     if (editedFile) {
       // アプリイメージ画像の参照とURL生成
       const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -128,7 +129,10 @@ const Edit: NextPage = () => {
           console.log('画像アップロードに成功しました')
         })
         .catch((error) => {
-          console.log('画像アップロードに失敗しました。error: ', error)
+          console.log(error)
+          alert(
+            '画像のアップロードに失敗しました。もう一度やり直してください。'
+          )
         })
 
       // cloud storageのURLを取得
@@ -147,9 +151,18 @@ const Edit: NextPage = () => {
           github: data.github,
         }
 
+        // 新しい画像と共に、投稿を編集する
         updateDoc(docRef, payload)
+          .then(() => {
+            alert('投稿の編集が完了しました！')
+            router.push('/')
+          })
+          .catch((error) => {
+            console.log(error)
+            alert('投稿の編集に失敗しました。もう一度やり直してください。')
+          })
 
-        // 既に画像がstorageに存在場合は、元ファイルを削除
+        // 既に画像がstorageに存在する場合は、元ファイルを削除
         if (image) {
           const imageRef = ref(storage, image)
           deleteObject(imageRef)
@@ -162,7 +175,7 @@ const Edit: NextPage = () => {
         }
       })
     } else {
-      //画像がアップロードされていない場合の投稿動作
+      //画像情報が存在しない場合の投稿動作
       const docRef = doc(db, 'posts', id)
       const payload = {
         appName: data.appName,
@@ -172,33 +185,46 @@ const Edit: NextPage = () => {
         language: editedLanguage,
         appUrl: data.appUrl,
         github: data.github,
-        // imageは変更なし
       }
+
+      // 画像データは変更せず、投稿を編集
       updateDoc(docRef, payload)
+        .then(() => {
+          alert('投稿の編集が完了しました！')
+          router.push('/')
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('投稿の編集に失敗しました。もう一度やり直してください。')
+        })
       setIsSubmitting(false)
     }
-
-    router.push('/')
   }
 
   //投稿の削除
   const handleDeleteButtonClick = async (id: string) => {
     // firestoreのドキュメントを、Recoilでセットしている投稿idで参照
     const docRef = doc(db, 'posts', id) //第３引数は、document id
-    await deleteDoc(docRef)
 
-    // 画像ファイルを削除
-    if (image) {
-      const imageRef = ref(storage, image)
-      deleteObject(imageRef)
-        .then(() => {
-          console.log('画像ファイルが、storageから削除されました。')
-        })
-        .catch((error) => {
-          console.log('画像ファイルの削除に失敗しました。error: ', error)
-        })
+    try {
+      await deleteDoc(docRef)
+      // 画像ファイルを削除
+      if (image) {
+        const imageRef = ref(storage, image)
+        deleteObject(imageRef)
+          .then(() => {
+            console.log('画像ファイルが、storageから削除されました。')
+          })
+          .catch((error) => {
+            console.log('画像ファイルの削除に失敗しました。error: ', error)
+          })
+      }
+      alert('投稿を削除しました。')
+      router.push('/')
+    } catch (error) {
+      console.log(error)
+      alert('問題が発生しました。もう一度やりなおしてください。')
     }
-    router.push('/')
   }
 
   const displayedLanguages = [
@@ -251,15 +277,15 @@ const Edit: NextPage = () => {
             {/* アプリ名 */}
             <FormControl mb={4} isInvalid={errors.appName ? true : false}>
               <FormLabel
-                htmlFor="appName"
+                htmlFor='appName'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 アプリ / サイト名
               </FormLabel>
               <Input
-                id="appName"
-                type="text"
+                id='appName'
+                type='text'
                 {...register('appName', {
                   value: appName,
                   required: '入力が必須の項目です',
@@ -276,12 +302,12 @@ const Edit: NextPage = () => {
 
             {/* タイトル */}
             <FormControl mb={4} isInvalid={errors.title ? true : false}>
-              <FormLabel htmlFor="title" fontWeight={'bold'} color={'blue.500'}>
+              <FormLabel htmlFor='title' fontWeight={'bold'} color={'blue.500'}>
                 投稿タイトル（必須）
               </FormLabel>
               <Input
-                id="title"
-                type="text"
+                id='title'
+                type='text'
                 {...register('title', {
                   value: title,
                   required: '入力が必須の項目です',
@@ -290,7 +316,7 @@ const Edit: NextPage = () => {
                     message: '60文字以内で入力してください',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.title && errors.title.message}
@@ -300,15 +326,15 @@ const Edit: NextPage = () => {
             {/* 説明 */}
             <FormControl mb={4} isInvalid={errors.description ? true : false}>
               <FormLabel
-                htmlFor="description"
+                htmlFor='description'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 説明
               </FormLabel>
               <Textarea
-                id="description"
-                placeholder="アプリやサイトの簡単な説明を記載してください。"
+                id='description'
+                placeholder='アプリやサイトの簡単な説明を記載してください。'
                 {...register('description', {
                   value: description,
                   required: '入力が必須の項目です',
@@ -318,7 +344,7 @@ const Edit: NextPage = () => {
                   },
                 })}
                 rows={10}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.description && errors.description.message}
@@ -327,10 +353,10 @@ const Edit: NextPage = () => {
 
             {/* スクショ画像アップロード */}
             <FormControl mb={4}>
-              <FormLabel htmlFor="image" fontWeight={'bold'} color={'blue.500'}>
+              <FormLabel htmlFor='image' fontWeight={'bold'} color={'blue.500'}>
                 アプリ / サイトの画像
               </FormLabel>
-              <input id="image" type="file" onChange={handleImageSelect} />
+              <input id='image' type='file' onChange={handleImageSelect} />
               <FormHelperText fontSize={'xs'}>
                 例：トップページのスクリーンショット等
               </FormHelperText>
@@ -338,24 +364,24 @@ const Edit: NextPage = () => {
 
             {/* レベル */}
             <FormControl mb={4}>
-              <FormLabel htmlFor="level" fontWeight={'bold'} color={'blue.500'}>
+              <FormLabel htmlFor='level' fontWeight={'bold'} color={'blue.500'}>
                 レベル
               </FormLabel>
               <Select
                 w={40}
-                id="level"
+                id='level'
                 {...register('level', { value: level })}
               >
-                <option value="beginner">初心者</option>
-                <option value="intermediate">中級者</option>
-                <option value="advanced">上級者</option>
+                <option value='beginner'>初心者</option>
+                <option value='intermediate'>中級者</option>
+                <option value='advanced'>上級者</option>
               </Select>
             </FormControl>
 
             {/* 言語設定 */}
             <FormControl mb={4}>
               <FormLabel
-                htmlFor="language"
+                htmlFor='language'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
@@ -364,7 +390,7 @@ const Edit: NextPage = () => {
               <CheckboxGroup defaultValue={language}>
                 {displayedLanguages.map((displayedLanguage) => (
                   <Checkbox
-                    id="language"
+                    id='language'
                     m={2}
                     key={displayedLanguage}
                     onChange={handleCheckBoxChange}
@@ -379,16 +405,16 @@ const Edit: NextPage = () => {
             {/* アプリURL */}
             <FormControl mb={4} isInvalid={errors.appUrl ? true : false}>
               <FormLabel
-                htmlFor="appUrl"
+                htmlFor='appUrl'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 アプリ / サイトURL（必須）
               </FormLabel>
               <Input
-                id="appUrl"
-                type="text"
-                placeholder="URL: "
+                id='appUrl'
+                type='text'
+                placeholder='URL: '
                 {...register('appUrl', {
                   value: appUrl,
                   required: '入力が必須の項目です',
@@ -398,7 +424,7 @@ const Edit: NextPage = () => {
                     message: 'アドレスの形式が正しくありません',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.appUrl && errors.appUrl.message}
@@ -408,16 +434,16 @@ const Edit: NextPage = () => {
             {/* Github */}
             <FormControl mb={4} isInvalid={errors.github ? true : false}>
               <FormLabel
-                htmlFor="github"
+                htmlFor='github'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 GitHub
               </FormLabel>
               <Input
-                id="github"
-                type="text"
-                placeholder="GitHub: "
+                id='github'
+                type='text'
+                placeholder='GitHub: '
                 {...register('github', {
                   value: github,
                   pattern: {
@@ -426,7 +452,7 @@ const Edit: NextPage = () => {
                     message: 'アドレスの形式が正しくありません',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.github && errors.github.message}
@@ -440,8 +466,8 @@ const Edit: NextPage = () => {
             <Stack>
               {/* 更新ボタン */}
               <Button
-                type="submit"
-                size="lg"
+                type='submit'
+                size='lg'
                 bg={'blue.400'}
                 color={'white'}
                 _hover={{
@@ -454,10 +480,10 @@ const Edit: NextPage = () => {
 
               {/* 削除ボタン */}
               <DeleteButton
-                headerText="投稿の削除"
-                bodyText="投稿を削除します。この操作は取り消すことができませんが、よろしいですか？"
+                headerText='投稿の削除'
+                bodyText='投稿を削除します。この操作は取り消すことができませんが、よろしいですか？'
                 onHandleDeleteButtonClick={() => handleDeleteButtonClick(id)}
-                buttonText="削除"
+                buttonText='削除'
                 isDanger={true}
                 disabled={isSubmitting ? true : false}
               />
@@ -465,8 +491,8 @@ const Edit: NextPage = () => {
               {/* 戻るボタン */}
               <NextLink href={`/posts/${detail}`} passHref>
                 <Button
-                  as="a"
-                  size="lg"
+                  as='a'
+                  size='lg'
                   bg={'gray.400'}
                   color={'white'}
                   _hover={{

@@ -5,6 +5,9 @@ import Layout from '@/components/Layout'
 import { useAuth } from '@/lib/auth'
 import { useRouter } from 'next/router'
 
+/**
+    新規登録ページ
+ */
 const Signup: NextPage = () => {
   const user = useAuth()
   const router = useRouter()
