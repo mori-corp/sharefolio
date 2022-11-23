@@ -128,6 +128,7 @@ const Posts: NextPage = () => {
                       justifyContent={'center'}
                       my={{ sm: 5, md: 0 }}
                       maxW={{ md: 'md' }}
+                      maxH={280}
                     >
                       {/* サムネ画像部分 */}
 
