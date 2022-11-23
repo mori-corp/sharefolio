@@ -50,7 +50,7 @@ export const DesktopNav: React.FC = () => {
                   passHref
                 >
                   <Text
-                    as="a"
+                    as='a'
                     p={2}
                     fontSize={'sm'}
                     fontWeight={'bold'}
@@ -72,9 +72,9 @@ export const DesktopNav: React.FC = () => {
         {/* Sign upボタン */}
         {!isLogin && (
           <>
-            <NextLink href="/login" passHref>
+            <NextLink href='/login' passHref>
               <Button
-                as="a"
+                as='a'
                 display={{ base: 'none', md: 'inline-flex' }}
                 fontSize={'sm'}
                 fontWeight={600}
@@ -87,9 +87,9 @@ export const DesktopNav: React.FC = () => {
                 Login
               </Button>
             </NextLink>
-            <NextLink href="/signup" passHref>
+            <NextLink href='/signup' passHref>
               <Button
-                as="a"
+                as='a'
                 display={{ base: 'none', md: 'inline-flex' }}
                 fontSize={'sm'}
                 fontWeight={600}
@@ -108,7 +108,7 @@ export const DesktopNav: React.FC = () => {
         {/* ログアウトボタン */}
         {isLogin && (
           <Button
-            as="a"
+            as='a'
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}

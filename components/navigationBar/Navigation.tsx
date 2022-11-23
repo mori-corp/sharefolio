@@ -47,11 +47,11 @@ export const Navigation: React.FC = () => {
           h={'60px'}
         >
           {/* *** ロゴ  *** */}
-          <NextLink href="/" passHref>
-            <HStack h={'60px'} display="flex" alignItems={'center'}>
+          <NextLink href='/' passHref>
+            <HStack h={'60px'} display='flex' alignItems={'center'}>
               <Image
-                src="/logo.png"
-                alt="logo"
+                src='/logo.png'
+                alt='logo'
                 w={'100px'}
                 _hover={{
                   cursor: 'pointer',

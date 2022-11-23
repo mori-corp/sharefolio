@@ -121,9 +121,9 @@ export const SignupForm: React.FC = () => {
         >
           <Stack spacing={4} h={'full'}>
             {/* 認証方法の切り替えボタン */}
-            <NextLink href="/login" passHref>
+            <NextLink href='/login' passHref>
               <Text
-                as="a"
+                as='a'
                 my={2}
                 color={'blue.500'}
                 align={'center'}
@@ -140,9 +140,9 @@ export const SignupForm: React.FC = () => {
             <form onSubmit={handleSubmit(handleSignUpWithEmail)}>
               {/* username入力欄 */}
               <FormControl isInvalid={errors.username ? true : false} mb={4}>
-                <FormLabel htmlFor="username">Username</FormLabel>
+                <FormLabel htmlFor='username'>Username</FormLabel>
                 <Input
-                  id="username"
+                  id='username'
                   {...register('username', {
                     required: 'ユーザー名を入力してください',
                     maxLength: {
@@ -150,8 +150,8 @@ export const SignupForm: React.FC = () => {
                       message: '20文字以内で入力してください',
                     },
                   })}
-                  placeholder="ユーザー名"
-                  autoComplete="off"
+                  placeholder='ユーザー名'
+                  autoComplete='off'
                 />
                 <FormErrorMessage>
                   {errors.username && errors.username.message}
@@ -160,13 +160,13 @@ export const SignupForm: React.FC = () => {
 
               {/* email入力欄 */}
               <FormControl
-                id="email"
+                id='email'
                 isInvalid={errors.email ? true : false}
                 mb={4}
               >
-                <FormLabel htmlFor="email">Email address</FormLabel>
+                <FormLabel htmlFor='email'>Email address</FormLabel>
                 <Input
-                  id="email"
+                  id='email'
                   {...register('email', {
                     required: 'メールアドレスを入力してください',
                     pattern: {
@@ -174,9 +174,9 @@ export const SignupForm: React.FC = () => {
                       message: 'メールアドレスの形式が正しくありません',
                     },
                   })}
-                  type="email"
-                  placeholder="メールアドレス"
-                  autoComplete="off"
+                  type='email'
+                  placeholder='メールアドレス'
+                  autoComplete='off'
                 />
                 <FormErrorMessage>
                   {errors.email && errors.email.message}
@@ -185,14 +185,14 @@ export const SignupForm: React.FC = () => {
 
               {/* パスワード入力欄 */}
               <FormControl
-                id="password"
+                id='password'
                 isInvalid={errors.password ? true : false}
                 mb={4}
               >
-                <FormLabel htmlFor="password">Password</FormLabel>
+                <FormLabel htmlFor='password'>Password</FormLabel>
                 <InputGroup>
                   <Input
-                    id="password"
+                    id='password'
                     {...register('password', {
                       required: '6文字以上で入力してください',
                       minLength: {
@@ -201,8 +201,8 @@ export const SignupForm: React.FC = () => {
                       },
                     })}
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="パスワード"
-                    autoComplete="off"
+                    placeholder='パスワード'
+                    autoComplete='off'
                   />
 
                   {/* パスワード可視化ボタン */}
@@ -225,9 +225,9 @@ export const SignupForm: React.FC = () => {
               {/* Submitボタン */}
               <Stack pt={2}>
                 <Button
-                  type="submit"
-                  loadingText="Submitting"
-                  size="md"
+                  type='submit'
+                  loadingText='Submitting'
+                  size='md'
                   bg={'blue.400'}
                   color={'white'}
                   _hover={{
@@ -243,8 +243,8 @@ export const SignupForm: React.FC = () => {
             {/* Google Sign inボタン */}
             <Stack>
               <Button
-                loadingText="Submitting"
-                size="md"
+                loadingText='Submitting'
+                size='md'
                 bg={'pink.400'}
                 color={'white'}
                 _hover={{

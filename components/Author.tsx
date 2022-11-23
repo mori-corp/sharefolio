@@ -8,19 +8,19 @@ type AuthorProps = {
 
 export const Author: React.FC<AuthorProps> = (props) => {
   return (
-    <HStack spacing="2" display="flex" alignItems="center">
+    <HStack spacing='2' display='flex' alignItems='center'>
       {/* プロフィール画像 */}
       <Image
-        borderRadius="full"
-        boxSize="20px"
-        src="/user.png"
+        borderRadius='full'
+        boxSize='20px'
+        src='/user.png'
         alt={`Avatar of ${props.name}`}
-        border="1px"
-        borderColor="gray.200"
+        border='1px'
+        borderColor='gray.200'
       />
 
       {/* ユーザーネーム */}
-      <Text fontWeight="medium" fontSize={'sm'}>
+      <Text fontWeight='medium' fontSize={'sm'}>
         {props.name}
       </Text>
       <Text>—</Text>

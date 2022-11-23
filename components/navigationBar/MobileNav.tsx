@@ -47,7 +47,7 @@ export const MobileNav: React.FC = () => {
               >
                 <NextLink href={navItem.href ?? '#'}>
                   <Text
-                    as="a"
+                    as='a'
                     fontWeight={600}
                     color={'gray.600'}
                     _hover={{
@@ -72,9 +72,9 @@ export const MobileNav: React.FC = () => {
               textDecoration: 'none',
             }}
           >
-            <NextLink href="/posts">
+            <NextLink href='/posts'>
               <Text
-                as="a"
+                as='a'
                 fontWeight={600}
                 color={'gray.600'}
                 _hover={{
@@ -92,9 +92,9 @@ export const MobileNav: React.FC = () => {
       {/* ログアウト状態の時 */}
       {!isLogin && (
         <Flex direction={'column'} maxW={'80px'}>
-          <NextLink href="/login" passHref>
+          <NextLink href='/login' passHref>
             <Button
-              as="a"
+              as='a'
               fontSize={'sm'}
               fontWeight={600}
               color={'white'}
@@ -107,9 +107,9 @@ export const MobileNav: React.FC = () => {
               Login
             </Button>
           </NextLink>
-          <NextLink href="/signup" passHref>
+          <NextLink href='/signup' passHref>
             <Button
-              as="a"
+              as='a'
               fontSize={'sm'}
               fontWeight={600}
               color={'white'}
@@ -127,7 +127,7 @@ export const MobileNav: React.FC = () => {
       {/* ログアウトボタン */}
       {isLogin && (
         <Button
-          as="a"
+          as='a'
           fontSize={'sm'}
           fontWeight={600}
           color={'white'}
