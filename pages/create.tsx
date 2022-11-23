@@ -225,15 +225,15 @@ const Create: NextPage = () => {
             {/* アプリ名 */}
             <FormControl mb={4} isInvalid={errors.appName ? true : false}>
               <FormLabel
-                htmlFor="appName"
+                htmlFor='appName'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 アプリ / サイト名（必須）
               </FormLabel>
               <Input
-                id="appName"
-                type="text"
+                id='appName'
+                type='text'
                 {...register('appName', {
                   required: '入力が必須の項目です',
                   maxLength: {
@@ -241,7 +241,7 @@ const Create: NextPage = () => {
                     message: '30文字以内で入力してください',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.appName && errors.appName.message}
@@ -250,12 +250,12 @@ const Create: NextPage = () => {
 
             {/* タイトル */}
             <FormControl mb={4} isInvalid={errors.title ? true : false}>
-              <FormLabel htmlFor="title" fontWeight={'bold'} color={'blue.500'}>
+              <FormLabel htmlFor='title' fontWeight={'bold'} color={'blue.500'}>
                 投稿タイトル（必須）
               </FormLabel>
               <Input
-                id="title"
-                type="text"
+                id='title'
+                type='text'
                 {...register('title', {
                   required: '入力が必須の項目です',
                   maxLength: {
@@ -263,7 +263,7 @@ const Create: NextPage = () => {
                     message: '60文字以内で入力してください',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormHelperText fontSize={'xs'}>
                 例：プロジェクトをシェアして共有できるサイト！ShareFolio
@@ -276,15 +276,15 @@ const Create: NextPage = () => {
             {/* 説明 */}
             <FormControl mb={4} isInvalid={errors.description ? true : false}>
               <FormLabel
-                htmlFor="description"
+                htmlFor='description'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 説明（必須）
               </FormLabel>
               <Textarea
-                id="description"
-                placeholder="アプリやサイトの簡単な説明を記載してください。"
+                id='description'
+                placeholder='アプリやサイトの簡単な説明を記載してください。'
                 {...register('description', {
                   required: '入力が必須の項目です',
                   maxLength: {
@@ -293,7 +293,7 @@ const Create: NextPage = () => {
                   },
                 })}
                 rows={10}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.description && errors.description.message}
@@ -302,10 +302,10 @@ const Create: NextPage = () => {
 
             {/* スクショ画像アップロード */}
             <FormControl mb={4}>
-              <FormLabel htmlFor="image" fontWeight={'bold'} color={'blue.500'}>
+              <FormLabel htmlFor='image' fontWeight={'bold'} color={'blue.500'}>
                 アプリ / サイトの画像
               </FormLabel>
-              <input id="image" type="file" onChange={handleImageSelect} />
+              <input id='image' type='file' onChange={handleImageSelect} />
               <FormHelperText fontSize={'xs'}>
                 例：トップページのスクリーンショット等
               </FormHelperText>
@@ -313,20 +313,20 @@ const Create: NextPage = () => {
 
             {/* レベル */}
             <FormControl mb={4}>
-              <FormLabel htmlFor="level" fontWeight={'bold'} color={'blue.500'}>
+              <FormLabel htmlFor='level' fontWeight={'bold'} color={'blue.500'}>
                 レベル
               </FormLabel>
-              <Select w={40} id="level" {...register('level', {})}>
-                <option value="beginner">初心者</option>
-                <option value="intermediate">中級者</option>
-                <option value="advanced">上級者</option>
+              <Select w={40} id='level' {...register('level', {})}>
+                <option value='beginner'>初心者</option>
+                <option value='intermediate'>中級者</option>
+                <option value='advanced'>上級者</option>
               </Select>
             </FormControl>
 
             {/* 使用言語選択 */}
             <FormControl mb={4}>
               <FormLabel
-                htmlFor="language"
+                htmlFor='language'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
@@ -335,7 +335,7 @@ const Create: NextPage = () => {
               <CheckboxGroup>
                 {displayedLanguages.map((displayedLanguage) => (
                   <Checkbox
-                    id="language"
+                    id='language'
                     m={2}
                     key={displayedLanguage}
                     onChange={handleCheckBoxChange}
@@ -350,16 +350,16 @@ const Create: NextPage = () => {
             {/* アプリURL */}
             <FormControl mb={4} isInvalid={errors.appUrl ? true : false}>
               <FormLabel
-                htmlFor="appUrl"
+                htmlFor='appUrl'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 アプリ / サイトURL（必須）
               </FormLabel>
               <Input
-                id="appUrl"
-                type="text"
-                placeholder="URL: "
+                id='appUrl'
+                type='text'
+                placeholder='URL: '
                 {...register('appUrl', {
                   required: '入力が必須の項目です',
                   pattern: {
@@ -372,7 +372,7 @@ const Create: NextPage = () => {
                     message: 'アドレスの形式が正しくありません',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.appUrl && errors.appUrl.message}
@@ -382,16 +382,16 @@ const Create: NextPage = () => {
             {/* Github */}
             <FormControl mb={4} isInvalid={errors.github ? true : false}>
               <FormLabel
-                htmlFor="github"
+                htmlFor='github'
                 fontWeight={'bold'}
                 color={'blue.500'}
               >
                 GitHub
               </FormLabel>
               <Input
-                id="github"
-                type="text"
-                placeholder="GitHub: "
+                id='github'
+                type='text'
+                placeholder='GitHub: '
                 {...register('github', {
                   pattern: {
                     value:
@@ -399,7 +399,7 @@ const Create: NextPage = () => {
                     message: 'アドレスの形式が正しくありません',
                   },
                 })}
-                autoComplete="off"
+                autoComplete='off'
               />
               <FormErrorMessage>
                 {errors.github && errors.github.message}
@@ -407,8 +407,8 @@ const Create: NextPage = () => {
             </FormControl>
             <Stack spacing={10} pt={2} mb={4}>
               <Button
-                type="submit"
-                size="lg"
+                type='submit'
+                size='lg'
                 bg={'blue.400'}
                 color={'white'}
                 _hover={{

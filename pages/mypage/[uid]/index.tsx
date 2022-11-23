@@ -225,17 +225,17 @@ const Mypage: NextPage = () => {
           {/* プロフィール編集フォーム */}
           <form onSubmit={handleUpdateButtonClick}>
             {/* ユーザーネーム入力欄 */}
-            <FormControl id="username" isRequired mb={8}>
+            <FormControl id='username' isRequired mb={8}>
               <FormLabel fontWeight={'bold'} color={'blue.400'}>
                 ユーザーネーム
               </FormLabel>
               <Input
-                id="username"
-                type="username"
-                placeholder="Usernameを入力"
+                id='username'
+                type='username'
+                placeholder='Usernameを入力'
                 value={username ? username : ''}
                 onChange={(e) => setUsername(e.target.value)}
-                autoComplete="off"
+                autoComplete='off'
               />
             </FormControl>
 
@@ -244,7 +244,7 @@ const Mypage: NextPage = () => {
               <FormLabel fontWeight={'bold'} color={'blue.400'}>
                 プロフィールアイコンを変更する
               </FormLabel>
-              <input type="file" onChange={handleImageSelect} />
+              <input type='file' onChange={handleImageSelect} />
               <Text fontSize={'sm'} mt={2} color={'red.500'}>
                 {!isUploaded && '画像をアップロードしています...'}
               </Text>
@@ -252,8 +252,8 @@ const Mypage: NextPage = () => {
 
             {/* 更新ボタン */}
             <Button
-              type="submit"
-              loadingText="Submitting"
+              type='submit'
+              loadingText='Submitting'
               bg={'blue.400'}
               color={'white'}
               _hover={{
@@ -265,10 +265,10 @@ const Mypage: NextPage = () => {
             </Button>
 
             {/* 戻るボタン */}
-            <NextLink href="/" passHref>
+            <NextLink href='/' passHref>
               <Button
-                as="a"
-                loadingText="Submitting"
+                as='a'
+                loadingText='Submitting'
                 bg={'gray.400'}
                 color={'white'}
                 _hover={{

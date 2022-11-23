@@ -90,16 +90,16 @@ const Posts: NextPage = () => {
       </Heading>
 
       <Container display={'flex'} maxW={'5xl'} p={{ base: 2, md: 12 }}>
-        <UnorderedList styleType="none" m={0}>
+        <UnorderedList styleType='none' m={0}>
           {posts.map((post) => (
             <ListItem key={post.id}>
               {/* 各投稿のBox */}
               <NextLink href={`/posts/${post.id}`}>
                 <Box
                   my={{ base: '10', sm: '8' }}
-                  display="flex"
+                  display='flex'
                   flexDirection={{ base: 'column', md: 'row' }}
-                  justifyContent="space-between"
+                  justifyContent='space-between'
                   p={4}
                   bg={'gray.100'}
                   _hover={{ bg: 'gray.200' }}
@@ -112,19 +112,19 @@ const Posts: NextPage = () => {
                 >
                   {/* サムネ画像部分（左半分）のBox */}
                   <Box
-                    display="flex"
-                    flex="1"
-                    position="relative"
-                    alignItems="center"
+                    display='flex'
+                    flex='1'
+                    position='relative'
+                    alignItems='center'
                     justifyContent={'center'}
                   >
                     {/* サムネ画像のBox */}
                     <Box
                       width={{ sm: '100%' }}
-                      zIndex="2"
-                      marginTop="5%"
+                      zIndex='2'
+                      marginTop='5%'
                       marginRight={{ base: 0, md: 4 }}
-                      display="flex"
+                      display='flex'
                       justifyContent={'center'}
                       my={{ sm: 5, md: 0 }}
                       maxW={{ md: 'md' }}
@@ -132,10 +132,10 @@ const Posts: NextPage = () => {
                       {/* サムネ画像部分 */}
 
                       <Image
-                        borderRadius="lg"
+                        borderRadius='lg'
                         src={post.image ? post.image : '/sample-icon.png'}
                         alt={`image of ${post.appName}`}
-                        objectFit="cover"
+                        objectFit='cover'
                         align={'center'}
                         _hover={{ cursor: 'pointer' }}
                       />
@@ -144,18 +144,18 @@ const Posts: NextPage = () => {
 
                   {/* 文章（コンテンツ）部分（右半分）のBox */}
                   <Box
-                    display="flex"
-                    flex="1"
-                    flexDirection="column"
-                    justifyContent="space-around"
+                    display='flex'
+                    flex='1'
+                    flexDirection='column'
+                    justifyContent='space-around'
                     marginTop={{ base: 3, sm: 3, md: 0 }}
                     ml={{ sm: 0, md: 4 }}
                   >
                     {/* 投稿タイトル */}
-                    <Heading marginTop="1" fontSize={{ base: 'xl', sm: '2xl' }}>
+                    <Heading marginTop='1' fontSize={{ base: 'xl', sm: '2xl' }}>
                       <Text
-                        as="a"
-                        textDecoration="none"
+                        as='a'
+                        textDecoration='none'
                         _hover={{
                           textDecoration: 'underline',
                           cursor: 'pointer',
@@ -168,9 +168,9 @@ const Posts: NextPage = () => {
 
                     {/* アプリの説明 */}
                     <Text
-                      as="p"
-                      marginTop="2"
-                      color="gray.700"
+                      as='p'
+                      marginTop='2'
+                      color='gray.700'
                       fontSize={{ base: 'sm', sm: 'md' }}
                       noOfLines={4}
                     >
@@ -190,8 +190,8 @@ const Posts: NextPage = () => {
                               <HStack key={idx}>
                                 {/* ユーザーのアイコン */}
                                 <Image
-                                  borderRadius="full"
-                                  boxSize="28px"
+                                  borderRadius='full'
+                                  boxSize='28px'
                                   src={
                                     author.photoUrl
                                       ? author.photoUrl
@@ -200,7 +200,7 @@ const Posts: NextPage = () => {
                                   alt={`Avatar of ${author.username}`}
                                 />
                                 {/* ユーザーネーム */}
-                                <Text fontWeight="medium" fontSize={'sm'}>
+                                <Text fontWeight='medium' fontSize={'sm'}>
                                   {author.username}
                                 </Text>
                               </HStack>

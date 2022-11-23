@@ -57,7 +57,7 @@ export const DeleteButton: React.FC<Props> = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost" onClick={onClose} mr={3}>
+            <Button variant='ghost' onClick={onClose} mr={3}>
               Close
             </Button>
             <Button colorScheme={isDanger ? 'red' : ''} onClick={onSubmit}>
